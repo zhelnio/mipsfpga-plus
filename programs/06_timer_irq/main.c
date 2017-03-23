@@ -24,9 +24,7 @@ void mipsTimerInit(void)
 void mipsTimerReset(void)
 {
     mips32_setcount(0);                     //reset counter as it reached the TOP value
-    mips32_setcompare(MIPS_TIMER_PERIOD);   //don`t ask me why
-                                            //but this is the way to clear timer interrupt flag (SI_TimerInt)
-                                            //see m14k_cpz.v:1984 for details
+    mips32_setcompare(MIPS_TIMER_PERIOD);   //clear timer interrupt flag
 }
 
 void mipsInterruptInit(void)
