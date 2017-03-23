@@ -50,7 +50,8 @@ module mfp_ahb_ram_slave
         end
     end
 
-    wire    read_after_write = HADDR == HADDR_dly && HWRITE_dly && !HWRITE;
+    wire    read_after_write = HADDR == HADDR_dly && HWRITE_dly && !HWRITE 
+                               && HTRANS != `HTRANS_IDLE && HTRANS_dly != `HTRANS_IDLE && HSEL;
     always @ (posedge HCLK)
         HREADY <= !read_after_write;
 

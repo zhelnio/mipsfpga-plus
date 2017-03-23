@@ -52,7 +52,9 @@ module mfp_ahb_gpio_slave
     wire [3:0] read_ionum       = HADDR     [5:2];
     wire [3:0] write_ionum      = HADDR_dly [5:2];
     wire       write_enable     = HTRANS_dly != `HTRANS_IDLE && HSEL_dly && HWRITE_dly;
-    wire       read_after_write = HADDR == HADDR_dly && HWRITE_dly && !HWRITE;
+
+    wire       read_after_write = HADDR == HADDR_dly && HWRITE_dly && !HWRITE 
+                                  && HTRANS!= `HTRANS_IDLE && HTRANS_dly != `HTRANS_IDLE && HSEL;
 
     always @ (posedge HCLK or negedge HRESETn)
     begin
