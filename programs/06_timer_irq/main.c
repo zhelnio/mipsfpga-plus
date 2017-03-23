@@ -9,8 +9,8 @@
 
 // config start
 
-#define RUNTYPE             MULTIPLE_IRQ_HANDLERS
-#define MIPS_TIMER_PERIOD   0x200
+#define RUNTYPE             SHARED_IRQ_HANDLER
+#define MIPS_TIMER_PERIOD   0x600
 
 // config end
 
@@ -35,7 +35,7 @@ void mipsInterruptInit(void)
         //vector mode, one common handler
         mips32_bicsr (SR_BEV);              // Status.BEV  0 - vector interrupt mode
         mips32_biccr (CR_IV);               // Cause.IV,   0 - general exception handler (offset 0x180)
-        mips32_bissr (SR_IE | SR_HINT5);    // interrupt enable, HW5 - unmasked
+        mips32_bissr (SR_IE | SR_HINT5 | SR_SINT1);    // interrupt enable, HW5 - unmasked
 
     #elif   RUNTYPE == MULTIPLE_IRQ_HANDLERS
         //vector mode multiple handlers
@@ -58,16 +58,22 @@ void __attribute__ ((interrupt, keep_interrupts_masked)) __mips_interrupt ()
 
     uint32_t cause = mips32_getcr();
 
-    //check for timer interrupt
-    if(cause & CR_HINT5)
+        //check for timer interrupt
+     if(cause & CR_HINT5)
     {
+        MFP_RED_LEDS = MFP_RED_LEDS | 0x10;
         n++;
         mipsTimerReset();
+
+        mips32_biscr(CR_SINT1);     //request for software interrupt 1
+        MFP_RED_LEDS = MFP_RED_LEDS & ~0x10;
     }
     //check for software interrupt 1
     else if (cause & CR_SINT1)
     {
+        MFP_RED_LEDS = MFP_RED_LEDS | 0x8;
         mips32_biccr(CR_SINT1);     //clear software interrupt 1 flag
+        MFP_RED_LEDS = MFP_RED_LEDS & ~0x8;
     }
 
     MFP_RED_LEDS = MFP_RED_LEDS & ~0x1;
