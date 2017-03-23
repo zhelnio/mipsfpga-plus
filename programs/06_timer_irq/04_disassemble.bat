@@ -1,1 +1,1 @@
-mips-mti-elf-objdump -D program.elf > program.dis
+mips-mti-elf-objdump -SD program.elf > program.dis
