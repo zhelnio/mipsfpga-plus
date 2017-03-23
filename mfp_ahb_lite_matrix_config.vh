@@ -30,9 +30,9 @@
 //  Memory type (choose one)
 //
 //`define MFP_USE_BYTE_MEMORY
-//`define MFP_USE_WORD_MEMORY
+`define MFP_USE_WORD_MEMORY
 //`define MFP_USE_BUSY_MEMORY
-`define MFP_USE_SDRAM_MEMORY
+//`define MFP_USE_SDRAM_MEMORY
 
 //
 // Enable external interrupt controller
