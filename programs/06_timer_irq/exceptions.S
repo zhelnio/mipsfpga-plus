@@ -19,10 +19,10 @@ __tlb_refill:
                                     # we can use 'j _mips_tlb_refill' but it works only with 1st 28 bits of addr
     nop
 
-    .org    0x80
-    .weak   _mips_xtlb_refill
-__xtlb_refill:
-    la      $k1, _mips_xtlb_refill
+    .org    0x80                    # there is no information about this vector in 
+    .weak   _mips_xtlb_refill       # 'MIPS32® microAptiv™ UP Processor Core Family Software User’s Manual, Revision 01.02'
+__xtlb_refill:                      # but it present in 'Codescape GNU Tools for MIPS Programmer's Guide'
+    la      $k1, _mips_xtlb_refill  # and in mips code examples
     beqz    $k1, __xtlb_refill
     nop
     jr      $k1
