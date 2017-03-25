@@ -47,7 +47,7 @@ void mipsInterruptInit(void)
 
 volatile long long int n;
 
-ISR(IH_MIPS)
+EH_GENERAL()
 {
     MFP_RED_LEDS = MFP_RED_LEDS | 0x2;
 
@@ -99,7 +99,7 @@ int main ()
     mipsInterruptInit();
 
     for (;;)
-        MFP_7_SEGMENT_HEX = ((n >> 8) & 0xffffff00) | (n & 0xff);   //counter output
+        MFP_7_SEGMENT_HEX = n;   //counter output
 
     return 0;
 }
