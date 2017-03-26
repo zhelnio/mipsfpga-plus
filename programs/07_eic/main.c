@@ -51,10 +51,15 @@ EH_GENERAL()
 {
     MFP_RED_LEDS = MFP_RED_LEDS | 0x2;
 
-    //check for software interrupt 1
     uint32_t cause = mips32_getcr();
-    if (cause & CR_SINT1)
-        mips32_biccr(CR_SINT1);     //clear software interrupt 1 flag
+
+    //check that this is interrupt exception
+    if((cause & CR_XMASK) == 0)
+    {
+        //check for software interrupt 1
+        if (cause & CR_SINT1)
+            mips32_biccr(CR_SINT1);     //clear software interrupt 1 flag
+    }
 
     MFP_RED_LEDS = MFP_RED_LEDS & ~0x2;
 }

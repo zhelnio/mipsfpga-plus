@@ -32,7 +32,7 @@ void mipsInterruptInit(void)
         //compatibility mode, one common handler
         mips32_bicsr (SR_BEV);              // Status.BEV  0 - place handlers in kseg0 (0x80000000)
         mips32_biccr (CR_IV);               // Cause.IV,   0 - general exception handler (offset 0x180)
-        mips32_bissr (SR_IE | SR_HINT5 | SR_SINT1);    // interrupt enable, HW5 - unmasked
+        mips32_bissr (SR_IE | SR_HINT5 | SR_SINT1);    // interrupt enable, HW5,SW1 - unmasked
 
     #elif   RUNTYPE == VECTOR
         //vector mode, multiple handlers
@@ -56,22 +56,26 @@ void __attribute__ ((interrupt, keep_interrupts_masked)) _mips_general_exception
 
     uint32_t cause = mips32_getcr();
 
-    //check for timer interrupt
-    if(cause & CR_HINT5)
+    //check that this is interrupt exception
+    if((cause & CR_XMASK) == 0)
     {
-        MFP_RED_LEDS = MFP_RED_LEDS | 0x10;
-        n++;
-        mipsTimerReset();
+        //check for timer interrupt
+        if(cause & CR_HINT5)
+        {
+            MFP_RED_LEDS = MFP_RED_LEDS | 0x10;
+            n++;
+            mipsTimerReset();
 
-        mips32_biscr(CR_SINT1);     //request for software interrupt 1
-        MFP_RED_LEDS = MFP_RED_LEDS & ~0x10;
-    }
-    //check for software interrupt 1
-    else if (cause & CR_SINT1)
-    {
-        MFP_RED_LEDS = MFP_RED_LEDS | 0x8;
-        mips32_biccr(CR_SINT1);     //clear software interrupt 1 flag
-        MFP_RED_LEDS = MFP_RED_LEDS & ~0x8;
+            mips32_biscr(CR_SINT1);     //request for software interrupt 1
+            MFP_RED_LEDS = MFP_RED_LEDS & ~0x10;
+        }
+        //check for software interrupt 1
+        else if (cause & CR_SINT1)
+        {
+            MFP_RED_LEDS = MFP_RED_LEDS | 0x8;
+            mips32_biccr(CR_SINT1);     //clear software interrupt 1 flag
+            MFP_RED_LEDS = MFP_RED_LEDS & ~0x8;
+        }
     }
 
     MFP_RED_LEDS = MFP_RED_LEDS & ~0x1;
@@ -106,10 +110,7 @@ int main ()
     mipsInterruptInit();
 
     for (;;)
-    {
-        //counter output
         MFP_7_SEGMENT_HEX = n;
-    }
 
     return 0;
 }
