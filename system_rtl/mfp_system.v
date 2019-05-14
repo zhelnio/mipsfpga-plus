@@ -34,6 +34,22 @@ module mfp_system
     output [`SDRAM_DM_BITS   - 1 : 0 ]      SDRAM_DQM,
     `endif
 
+    `ifdef MFP_USE_AVALON_MEMORY
+    output                                  avm_clk,
+    output                                  avm_rst_n,
+    input                                   avm_waitrequest,
+    input                                   avm_readdatavalid,
+    input  [                         31:0 ] avm_readdata,
+    output                                  avm_write,
+    output                                  avm_read,
+    output [                         31:0 ] avm_address,
+    output [                          3:0 ] avm_byteenable,
+    output [                          2:0 ] avm_burstcount,
+    output                                  avm_beginbursttransfer,
+    output                                  avm_begintransfer,
+    output [                         31:0 ] avm_writedata,
+    `endif
+
     `ifdef MFP_DEMO_LIGHT_SENSOR
     output                                  SPI_CS,
     output                                  SPI_SCK,
@@ -465,7 +481,23 @@ module mfp_system
         .SDRAM_DQ         (   SDRAM_DQ         ),
         .SDRAM_DQM        (   SDRAM_DQM        ),
         `endif
-                                                
+
+        `ifdef MFP_USE_AVALON_MEMORY
+        .avm_clk                ( avm_clk                ),
+        .avm_rst_n              ( avm_rst_n              ),
+        .avm_waitrequest        ( avm_waitrequest        ),
+        .avm_readdatavalid      ( avm_readdatavalid      ),
+        .avm_readdata           ( avm_readdata           ),
+        .avm_write              ( avm_write              ),
+        .avm_read               ( avm_read               ),
+        .avm_address            ( avm_address            ),
+        .avm_byteenable         ( avm_byteenable         ),
+        .avm_burstcount         ( avm_burstcount         ),
+        .avm_beginbursttransfer ( avm_beginbursttransfer ),
+        .avm_begintransfer      ( avm_begintransfer      ),
+        .avm_writedata          ( avm_writedata          ),
+        `endif
+
         .IO_Switches      (   IO_Switches      ),
         .IO_Buttons       (   IO_Buttons       ),
         .IO_RedLEDs       (   IO_RedLEDs       ),

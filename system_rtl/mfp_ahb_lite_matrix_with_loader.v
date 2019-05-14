@@ -31,6 +31,22 @@ module mfp_ahb_lite_matrix_with_loader
     output [`SDRAM_DM_BITS   - 1 : 0 ]      SDRAM_DQM,
     `endif
 
+    `ifdef MFP_USE_AVALON_MEMORY
+    output                                  avm_clk,
+    output                                  avm_rst_n,
+    input                                   avm_waitrequest,
+    input                                   avm_readdatavalid,
+    input  [                         31:0 ] avm_readdata,
+    output                                  avm_write,
+    output                                  avm_read,
+    output [                         31:0 ] avm_address,
+    output [                          3:0 ] avm_byteenable,
+    output [                          2:0 ] avm_burstcount,
+    output                                  avm_beginbursttransfer,
+    output                                  avm_begintransfer,
+    output [                         31:0 ] avm_writedata,
+    `endif
+
     input  [`MFP_N_SWITCHES          - 1:0] IO_Switches,
     input  [`MFP_N_BUTTONS           - 1:0] IO_Buttons,
     output [`MFP_N_RED_LEDS          - 1:0] IO_RedLEDs,
@@ -144,7 +160,23 @@ module mfp_ahb_lite_matrix_with_loader
         .SDRAM_DQ         ( SDRAM_DQ        ),
         .SDRAM_DQM        ( SDRAM_DQM       ),
         `endif  // MFP_USE_SDRAM_MEMORY
-                                             
+
+        `ifdef MFP_USE_AVALON_MEMORY
+        .avm_clk                ( avm_clk                ),
+        .avm_rst_n              ( avm_rst_n              ),
+        .avm_waitrequest        ( avm_waitrequest        ),
+        .avm_readdatavalid      ( avm_readdatavalid      ),
+        .avm_readdata           ( avm_readdata           ),
+        .avm_write              ( avm_write              ),
+        .avm_read               ( avm_read               ),
+        .avm_address            ( avm_address            ),
+        .avm_byteenable         ( avm_byteenable         ),
+        .avm_burstcount         ( avm_burstcount         ),
+        .avm_beginbursttransfer ( avm_beginbursttransfer ),
+        .avm_begintransfer      ( avm_begintransfer      ),
+        .avm_writedata          ( avm_writedata          ),
+        `endif
+
         `ifdef MFP_DEMO_LIGHT_SENSOR
         .SPI_CS           ( SPI_CS          ),
         .SPI_SCK          ( SPI_SCK         ),

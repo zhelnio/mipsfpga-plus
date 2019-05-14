@@ -41,6 +41,33 @@ module mfp_testbench;
     wire  [`SDRAM_DM_BITS     - 1 : 0]  SDRAM_DQM;
     `endif
 
+    `ifdef MFP_USE_AVALON_MEMORY
+    wire          avm_clk;
+    wire          avm_rst_n;
+    wire          avm_waitrequest;
+    wire          avm_readdatavalid;
+    wire [ 31:0 ] avm_readdata;
+    wire          avm_write;
+    wire          avm_read;
+    wire [ 31:0 ] avm_address;
+    wire [  3:0 ] avm_byteenable;
+    wire [  2:0 ] avm_burstcount;
+    wire          avm_beginbursttransfer;
+    wire          avm_begintransfer;
+    wire [ 31:0 ] avm_writedata;
+
+    //LPDDR2
+    wire [9:0]  mem_ca;
+    wire [0:0]  mem_ck;
+    wire [0:0]  mem_ck_n;
+    wire [0:0]  mem_cke;
+    wire [0:0]  mem_cs_n;
+    wire [3:0]  mem_dm;
+    wire [31:0] mem_dq;
+    wire [3:0]  mem_dqs;
+    wire [3:0]  mem_dqs_n;
+    `endif
+
     reg         UART_RX;
     wire        UART_TX;
 
@@ -100,6 +127,22 @@ module mfp_testbench;
         .SDRAM_BA         ( SDRAM_BA         ),
         .SDRAM_DQ         ( SDRAM_DQ         ),
         .SDRAM_DQM        ( SDRAM_DQM        ),
+        `endif
+
+        `ifdef MFP_USE_AVALON_MEMORY
+        .avm_clk                ( avm_clk                ),
+        .avm_rst_n              ( avm_rst_n              ),
+        .avm_waitrequest        ( avm_waitrequest        ),
+        .avm_readdatavalid      ( avm_readdatavalid      ),
+        .avm_readdata           ( avm_readdata           ),
+        .avm_write              ( avm_write              ),
+        .avm_read               ( avm_read               ),
+        .avm_address            ( avm_address            ),
+        .avm_byteenable         ( avm_byteenable         ),
+        .avm_burstcount         ( avm_burstcount         ),
+        .avm_beginbursttransfer ( avm_beginbursttransfer ),
+        .avm_begintransfer      ( avm_begintransfer      ),
+        .avm_writedata          ( avm_writedata          ),
         `endif
                                               
         .IO_Switches      ( IO_Switches      ),
@@ -201,6 +244,49 @@ module mfp_testbench;
                 # 20 SI_ClkIn = ~ SI_ClkIn;
         end
     `endif //MFP_USE_SDRAM_MEMORY
+
+    //----------------------------------------------------------------
+
+    `ifdef MFP_USE_AVALON_MEMORY
+    lpddr2_wrapper lpddr2_wrapper
+    (
+        .clk_global      ( SI_ClkIn               ),
+        .rst_global_n    ( SI_ColdReset           ),
+        .mem_ca          ( mem_ca                 ),
+        .mem_ck          ( mem_ck                 ),
+        .mem_ck_n        ( mem_ck_n               ),
+        .mem_cke         ( mem_cke                ),
+        .mem_cs_n        ( mem_cs_n               ),
+        .mem_dm          ( mem_dm                 ),
+        .mem_dq          ( mem_dq                 ),
+        .mem_dqs         ( mem_dqs                ),
+        .mem_dqs_n       ( mem_dqs_n              ),
+        .avm_clk         ( avm_clk                ),
+        .avm_rst_n       ( avm_rst_n              ),
+        .avm_ready       ( avm_waitrequest        ),
+        .avm_burstbegin  ( avm_beginbursttransfer ),
+        .avm_addr        ( avm_address     [26:0] ),
+        .avm_rdata_valid ( avm_readdatavalid      ),
+        .avm_rdata       ( avm_readdata           ),
+        .avm_wdata       ( avm_writedata          ),
+        .avm_be          ( avm_byteenable         ),
+        .avm_read_req    ( avm_read               ),
+        .avm_write_req   ( avm_write              ),
+        .avm_size        ( avm_burstcount [0]     ) 
+    );
+    `endif
+
+    mobile_ddr2 mobile_ddr2(
+        .ck    ( mem_ck    ),
+        .ck_n  ( mem_ck_n  ),
+        .cke   ( mem_cke   ),
+        .cs_n  ( mem_cs_n  ),
+        .ca    ( mem_ca    ),
+        .dm    ( mem_dm    ),
+        .dq    ( mem_dq    ),
+        .dqs   ( mem_dqs   ),
+        .dqs_n ( mem_dqs_n ) 
+    );
 
     //----------------------------------------------------------------
 

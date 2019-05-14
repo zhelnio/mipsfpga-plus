@@ -13,7 +13,7 @@ module lpddr2_reset
     input      local_cal_success,
     output reg soft_reset_n,
     output     mpfe_clk,
-    output reg mpfe_reset_n,
+    output reg mpfe_reset_n 
 );
     // Altera External Memory Interface Handbook. Volume 3:
     //   soft_reset_n - Assert to cause a complete reset to the PHY, but not to the PLL that the PHY uses
@@ -31,7 +31,7 @@ module lpddr2_reset
     //   the interface is successfully calibrated.
 
     // common async reset
-    wire rst_n = global_reset_n & avm_rst_n;
+    wire rst_n = rst_global_n & avm_rst_n;
 
     // status wires (CDC to Avalon domain)
     reg a_pll_locked, a_pll_locked_buf;

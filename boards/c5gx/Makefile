@@ -1,18 +1,14 @@
 
-help:
-	qmegawiz -h
+IP_DIR = ip
+LST_IP = lpddr2
 
-test:
-	qmegawiz -silent OPTIONAL_FILES=NONE ip/fpga_lpddr2.v 
+IP_DIR_PATH = $(IP_DIR)/$@
+IP_DIR_FILE = $@.v
 
-test2:
-	qmegawiz -p:test_dir -silent OPTIONAL_FILES=NONE ip/fpga_lpddr2.v 
+$(LST_IP):
+	mkdir -p $(IP_DIR_PATH)
+	cp $(IP_DIR_FILE) $(IP_DIR_PATH)
+	cd $(IP_DIR_PATH) && qmegawiz -silent OPTIONAL_FILES="SIM_NETLIST|SYNTH_NETLIST" $(IP_DIR_FILE)
 
-SYN_DIR = synth/lpddr2
-
-syn:
-	rm -rf $(SYN_DIR)
-	mkdir -p $(SYN_DIR)
-	cp ip/* $(SYN_DIR)
-	cd $(SYN_DIR) && qmegawiz -silent OPTIONAL_FILES="SIM_NETLIST|SYNTH_NETLIST" lpddr2.v 
-
+clean:
+	rm -rf $(IP_DIR)

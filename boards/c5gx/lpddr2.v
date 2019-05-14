@@ -54,7 +54,7 @@ module lpddr2 (
 		output wire        pll_avl_phy_clk             //                   .pll_avl_phy_clk
 	);
 
-	fpga_lpddr2_0002 fpga_lpddr2_inst (
+	lpddr2_0002 lpddr2_0002 (
 		.pll_ref_clk                (pll_ref_clk),                //        pll_ref_clk.clk
 		.global_reset_n             (global_reset_n),             //       global_reset.reset_n
 		.soft_reset_n               (soft_reset_n),               //         soft_reset.reset_n

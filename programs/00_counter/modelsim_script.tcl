@@ -1,7 +1,8 @@
 
 vlib work
 
-set p0 -vlog01compat
+set p0 -sv05compat 
+#-vlog01compat
 set p1 +define+SIMULATION
 
 set i0 +incdir+../../../core
@@ -16,9 +17,21 @@ set s2 ../../../system_rtl/uart16550/*.v
 set s3 ../../../testbench/*.v
 set s4 ../../../testbench/sdr_sdram/*.v
 
-vlog $p0 $p1  $i0 $i1 $i2 $i3 $i4  $s0 $s1 $s2 $s3 $s4
+set s5 ../../../system_rtl/*.sv
+set s6 ../../../testbench/mobile_ddr2/*.v
+set s7 ../../../boards/c5gx/lpddr*.v
 
-vsim work.mfp_testbench
+# Quartus specific
+# TODO: redesign
+set QSYS_SIMDIR ../../../boards/c5gx/ip/lpddr2/lpddr2_sim
+source $QSYS_SIMDIR/mentor/msim_setup.tcl
+dev_com
+com
+
+
+vlog -sv $p0 $p1  $i0 $i1 $i2 $i3 $i4  $s0 $s1 $s2 $s3 $s4 $s5 $s6 $s7
+
+vsim -L work -L work_lib -L dll0 -L oct0 -L c0 -L s0 -L p0 -L pll0 -L lpddr2 -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver work.mfp_testbench
 
 add wave -radix hex sim:/mfp_testbench/*
 

@@ -26,7 +26,7 @@ module lpddr2_wrapper
     input  [3:0]  avm_be,           //       .byteenable
     input         avm_read_req,     //       .read
     input         avm_write_req,    //       .write
-    input         avm_size,         //       .burstcount
+    input         avm_size          //       .burstcount
 );
     wire afi_half_clk;
     wire pll_locked;
@@ -36,7 +36,7 @@ module lpddr2_wrapper
     wire mpfe_reset_n;
 
     wire avm_waitrequest_n;
-    assign avm_ready = avl_waitrequest_n & mpfe_reset_n;
+    assign avm_ready = avm_waitrequest_n & mpfe_reset_n;
 
     lpddr2_reset lpddr2_reset (
         .clk_global                 ( clk_global        ),
@@ -50,7 +50,7 @@ module lpddr2_wrapper
         .mpfe_reset_n               ( mpfe_rst_n        ) 
     );
 
-    fpga_lpddr2 fpga_lpddr2 (
+    lpddr2 lpddr2_ctrl (
         .pll_ref_clk                ( clk_global        ),
         .global_reset_n             ( rst_global_n      ),
         .soft_reset_n               ( soft_reset_n      ),

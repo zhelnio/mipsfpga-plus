@@ -16,17 +16,22 @@ module ahb_lite_avm
     input                    HRESETn,
     input  [HADDR_WIDTH-1:0] HADDR,
     input  [            2:0] HBURST,
-    input  [            1:0] HTRANS,
-    input  [            2:0] HSIZE,
-    input                    HWRITE,
-    input  [HDATA_WIDTH-1:0] HWDATA,
-    output [HDATA_WIDTH-1:0] HRDATA,
-    input                    HREADY,
-    output                   HRESP,
+    input                    HMASTLOCK, // ignored
+    input  [            3:0] HPROT,     // ignored
     input                    HSEL,
+    input  [            2:0] HSIZE,
+    input  [            1:0] HTRANS,
+    input  [HDATA_WIDTH-1:0] HWDATA,
+    input                    HWRITE,
+    input                    HREADY,
+    output [HDATA_WIDTH-1:0] HRDATA,
     output                   HREADYOUT,
+    output                   HRESP,
+    input                    SI_Endian, // ignored
 
     // Avalon-MM side
+    output                   avm_clk,
+    output                   avm_rst_n,
     input                    avm_waitrequest,
     input                    avm_readdatavalid,
     input  [HDATA_WIDTH-1:0] avm_readdata,
@@ -39,10 +44,13 @@ module ahb_lite_avm
     output                   avm_begintransfer,
     output [HDATA_WIDTH-1:0] avm_writedata 
 );
+    assign avm_clk   = HCLK;
+    assign avm_rst_n = HRESETn;
+
     // AHB side request
     wire ahb_act = HTRANS != `HTRANS_IDLE && HSEL && HREADY;
 
-    reg [MADDR_WIDTH-1:0] ahb_addr;
+    reg [HADDR_WIDTH-1:0] ahb_addr;
     always_ff @(posedge HCLK)
         if(ahb_act) ahb_addr <= HADDR;
 
@@ -54,7 +62,7 @@ module ahb_lite_avm
 
     reg [1:0] State, Next;
     always_ff @(posedge HCLK or negedge HRESETn)
-        if(~HRESETn) State <= S_IDLE
+        if(~HRESETn) State <= S_IDLE;
         else         State <= Next;
 
     always_comb begin
@@ -83,9 +91,8 @@ module ahb_lite_avm
     assign avm_writedata = HWDATA;
 
     // byteenable 
-    // - calculated from HSIZE for write 
-    // - 0xFF for read
     localparam BENAB_WIDTH = HDATA_WIDTH / 8;
+    localparam BADDR_WIDTH = $clog2(BENAB_WIDTH);
     reg [BENAB_WIDTH-1:0] benab;
     assign avm_byteenable = benab [AV_BE_WIDTH-1:0];
 
