@@ -127,7 +127,7 @@ disasm:
 
 readmemh:
 	$(OC) program.elf -O verilog program.hex
-	$(HS)
+	#$(HS)
 
 srecord:
 	$(OC) program.elf -O srec program.rec

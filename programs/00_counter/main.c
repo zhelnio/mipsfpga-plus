@@ -6,7 +6,7 @@ int main ()
 
     for (;;)
     {
-        long long int val = ((n >> 8) & 0xffffff00) | (n & 0xff);
+        long long int val = n;//((n >> 8) & 0xffffff00) | (n & 0xff);
 
         MFP_RED_LEDS      = val >> 8;
         MFP_GREEN_LEDS    = MFP_RED_LEDS;

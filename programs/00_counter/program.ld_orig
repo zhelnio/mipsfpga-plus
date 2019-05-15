@@ -61,7 +61,6 @@ SECTIONS
   /**** Init Code (executed from reset) ****/
 
   .reset 0x9fc00000 :   /* Runs uncached (from 0x9fc00000) until I$ is initialized. */
-  AT ( 0x00000000 )
   {
     _ftext_init = ABSOLUTE(.) ;	/* Start of init code. */
     *(.reset)			/* Reset entry point   */
@@ -72,7 +71,7 @@ SECTIONS
 
   /**** "C" Code and read-only data ****/
 
-  .text_ram :
+  .text_ram 0x80001000 :
   {
     _ftext_ram = ABSOLUTE(.) ;	/* Start of code and read-only data */
     *(.text)*(.text.*)
@@ -85,7 +84,6 @@ SECTIONS
   /**** Initialised data ****/
 
   .data :
-  /* AT ( ADDR ( .text_ram ) + SIZEOF (.text_ram)) */
   {
     _fdata_ram = ABSOLUTE(.);	/* Start of initialised data */
     *(.data)
@@ -100,21 +98,24 @@ SECTIONS
 
   /**** Uninitialised data ****/
 
-  .bss 0x80001000 :
-  {
-    _fbss = ABSOLUTE(.) ;
-    *(.sbss)
+  _fbss = .;			/* Start of uninitialised data	*/
+
+  .sbss : 
+  { 
+    *(.sbss) 
     *(.scommon)
+  }
+  .bss :
+  {
     *(.bss)
     *(COMMON)
-    _end = . ;
-    *(.gptab.data) 
-    *(.gptab.sdata)
-    *(.gptab.bss) 
-    *(.gptab.sbss)
   }
 
-/* End of uninitialised data	    */
+  _end = . ;		/* End of uninitialised data	    */
+
+  .gptab.sdata : { *(.gptab.data) *(.gptab.sdata) }
+  .gptab.sbss : { *(.gptab.bss) *(.gptab.sbss) }
+
 
   /DISCARD/ :
   {

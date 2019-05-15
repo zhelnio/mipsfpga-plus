@@ -44,10 +44,11 @@ module lpddr2_wrapper
         .avm_clk                    ( avm_clk           ),
         .avm_rst_n                  ( avm_rst_n         ),
         .afi_half_clk               ( afi_half_clk      ),
+        .pll_locked                 ( pll_locked        ),
         .local_cal_success          ( local_cal_success ),
         .soft_reset_n               ( soft_reset_n      ),
         .mpfe_clk                   ( mpfe_clk          ),
-        .mpfe_reset_n               ( mpfe_rst_n        ) 
+        .mpfe_reset_n               ( mpfe_reset_n      ) 
     );
 
     lpddr2 lpddr2_ctrl (

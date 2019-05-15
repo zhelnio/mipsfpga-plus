@@ -54,7 +54,7 @@ module lpddr2 (
 		output wire        pll_avl_phy_clk             //                   .pll_avl_phy_clk
 	);
 
-	lpddr2_0002 lpddr2_0002 (
+	lpddr2_0002 lpddr2_inst (
 		.pll_ref_clk                (pll_ref_clk),                //        pll_ref_clk.clk
 		.global_reset_n             (global_reset_n),             //       global_reset.reset_n
 		.soft_reset_n               (soft_reset_n),               //         soft_reset.reset_n
@@ -392,7 +392,7 @@ endmodule
 // Retrieval info: 	<generic name="DQ_INPUT_REG_USE_CLKN" value="false" />
 // Retrieval info: 	<generic name="DQS_DQSN_MODE" value="DIFFERENTIAL" />
 // Retrieval info: 	<generic name="AFI_DEBUG_INFO_WIDTH" value="32" />
-// Retrieval info: 	<generic name="CALIBRATION_MODE" value="Full" />
+// Retrieval info: 	<generic name="CALIBRATION_MODE" value="Skip" />
 // Retrieval info: 	<generic name="NIOS_ROM_DATA_WIDTH" value="32" />
 // Retrieval info: 	<generic name="READ_FIFO_SIZE" value="8" />
 // Retrieval info: 	<generic name="PHY_CSR_ENABLED" value="false" />
@@ -437,7 +437,7 @@ endmodule
 // Retrieval info: 	<generic name="NUM_DLL_SHARING_INTERFACES" value="1" />
 // Retrieval info: 	<generic name="OCT_SHARING_MODE" value="None" />
 // Retrieval info: 	<generic name="NUM_OCT_SHARING_INTERFACES" value="1" />
-// Retrieval info: 	<generic name="AUTO_DEVICE" value="5CEBA2F17A7" />
-// Retrieval info: 	<generic name="AUTO_DEVICE_SPEEDGRADE" value="7" />
+// Retrieval info: 	<generic name="AUTO_DEVICE" value="Unknown" />
+// Retrieval info: 	<generic name="AUTO_DEVICE_SPEEDGRADE" value="Unknown" />
 // Retrieval info: </instance>
 // IPFS_FILES : NONE

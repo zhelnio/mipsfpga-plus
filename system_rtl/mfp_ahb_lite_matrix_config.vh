@@ -136,7 +136,7 @@
 `define MFP_RESET_RAM_ADDR          32'h1fc?????
 `define MFP_RAM_ADDR                32'h0???????
 
-`define MFP_RESET_RAM_ADDR_WIDTH    10  // The boot sequence is the same for everything
+`define MFP_RESET_RAM_ADDR_WIDTH    11  // The boot sequence is the same for everything
 
 `ifndef MFP_RAM_ADDR_WIDTH
     `ifdef SIMULATION

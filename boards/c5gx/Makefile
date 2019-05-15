@@ -12,3 +12,6 @@ $(LST_IP):
 
 clean:
 	rm -rf $(IP_DIR)
+
+edit:
+	cd ip/lpddr2 && qmegawiz lpddr2.v

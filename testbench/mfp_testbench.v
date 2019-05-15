@@ -1,6 +1,9 @@
 `include "mfp_ahb_lite_matrix_config.vh"
 
-`timescale 1 ns / 100 ps
+//TODO: check with ddr2
+//`timescale 1 ns / 100 ps
+
+`timescale 1 ps / 1 ps
 
 module mfp_testbench;
 
@@ -241,7 +244,9 @@ module mfp_testbench;
         begin
             SI_ClkIn = 0;
             forever
-                # 20 SI_ClkIn = ~ SI_ClkIn;
+            //    # 20 
+            # 10000
+            SI_ClkIn = ~ SI_ClkIn;
         end
     `endif //MFP_USE_SDRAM_MEMORY
 
@@ -251,7 +256,7 @@ module mfp_testbench;
     lpddr2_wrapper lpddr2_wrapper
     (
         .clk_global      ( SI_ClkIn               ),
-        .rst_global_n    ( SI_ColdReset           ),
+        .rst_global_n    (~SI_ColdReset           ),
         .mem_ca          ( mem_ca                 ),
         .mem_ck          ( mem_ck                 ),
         .mem_ck_n        ( mem_ck_n               ),
@@ -356,8 +361,7 @@ module mfp_testbench;
                 = { ram [i + 3], ram [i + 2], ram [i + 1], ram [i + 0] };
     end
 
-    `else
-    `ifdef MFP_USE_BYTE_MEMORY
+    `elsif MFP_USE_BYTE_MEMORY
 
     generate
         genvar j;
@@ -380,8 +384,7 @@ module mfp_testbench;
         end
     endgenerate
 
-    `else
-    `ifdef MFP_USE_BUSY_MEMORY
+    `elsif MFP_USE_BUSY_MEMORY
 
     initial
     begin
@@ -397,8 +400,7 @@ module mfp_testbench;
                 = { ram [i + 3], ram [i + 2], ram [i + 1], ram [i + 0] };
     end
 
-    `else
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `elsif MFP_USE_SDRAM_MEMORY
 
     reg  [`SDRAM_COL_BITS - 1 : 0]  AddrColumn ;
     reg  [`SDRAM_ROW_BITS - 1 : 0]  AddrRow    ;
@@ -428,10 +430,45 @@ module mfp_testbench;
         end
     end
 
-    `endif //MFP_USE_SDRAM_MEMORY
-    `endif //MFP_USE_BUSY_MEMORY
-    `endif //MFP_USE_BYTE_MEMORY
-    `endif //MFP_USE_WORD_MEMORY
+    `elsif MFP_USE_AVALON_MEMORY
+
+    initial begin
+        $readmemh ("program.hex", reset_ram);
+
+        for (i = 0; i < (1 << `MFP_RESET_RAM_ADDR_WIDTH); i = i + 4)
+            system.matrix_loader.matrix.reset_ram.ram.ram [i / 4]
+                = { reset_ram [i + 3], reset_ram [i + 2], reset_ram [i + 1], reset_ram [i + 0] };
+    end
+
+    // initial begin
+    //     $readmemh ("program_1fc00000.hex", reset_ram);
+    //     $readmemh ("program_00000000.hex", ram);
+
+    //     for (i = 0; i < (1 << `MFP_RESET_RAM_ADDR_WIDTH); i = i + 4)
+    //         system.matrix_loader.matrix.reset_ram.ram.ram [i / 4]
+    //             = { reset_ram [i + 3], reset_ram [i + 2], reset_ram [i + 1], reset_ram [i + 0] };
+
+    //     for (i = 0; i < (1 << `MFP_RAM_ADDR_WIDTH); i = i + 8)
+    //         write_ddr2 ( i / 4, 
+    //             { ram [i + 7], ram [i + 6], ram [i + 5], ram [i + 4],
+    //               ram [i + 3], ram [i + 2], ram [i + 1], ram [i + 0]  } );
+    // end
+
+    // `include "mobile_ddr2_parameters.vh"
+
+    // task write_ddr2(input [31:0] addr, input [63:0] data);
+    //     reg [ BA_BITS-1:0] bank;
+    //     reg [ROW_BITS-1:0] row;
+    //     reg [COL_BITS-1:0] col;
+        
+    //     { bank, row, col } = addr >> 2;
+
+    //     if(data !== 64'bx)
+    //         mobile_ddr2.memory_write ( bank, row, col, data );
+    // endtask
+
+
+    `endif
 
     //----------------------------------------------------------------
 
@@ -455,28 +492,36 @@ module mfp_testbench;
 
     integer cycle; initial cycle = 0;
 
+    initial mobile_ddr2.mcd_info = 1;
+
     always @ (posedge SI_ClkIn)
     begin
 
-        $display ("%5d HCLK %b HADDR %h HRDATA %h HWDATA %h HWRITE %b HREADY %b HTRANS %b LEDR %b LEDG %b 7SEG %h",
-            cycle, system.HCLK, HADDR, HRDATA, HWDATA,      HWRITE, HREADY, HTRANS, IO_RedLEDs, IO_GreenLEDs, IO_7_SegmentHEX);
+        if(HREADY)
+            $display ("%5d HCLK %b HADDR %h HRDATA %h HWDATA %h HWRITE %b HREADY %b HTRANS %b LEDR %b LEDG %b 7SEG %h",
+                cycle, system.HCLK, HADDR, HRDATA, HWDATA,      HWRITE, HREADY, HTRANS, IO_RedLEDs, IO_GreenLEDs, IO_7_SegmentHEX);
 
-        `ifdef MFP_DEMO_PIPE_BYPASS
 
-        if ( system.mpc_aselwr_e  ) $display ( "%5d PIPE_BYPASS mpc_aselwr_e"  , cycle );
-        if ( system.mpc_bselall_e ) $display ( "%5d PIPE_BYPASS mpc_bselall_e" , cycle );
-        if ( system.mpc_aselres_e ) $display ( "%5d PIPE_BYPASS mpc_aselres_e" , cycle );
-        if ( system.mpc_bselres_e ) $display ( "%5d PIPE_BYPASS mpc_bselres_e" , cycle );
+    //     $display ("%5d HCLK %b HADDR %h HRDATA %h HWDATA %h HWRITE %b HREADY %b HTRANS %b LEDR %b LEDG %b 7SEG %h",
+    //         cycle, system.HCLK, HADDR, HRDATA, HWDATA,      HWRITE, HREADY, HTRANS, IO_RedLEDs, IO_GreenLEDs, IO_7_SegmentHEX);
 
-        `endif
+    //     `ifdef MFP_DEMO_PIPE_BYPASS
+
+    //     if ( system.mpc_aselwr_e  ) $display ( "%5d PIPE_BYPASS mpc_aselwr_e"  , cycle );
+    //     if ( system.mpc_bselall_e ) $display ( "%5d PIPE_BYPASS mpc_bselall_e" , cycle );
+    //     if ( system.mpc_aselres_e ) $display ( "%5d PIPE_BYPASS mpc_aselres_e" , cycle );
+    //     if ( system.mpc_bselres_e ) $display ( "%5d PIPE_BYPASS mpc_bselres_e" , cycle );
+
+    //     `endif
 
         cycle = cycle + 1;
 
-        if (cycle > 21000)
-        begin
-            $display ("Timeout");
-            $finish;
-        end
+    //     // if (cycle > 21000)
+    //     // begin
+    //     //     $display ("Timeout");
+    //     //     // $finish;
+            
+    //     // end
     end
 
 endmodule
