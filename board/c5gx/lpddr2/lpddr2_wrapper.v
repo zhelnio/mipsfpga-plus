@@ -14,6 +14,7 @@ module lpddr2_wrapper
     inout  [31:0] mem_dq,           //       .mem_dq
     inout  [3:0]  mem_dqs,          //       .mem_dqs
     inout  [3:0]  mem_dqs_n,        //       .mem_dqs_n
+    input         mem_rzqin,        //       .oct_rzqin
 
     input         avm_clk,
     input         avm_rst_n,
@@ -87,7 +88,7 @@ module lpddr2_wrapper
         .local_init_done            (                   ),
         .local_cal_success          ( local_cal_success ),
         .local_cal_fail             (                   ),
-        .oct_rzqin                  (                   ),
+        .oct_rzqin                  ( mem_rzqin         ),
         .pll_mem_clk                (                   ),
         .pll_write_clk              (                   ),
         .pll_locked                 ( pll_locked        ),

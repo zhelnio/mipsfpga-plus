@@ -47,6 +47,15 @@ OCD_CONF = ../../scripts/load/openocd.cfg
 # UART interface for memory programming
 UART_MEM_LOADER_DEV=/dev/ttyUSB0
 
+DIR_COMMON         = ../../common
+DIR_COMMON_INCLUDE = $(DIR_COMMON)/include
+DIR_COMMON_BUILD   = $(DIR_COMMON)/build
+DIR_COMMON_RUN     = $(DIR_COMMON)/run
+
+LDSCRIPT = $(DIR_COMMON_BUILD)/reset_ram.ld
+
+TCL_MODELSIM = $(abspath $(DIR_COMMON_RUN)/modelsim_script.tcl)
+
 #########################################################
 # Compile settings and tasks
 
@@ -55,14 +64,14 @@ UART_MEM_LOADER_DEV=/dev/ttyUSB0
 # -msoft-float  - should not use floating-point processor instructions
 # -O1           - optimization level
 # -std=c99		- C99 lang standard options enabled
-CFLAGS  = -EL -march=m14kc -msoft-float -O1 -std=c99 
+CFLAGS  = -EL -march=m14kc -msoft-float -O1 -std=c99 -I$(DIR_COMMON_INCLUDE)
 LDFLAGS = -EL -march=m14kc -msoft-float -Wl,-Map=program.map
 
 # -g -gdwarf-2  - debug symbols to use with gdb
 DBFLAGS = -g -gdwarf-2 
 
 # Set up the link addresses for a bootable C program on MIPSfpga
-LDFLAGS += -T program.ld
+LDFLAGS += -T $(LDSCRIPT)
 # Place the boot code (physical address). The virtual address for
 # boot code entry point is hard-wired to 0x9fc00000.
 LDFLAGS += -Wl,--defsym,__flash_start=0xbfc00000
@@ -92,10 +101,10 @@ LDFLAGS += -Wl,--defsym,__memory_size=0x1f800
 LDFLAGS += -Wl,-e,0xbfc00000
 
 ASOURCES= \
-boot.S
+$(DIR_COMMON_BUILD)/boot.S
 
-CSOURCES= \
-main.c
+# CSOURCES= \
+# main.c
 
 COBJECTS = $(CSOURCES:.c=.o)
 CASMS    = $(CSOURCES:.c=.s)
@@ -185,7 +194,7 @@ modelsim:
 	rm -rf sim
 	mkdir sim
 	cp *.hex sim
-	cd sim && vsim -do ../modelsim_script.tcl
+	cd sim && vsim -do $(TCL_MODELSIM)
 
 #########################################################
 # Icarus verilog simulation

@@ -1,16 +1,6 @@
-#============================================================
-# Build by Terasic V1.0.0
-#============================================================
-
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CGXFC5C6F27C7
-set_global_assignment -name TOP_LEVEL_ENTITY "C5G_Default"
-set_global_assignment -name ORIGINAL_QUARTUS_VERSION 12
-set_global_assignment -name LAST_QUARTUS_VERSION 13.1
-set_global_assignment -name PROJECT_CREATION_TIME_DATE "TUE JUN  4 20:41:15 2013"
-set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
-
 
 #============================================================
 # ADC
@@ -801,31 +791,14 @@ set_location_assignment PIN_AC22 -to HEX3[6]
 
 #============================================================
 
-
-
-
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
-
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name QIP_FILE HDMI_QSYS/synthesis/HDMI_QSYS.qip
-set_global_assignment -name QIP_FILE mem_init/meminit.qip
-set_global_assignment -name QIP_FILE V/Audio_PLL.qip
-set_global_assignment -name VERILOG_FILE V/SEG7_LUT_4.v
-set_global_assignment -name VERILOG_FILE V/SEG7_LUT.v
-set_global_assignment -name VERILOG_FILE V/Reset_Delay.v
-set_global_assignment -name VERILOG_FILE V/I2C_Controller.v
-set_global_assignment -name VERILOG_FILE V/I2C_AV_Config.v
-set_global_assignment -name VERILOG_FILE V/AUDIO_DAC.v
-set_global_assignment -name VERILOG_FILE V/hdmi_controller.v
-set_global_assignment -name VERILOG_FILE V/img_data.v
-set_global_assignment -name VERILOG_FILE V/video_sync_generator.v
-set_global_assignment -name VERILOG_FILE V/img_index.v
 set_global_assignment -name OPTIMIZATION_TECHNIQUE BALANCED
 set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS ON
 set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "ACTIVE SERIAL X4"
@@ -837,7 +810,6 @@ set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
 set_global_assignment -name ACTIVE_SERIAL_CLOCK FREQ_100MHZ
-set_global_assignment -name SDC_FILE C5G_Default.sdc
 set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
 set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
 set_global_assignment -name FITTER_EFFORT "STANDARD FIT"

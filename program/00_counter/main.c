@@ -1,4 +1,4 @@
-#include "mfp_memory_mapped_registers.h"
+#include "mfp_gpio.h"
 
 int main ()
 {

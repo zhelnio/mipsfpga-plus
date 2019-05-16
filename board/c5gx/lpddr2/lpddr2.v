@@ -437,7 +437,7 @@ endmodule
 // Retrieval info: 	<generic name="NUM_DLL_SHARING_INTERFACES" value="1" />
 // Retrieval info: 	<generic name="OCT_SHARING_MODE" value="None" />
 // Retrieval info: 	<generic name="NUM_OCT_SHARING_INTERFACES" value="1" />
-// Retrieval info: 	<generic name="AUTO_DEVICE" value="Unknown" />
-// Retrieval info: 	<generic name="AUTO_DEVICE_SPEEDGRADE" value="Unknown" />
+// Retrieval info: 	<generic name="AUTO_DEVICE" value="5CEBA2F17A7" />
+// Retrieval info: 	<generic name="AUTO_DEVICE_SPEEDGRADE" value="7" />
 // Retrieval info: </instance>
 // IPFS_FILES : NONE
