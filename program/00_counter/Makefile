@@ -3,4 +3,7 @@
 
 CSOURCES += main.c
 
-include $(PWD)/../../common/build/build.mk
+include $(PWD)/../../global.mk
+include $(COMMON_PROGRAM)/build.mk
+
+RTL_SIM_DEFINES += MFP_RESET_RAM_HEX="$(abspath program.hex)"

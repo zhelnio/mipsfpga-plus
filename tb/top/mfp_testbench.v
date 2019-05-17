@@ -430,10 +430,14 @@ module mfp_testbench;
         end
     end
 
+    `ifndef MFP_RESET_RAM_HEX
+        `define MFP_RESET_RAM_HEX "program.hex"
+    `endif
+
     `elsif MFP_USE_AVALON_MEMORY
 
     initial begin
-        $readmemh ("program.hex", reset_ram);
+        $readmemh (`MFP_RESET_RAM_HEX, reset_ram);
 
         for (i = 0; i < (1 << `MFP_RESET_RAM_ADDR_WIDTH); i = i + 4)
             system.matrix_loader.matrix.reset_ram.ram.ram [i / 4]

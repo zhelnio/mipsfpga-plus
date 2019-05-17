@@ -47,14 +47,7 @@ OCD_CONF = ../../scripts/load/openocd.cfg
 # UART interface for memory programming
 UART_MEM_LOADER_DEV=/dev/ttyUSB0
 
-DIR_COMMON         = ../../common
-DIR_COMMON_INCLUDE = $(DIR_COMMON)/include
-DIR_COMMON_BUILD   = $(DIR_COMMON)/build
-DIR_COMMON_RUN     = $(DIR_COMMON)/run
-
-LDSCRIPT = $(DIR_COMMON_BUILD)/reset_ram.ld
-
-TCL_MODELSIM = $(abspath $(DIR_COMMON_RUN)/modelsim_script.tcl)
+LDSCRIPT = $(COMMON_PROGRAM)/reset_ram.ld
 
 #########################################################
 # Compile settings and tasks
@@ -64,7 +57,7 @@ TCL_MODELSIM = $(abspath $(DIR_COMMON_RUN)/modelsim_script.tcl)
 # -msoft-float  - should not use floating-point processor instructions
 # -O1           - optimization level
 # -std=c99		- C99 lang standard options enabled
-CFLAGS  = -EL -march=m14kc -msoft-float -O1 -std=c99 -I$(DIR_COMMON_INCLUDE)
+CFLAGS  = -EL -march=m14kc -msoft-float -O1 -std=c99 -I$(COMMON_INCLUDE)
 LDFLAGS = -EL -march=m14kc -msoft-float -Wl,-Map=program.map
 
 # -g -gdwarf-2  - debug symbols to use with gdb
@@ -101,7 +94,7 @@ LDFLAGS += -Wl,--defsym,__memory_size=0x1f800
 LDFLAGS += -Wl,-e,0xbfc00000
 
 ASOURCES= \
-$(DIR_COMMON_BUILD)/boot.S
+$(COMMON_PROGRAM)/boot.S
 
 # CSOURCES= \
 # main.c
@@ -186,45 +179,3 @@ debug:
 uart:
 	stty -F $(UART_MEM_LOADER_DEV) raw speed 115200 -crtscts cs8 -parenb -cstopb
 	cat program.rec > $(UART_MEM_LOADER_DEV)
-
-#########################################################
-# Modelsim simulation
-
-modelsim:
-	rm -rf sim
-	mkdir sim
-	cp *.hex sim
-	cd sim && vsim -do $(TCL_MODELSIM)
-
-#########################################################
-# Icarus verilog simulation
-
-TOPMODULE=mfp_testbench
-IVARG = -g2005 
-IVARG += -D SIMULATION
-IVARG += -I ../../../core
-IVARG += -I ../../../system_rtl
-IVARG += -I ../../../system_rtl/uart16550
-IVARG += -I ../../../testbench
-IVARG += -I ../../../testbench/sdr_sdram
-IVARG += -s $(TOPMODULE)
-IVARG += ../../../core/*.v
-IVARG += ../../../system_rtl/*.v
-IVARG += ../../../system_rtl/uart16550/*.v
-IVARG += ../../../testbench/*.v
-IVARG += ../../../testbench/sdr_sdram/*.v
-
-icarus:
-	rm -rf sim
-	mkdir sim
-	cp *.hex sim
-	cd sim && iverilog $(IVARG)
-	cd sim && vvp -la.lst a.out -n
-	
-gtkwave:
-	cd sim && gtkwave dump.vcd
-
-#########################################################
-# How to make a bat replacement
-#  make --no-print-directory -n debug > debug.bat
-#  make --no-print-directory -n debug > attach.bat

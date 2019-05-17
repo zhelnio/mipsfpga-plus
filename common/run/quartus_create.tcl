@@ -6,7 +6,7 @@ if {[info exists ::env(QUARTUS_PROJECT)]} {
     set project_name $env(QUARTUS_PROJECT)
 }
 
-project_new -revision $project_name $project_name
+project_new -overwrite -revision $project_name $project_name
 
 # set project top
 if {[info exists ::env(QUARTUS_TOP)]} {

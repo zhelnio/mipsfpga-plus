@@ -12,8 +12,10 @@ eval vsim [ split $env(VSIM_OPT) ]
 
 log -recursive /*
 
-if {[info exists ::env(VSIM_TCL)] } {
-    eval do $env(VSIM_TCL)
+set wave_do "wave.do"
+
+if {[file exists $wave_do] } {
+    eval do $wave_do
 }
 
 run -all
