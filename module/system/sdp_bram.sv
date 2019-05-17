@@ -25,7 +25,7 @@ module sdp_bram
     always @(posedge clk)
         if (re) rdata <= ram [ra];
 
-    generate;
+    generate
         if(INIT_RMEMH != "")
             initial $readmemh (INIT_RMEMH, ram);
     endgenerate

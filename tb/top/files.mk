@@ -7,4 +7,6 @@ RTL_SIM_FILES += $(filter %.v %.sv %.vh, %.svh,  \
 
 RTL_SIM_TOPNAME = mfp_testbench
 
+RTL_SIM_DEFINES += SIMULATION
+
 MODELSIM_DO += $(DIR_TB_TOP)/modelsim_wave.do

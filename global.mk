@@ -4,6 +4,7 @@ TOP_DIR := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 COMMON_PROGRAM  := $(TOP_DIR)/common/program
 COMMON_INCLUDE  := $(TOP_DIR)/common/include
 COMMON_RUN      := $(TOP_DIR)/common/run
+DIR_PROGRAM     := $(TOP_DIR)/program
 DIR_MODULE      := $(TOP_DIR)/module
 DIR_BOARD       := $(TOP_DIR)/board
 DIR_TB          := $(TOP_DIR)/tb
@@ -22,6 +23,14 @@ endif
 ifeq ($(MFP_CONFIG_BOARD_C5GX),y)
 include $(DIR_BOARD)/c5gx/top/files.mk
 endif
+
+ifeq ($(abspath $(PWD)/..),$(DIR_PROGRAM))
+    RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_DEFAULT))
+else
+    RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_INIT))
+endif
+RTL_SIM_DEFINES += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
+QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
 
 ##############################################
 # global targets
@@ -48,9 +57,11 @@ BOARD_NAME    ?= c5gx
 
 QUARTUS_FILES += $(RTL_SYN_FILES)
 QUARTUS_FILES += $(QUARTUS_MW_QIP)
+QUARTUS_FILES += $(RESET_RAM_INIT)
 export QUARTUS_FILES
 export QUARTUS_PROJECT ?= system
 export QUARTUS_TOP     ?= $(BOARD_NAME)
+export QUARTUS_MACRO
 
 QUARTUS_BUILD_DIR = $(DIR_BUILD)/$(BOARD_NAME)
 QUARTUS_BUILD_QPF = $(QUARTUS_BUILD_DIR)/$(QUARTUS_PROJECT).qpf
@@ -69,6 +80,12 @@ quartus_clean:
 
 quartus_sim: $(QUARTUS_BUILD_QPF) $(DIR_BUILD_SIM)
 	cd $(DIR_BUILD_SIM) && ip-setup-simulation --quartus-project=$(QUARTUS_BUILD_QPF)
+
+##############################################
+# Memory image
+
+$(RESET_RAM_INIT):
+	make -C $(@D) $(@F)
 
 ##############################################
 # Modelsim
@@ -93,7 +110,7 @@ endif
 
 MODELSIM_OPT    += -do $(COMMON_RUN)/modelsim_run.tcl
 
-RTL_SIM_DEFINES += SIMULATION
+
 
 VLOG_FILES = $(RTL_SYN_FILES) $(RTL_SIM_FILES)
 

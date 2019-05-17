@@ -1,9 +1,10 @@
 # MIPSfpga-plus makefile
 # Stanislav Zhelnio, 2017-2019
 
+# this .mk file current dir
+CUR_DIR := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
+
 CSOURCES += main.c
 
-include $(PWD)/../../global.mk
+include $(CUR_DIR)/../../global.mk
 include $(COMMON_PROGRAM)/build.mk
-
-RTL_SIM_DEFINES += MFP_RESET_RAM_HEX="$(abspath program.hex32)"

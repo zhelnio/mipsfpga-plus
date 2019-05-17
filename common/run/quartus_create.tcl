@@ -45,7 +45,10 @@ if {[info exists ::env(QUARTUS_FILES)]} {
                 set_global_assignment -name SEARCH_PATH $include_dir
         }
 
-        if { [string match {*.hex} $quartus_file] } { 
+        if { [string match {*.hex}   $quartus_file] ||
+             [string match {*.hex8}  $quartus_file] ||
+             [string match {*.hex16} $quartus_file] ||
+             [string match {*.hex32} $quartus_file] } { 
             set_global_assignment -name HEX_FILE $quartus_file 
         }
 
@@ -55,6 +58,15 @@ if {[info exists ::env(QUARTUS_FILES)]} {
     }
 } else { 
     puts  "QUARTUS_FILES environment variable is not set" 
+}
+
+# add macro
+if {[info exists ::env(QUARTUS_MACRO)]} {
+    foreach quartus_define $env(QUARTUS_MACRO) {
+        set_global_assignment -name VERILOG_MACRO $quartus_define
+    }
+} else {
+    puts  "QUARTUS_MACRO environment variable is not set" 
 }
 
 # save project
