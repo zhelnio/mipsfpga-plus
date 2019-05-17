@@ -73,19 +73,17 @@ module mfp_ahb_ram_busy
     wire [ ADDR_WIDTH - 1 : 0 ] read_addr  = HADDR_old [ ADDR_WIDTH - 1 + 2 : 2];
     wire [ ADDR_WIDTH - 1 : 0 ] write_addr = HADDR_old [ ADDR_WIDTH - 1 + 2 : 2];
 
-    mfp_dual_port_ram
-    #(
-        .ADDR_WIDTH ( ADDR_WIDTH ),
-        .DATA_WIDTH ( 32         )
-    )
-    ram
-    (
-        .clk          ( HCLK            ),
-        .read_addr    ( read_addr       ),
-        .write_addr   ( write_addr      ),
-        .write_data   ( HWDATA          ),
-        .write_enable ( write_enable    ),
-        .read_data    ( HRDATA          )
+    sdp_bram #(
+        .ADDR_WIDTH ( ADDR_WIDTH   ),
+        .DATA_WIDTH ( 32           )
+    ) ram (
+        .clk        ( HCLK         ),
+        .wa         ( write_addr   ),
+        .we         ( write_enable ),
+        .wd         ( HWDATA       ),
+        .ra         ( read_addr    ),
+        .re         ( 1'b1         ),
+        .rd         ( HRDATA       ) 
     );
 
 endmodule

@@ -101,12 +101,11 @@ module mfp_ahb_lite_matrix
     wire   [`MFP_AHB_DEVICE_COUNT    - 1 : 0 ] RESP;
 
     //RESET
-    mfp_ahb_ram_slave
-    # (
-        .ADDR_WIDTH ( `MFP_RESET_RAM_ADDR_WIDTH )
-    )
-    reset_ram
-    (
+    ahb_lite_bram #(
+        .HADDR_WIDTH      ( `MFP_RESET_RAM_ADDR_WIDTH ),
+        .HDATA_WIDTH      ( 32                        ),
+        .INIT_RMEMH       ( `MFP_RESET_RAM_HEX        )
+    ) reset_ram (
         .HCLK             ( HCLK            ),
         .HRESETn          ( HRESETn         ),
         .HADDR            ( HADDR           ),
@@ -150,9 +149,9 @@ module mfp_ahb_lite_matrix
             .AV_BC_WIDTH ( 3  ) 
         )
     `else
-        mfp_ahb_ram_slave
+        ahb_lite_bram
         #(
-            .ADDR_WIDTH ( `MFP_RAM_ADDR_WIDTH )
+            .HADDR_WIDTH ( `MFP_RAM_ADDR_WIDTH )
         )
     `endif
     ram

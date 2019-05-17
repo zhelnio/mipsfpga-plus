@@ -129,7 +129,7 @@ disasm:
 
 readmemh:
 	$(OC) program.elf -O verilog program.hex
-	#$(HS)
+	cat program.hex | $(COMMON_PROGRAM)/hex32.awk > program.hex32
 
 srecord:
 	$(OC) program.elf -O srec program.rec
