@@ -105,10 +105,18 @@ AOBJECTS = $(ASOURCES:.S=.o)
 
 .PHONY: clean sim
 
-all: compile program size disasm readmemh srecord
+all: compile build size disasm readmemh srecord
 
-program : $(AOBJECTS) $(COBJECTS) 
-	$(LD)  $(LDFLAGS) $(AOBJECTS) $(COBJECTS) $(DBFLAGS) -o program.elf
+compile:  $(CASMS)
+build:    program.elf
+disasm:   program.dis
+readmemh: program.hex32
+srecord:  program.rec
+
+PROGRAM=program
+
+$(PROGRAM).elf : $(AOBJECTS) $(COBJECTS) 
+	$(LD)  $(LDFLAGS) $(AOBJECTS) $(COBJECTS) $(DBFLAGS) -o $@
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(DBFLAGS) $< -o $@
@@ -119,31 +127,23 @@ program : $(AOBJECTS) $(COBJECTS)
 .c.s:
 	$(CC) -S $(CFLAGS) $< -o $@
 
-compile: $(CASMS)
+size: $(PROGRAM).elf
+	$(SZ) $^
 
-size:
-	$(SZ) program.elf
+%.dis: %.elf
+	$(OD) -D -l $^ > $@
 
-disasm:
-	$(OD) -D -l program.elf > program.dis
+%.hex: %.elf
+	$(OC) $^ -O verilog $@
 
-readmemh:
-	$(OC) program.elf -O verilog program.hex
-	cat program.hex | $(COMMON_PROGRAM)/hex32.awk > program.hex32
+%.hex32: %.hex
+	cat $^ | $(COMMON_PROGRAM)/hex32.awk > $@
 
-srecord:
-	$(OC) program.elf -O srec program.rec
+%.rec: %.elf
+	$(OC) $^ -O srec $@
 
 clean:
-	rm -rf sim
-	rm -f main.s
-	rm -f *.o
-	rm -f program.elf
-	rm -f program.map
-	rm -f program.dis
-	rm -f program*.hex
-	rm -f program.rec
-	rm -f *.log
+	rm -f main.s *.o *.elf *.map *.dis *.hex32 *.rec *.log
 
 #########################################################
 # On Board Debug
