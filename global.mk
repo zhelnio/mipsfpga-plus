@@ -29,8 +29,8 @@ ifeq ($(abspath $(PWD)/..),$(DIR_PROGRAM))
 else
     RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_INIT))
 endif
-RTL_SIM_DEFINES += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
 QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
+MSIM_MACRO      += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
 
 ##############################################
 # global targets
@@ -49,6 +49,9 @@ $(DIR_BUILD)/%.qip: $(DIR_BOARD)/%.v
 	cp $^ $(@D)/$(^F).bak
 	cd $(@D) && qmegawiz -silent OPTIONAL_FILES="SIM_NETLIST|SYNTH_NETLIST" $(^F)
 	mv $(@D)/$(^F).bak $(@D)/$(^F)
+
+# TODO: generation from qsys
+#qsys-generate -syn -sim adc.qsys
 
 ##############################################
 # Quartus
@@ -88,53 +91,50 @@ $(RESET_RAM_INIT):
 	make -C $(@D) $(@F)
 
 ##############################################
-# Modelsim
+# Simulation common
 
-ifneq ($(QUARTUS_MW_QIP),)
-    # quartus ip init file for modelsim
-    MODELSIM_QIP_TCL = $(DIR_BUILD_SIM)/mentor/msim_setup.tcl
-    
-    # add msim_setup.tcl to modelsim command args
-    MODELSIM_OPT    += -do "source $(MODELSIM_QIP_TCL); dev_com; com"
-    
-    # extract lib list from msim_setup.tcl
-    MODELSIM_QIP_LIB_PATTERN  = eval vsim -t ps
-    MODELSIM_LIB = $(filter-out $$%, \
-                        $(filter-out $(MODELSIM_QIP_LIB_PATTERN), \
-                            $(shell grep '$(MODELSIM_QIP_LIB_PATTERN)' $(MODELSIM_QIP_TCL)) \
-                        ) \
-                    )
-else
-    MODELSIM_LIB = -L work
-endif
+SIMULATION_FILES  = $(RTL_SYN_FILES) $(RTL_SIM_FILES)
+SIMULATION_V_SV   = $(filter %.v %.sv, $(SIMULATION_FILES))
+SIMULATION_INCDIR = $(sort $(realpath $(dir $(filter %.vh %.svh, $(SIMULATION_FILES)))))
 
-MODELSIM_OPT    += -do $(COMMON_RUN)/modelsim_run.tcl
-
-
-
-VLOG_FILES = $(RTL_SYN_FILES) $(RTL_SIM_FILES)
-
-VLOG_OPT += -sv05compat
-VLOG_OPT += -sv
-VLOG_OPT += $(filter %.v %.sv, $(VLOG_FILES))
-VLOG_OPT += $(addprefix +define+,$(RTL_SIM_DEFINES))
-VLOG_OPT += $(addprefix +incdir+,$(sort $(realpath $(dir $(filter %.vh %.svh %.hex, $(VLOG_FILES))))))
-export VLOG_OPT
-
-VSIM_OPT += work.$(RTL_SIM_TOPNAME)
-VSIM_OPT += $(MODELSIM_LIB)
-export VSIM_OPT
+sim_clean:
+	rm -rf $(DIR_BUILD_SIM)
 
 $(DIR_BUILD_SIM):
 	mkdir -p $(DIR_BUILD_SIM)
 
-modelsim_gui: $(DIR_BUILD_SIM)
-    ifneq ($(QUARTUS_MW_QIP),)
-		$(MAKE) quartus_sim
-    endif
-		cp $(COMMON_RUN)/modelsim_wave.do $(DIR_BUILD_SIM)/wave.do
-		cd $(DIR_BUILD_SIM) && vsim $(MODELSIM_OPT)
+##############################################
+# Modelsim
 
+# quartus ip init file for modelsim
+MODELSIM_QIP_TCL = $(if $(QUARTUS_MW_QIP), $(DIR_BUILD_SIM)/mentor/msim_setup.tcl )
+$(MODELSIM_QIP_TCL): quartus_sim
+
+# extract lib list from msim_setup.tcl
+QIP_TCL_PATTERN  = eval vsim -t ps
+MODELSIM_LIB = $(if $(wildcard $(MODELSIM_QIP_TCL)), \
+                    $(filter-out $$% $(QIP_TCL_PATTERN), \
+                        $(shell grep '$(QIP_TCL_PATTERN)' $(MODELSIM_QIP_TCL))))
+
+MODELSIM_OPT += $(if $(MODELSIM_QIP_TCL), -do "source $(MODELSIM_QIP_TCL); dev_com; com")
+MODELSIM_OPT += -do $(COMMON_RUN)/modelsim_run.tcl
+
+VLOG_OPT += -sv05compat
+VLOG_OPT += -sv
+VLOG_OPT += $(SIMULATION_V_SV)
+VLOG_OPT += $(addprefix +define+,$(RTL_SIM_DEFINES))
+VLOG_OPT += $(addprefix +define+,$(MSIM_MACRO))
+VLOG_OPT += $(addprefix +incdir+,$(SIMULATION_INCDIR))
+export VLOG_OPT
+
+VSIM_OPT += -novopt
+VSIM_OPT += work.$(RTL_SIM_TOPNAME)
+VSIM_OPT += $(MODELSIM_LIB)
+export VSIM_OPT
+
+modelsim_gui: $(DIR_BUILD_SIM) $(MODELSIM_QIP_TCL)
+	cp $(COMMON_RUN)/modelsim_wave.do $(DIR_BUILD_SIM)/wave.do
+	cd $(DIR_BUILD_SIM) && vsim $(MODELSIM_OPT)
 
 
 # #########################################################

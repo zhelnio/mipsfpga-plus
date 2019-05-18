@@ -10,7 +10,7 @@ if {![info exists ::env(VSIM_OPT)] } { error "VSIM_OPT environment variable is n
 eval vlog [ split $env(VLOG_OPT) ]
 eval vsim [ split $env(VSIM_OPT) ]
 
-log -recursive /*
+#log -recursive /*
 
 set wave_do "wave.do"
 

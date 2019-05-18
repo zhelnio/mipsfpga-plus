@@ -18,7 +18,7 @@ module lpddr2_wrapper
 
     input         avm_clk,
     input         avm_rst_n,
-    output        avm_ready,        //    avl.waitrequest_n
+    output        avm_waitrequest,  //    avl.waitrequest
     input         avm_burstbegin,   //       .beginbursttransfer
     input  [26:0] avm_addr,         //       .address
     output        avm_rdata_valid,  //       .readdatavalid
@@ -37,7 +37,7 @@ module lpddr2_wrapper
     wire mpfe_reset_n;
 
     wire avm_waitrequest_n;
-    assign avm_ready = avm_waitrequest_n & mpfe_reset_n;
+    assign avm_waitrequest = ~(avm_waitrequest_n & mpfe_reset_n);
 
     lpddr2_reset lpddr2_reset (
         .clk_global                 ( clk_global        ),

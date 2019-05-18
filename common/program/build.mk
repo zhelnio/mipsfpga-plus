@@ -33,13 +33,6 @@ OC = mips-mti-elf-objcopy
 SZ = mips-mti-elf-size
 GDB = mips-mti-elf-gdb
 
-#OS dependent
-# HEX splitter
-HS = ../../scripts/utilities/ad_hoc_program_hex_splitter
-ifeq ($(OS), Windows_NT)
-	HS  = ../../scripts/utilities/ad_hoc_program_hex_splitter.exe
-endif
-
 # OpenOCD debugger
 OCD = openocd
 OCD_CONF = ../../scripts/load/openocd.cfg
@@ -65,33 +58,6 @@ DBFLAGS = -g -gdwarf-2
 
 # Set up the link addresses for a bootable C program on MIPSfpga
 LDFLAGS += -T $(LDSCRIPT)
-# Place the boot code (physical address). The virtual address for
-# boot code entry point is hard-wired to 0x9fc00000.
-LDFLAGS += -Wl,--defsym,__flash_start=0xbfc00000
-# Place the application code (physical address)
-LDFLAGS += -Wl,--defsym,__flash_app_start=0x80000000
-# Place the application code (virtual address)
-LDFLAGS += -Wl,--defsym,__app_start=0x80000000
-
-# Set the stack to the top of the Code/Data RAM
-# stack depends on available mem size:
-#     256K -> 0x80040000 (simulation)
-#       8M -> 0x80800000 
-#      64M -> 0x84000000 (de10-lite)
-STACK   = 0x80040000
-LDFLAGS += -Wl,--defsym,__stack=$(STACK)
-
-# Cautiously set the size of memory as the 2015.01 toolchain uses
-# this size as the amount of free memory between the end of the
-# program data and the lowest address that the stack will reach.
-#
-# Max 2K for stack (0x800)
-# Max 128K for program code/data (0x20000)
-# Leaving 126K heap (0x1f800)
-LDFLAGS += -Wl,--defsym,__memory_size=0x1f800
-
-# Set the entry point to the true hard-reset address
-LDFLAGS += -Wl,-e,0xbfc00000
 
 ASOURCES= \
 $(COMMON_PROGRAM)/boot.S
@@ -131,7 +97,7 @@ size: $(PROGRAM).elf
 	$(SZ) $^
 
 %.dis: %.elf
-	$(OD) -D -l $^ > $@
+	$(OD) -DSlv $^ > $@
 
 %.hex: %.elf
 	$(OC) $^ -O verilog $@

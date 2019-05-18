@@ -52,9 +52,29 @@ OUTPUT_ARCH(mips)
 256KB: 0x80000000-0x8003FFFF
 */
 
+/*
+Currently not used:
+__flash_start=0xbfc00000
+__flash_app_start=0x80000000
+__app_start=0x80000000
+
+# Max 2K for stack (0x800)
+# Max 128K for program code/data (0x20000)
+# Leaving 126K heap (0x1f800)
+__memory_size=0x1f800
+*/
+
 /**** Start point ****/
 hwreset = 0xbfc00000;
 ENTRY(hwreset)
+
+/*
+# stack depends on available mem size:
+#     256K -> 0x80040000 (simulation)
+#       8M -> 0x80800000 
+#      64M -> 0x84000000 (de10-lite)
+*/
+PROVIDE (__stack = 0x80040000);
 
 SECTIONS
 {

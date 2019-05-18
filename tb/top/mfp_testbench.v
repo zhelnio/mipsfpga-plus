@@ -268,7 +268,7 @@ module mfp_testbench;
         .mem_dqs_n       ( mem_dqs_n              ),
         .avm_clk         ( avm_clk                ),
         .avm_rst_n       ( avm_rst_n              ),
-        .avm_ready       ( avm_waitrequest        ),
+        .avm_waitrequest ( avm_waitrequest        ),
         .avm_burstbegin  ( avm_beginbursttransfer ),
         .avm_addr        ( avm_address     [26:0] ),
         .avm_rdata_valid ( avm_readdatavalid      ),
@@ -360,7 +360,7 @@ module mfp_testbench;
 
     integer cycle; initial cycle = 0;
 
-    initial mobile_ddr2.mcd_info = 1;
+    //initial mobile_ddr2.mcd_info = 1;
 
     always @ (posedge SI_ClkIn)
     begin

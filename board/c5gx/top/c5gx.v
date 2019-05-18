@@ -132,7 +132,8 @@ module c5gx (
     wire [31:0] HADDR, HRDATA, HWDATA;
     wire        HWRITE;
 
-    assign LEDR = IO_RedLEDs [9:0];
+    assign LEDR = IO_RedLEDs   [9:0];
+    assign LEDG = IO_GreenLEDs [7:0];
 
     `define MFP_EJTAG_DEBUGGER
     `ifdef MFP_EJTAG_DEBUGGER
@@ -224,7 +225,7 @@ module c5gx (
         .mem_rzqin       ( DDR2LP_OCT_RZQ         ),
         .avm_clk         ( avm_clk                ),
         .avm_rst_n       ( avm_rst_n              ),
-        .avm_ready       ( avm_waitrequest        ),
+        .avm_waitrequest ( avm_waitrequest        ),
         .avm_burstbegin  ( avm_beginbursttransfer ),
         .avm_addr        ( avm_address     [26:0] ),
         .avm_rdata_valid ( avm_readdatavalid      ),
