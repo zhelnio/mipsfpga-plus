@@ -56,8 +56,20 @@ OUTPUT_ARCH(mips)
 hwreset = 0xbfc00000;
 ENTRY(hwreset)
 
+PROVIDE (__stack = 0x80040000);
+
 SECTIONS
 {
+  /**** Exception vectors ****/
+
+  .exceptions 0x80000000 :   /* Exception vectors. */
+  {
+    *(.exceptions)
+    /* For some reason the following is necessary for
+       this section to be kept when .rec is produced */
+    BYTE(0)
+  } = 0
+
   /**** Init Code (executed from reset) ****/
 
   .reset 0x9fc00000 :   /* Runs uncached (from 0x9fc00000) until I$ is initialized. */

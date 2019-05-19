@@ -2,7 +2,7 @@
 #include <mips/cpu.h>
 
 #include "eic.h"
-#include "mfp_memory_mapped_registers.h"
+#include "mfp_gpio.h"
 
 // config start
 

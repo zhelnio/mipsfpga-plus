@@ -1,4 +1,5 @@
-#include "mfp_memory_mapped_registers.h"
+#include "mfp_gpio.h"
+#include "pmod_als.h"
 
 #define DELAY_VALUE (10*1024*1024)
 

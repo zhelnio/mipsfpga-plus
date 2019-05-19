@@ -1,3 +1,29 @@
+
+# MIPSfpga-plus makefile
+# Stanislav Zhelnio, 2017-2019
+#
+# based on:
+#      microAptiv_UP makefile for MIPSfpga
+#      Andrea Guerrieri scripts
+
+help:
+	$(info make help       - show this message)
+	$(info make all        - alternative for: compile program size disasm readmemh srecord)
+	$(info make program    - build program.elf from sources)
+	$(info make compile    - compile all C sources to ASM)
+	$(info make size       - show program size information)
+	$(info make disasm     - disassemble program.elf )
+	$(info make readmemh   - create verilog memory init file for simulation)
+	$(info make srecord    - create Motorola S-record file to use it with UART loader)
+	$(info make clean      - delete all created files)
+	$(info make load       - load program into the device memory, run it and detach gdb)
+	$(info make debug      - load program into the device memory, wait for gdb commands)
+	$(info make attach     - attach to the device, wait for gdb commands)
+	$(info make modelsim   - simulate program and device using Modelsim)
+	$(info make icarus     - simulate program and device using Icarus Verilog)
+	$(info make gtkwave    - show the result of Icarus Verilog simulation in GTKWave)
+	@true
+
 # this .mk file current dir
 TOP_DIR := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 
@@ -31,6 +57,14 @@ else
 endif
 QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
 MSIM_MACRO      += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
+
+# convert config path to abs path
+# program      => program
+# folder/file  => $(TOP_DIR)/folder/file
+# /folder/file => /folder/file
+conf2path = $(strip $(if $(filter     /%, $(1)), $(1), \
+					$(if $(findstring /,  $(1)), $(TOP_DIR)/$(1), \
+					$(1))))
 
 ##############################################
 # global targets
@@ -137,6 +171,74 @@ modelsim_gui: $(DIR_BUILD_SIM) $(MODELSIM_QIP_TCL)
 	cd $(DIR_BUILD_SIM) && vsim $(MODELSIM_OPT)
 
 
+#########################################################
+# Program compile
+
+TOOLCHAIN_PREFIX = $(call conf2path,$(MFP_BUILD_TOOLCHAIN_PREFIX))
+
+CC       = $(TOOLCHAIN_PREFIX)gcc
+LD       = $(TOOLCHAIN_PREFIX)gcc
+OBJDUMP  = $(TOOLCHAIN_PREFIX)objdump
+OBJCOPY  = $(TOOLCHAIN_PREFIX)objcopy
+ELFSIZE  = $(TOOLCHAIN_PREFIX)size
+READELF  = $(TOOLCHAIN_PREFIX)readelf
+GDB      = $(TOOLCHAIN_PREFIX)gdb
+
+HEXCONV  = $(call conf2path,$(MFP_BUILD_DEFAULT_HEXCONV))
+LDSCRIPT = $(call conf2path,$(MFP_BUILD_DEFAULT_LDSCRIPT))
+BOOTS    = $(call conf2path,$(MFP_BUILD_DEFAULT_BOOTS))
+
+CFLAGS  += $(MFP_BUILD_DEFAULT_FLAGS)
+CFLAGS  += $(MFP_BUILD_DEFAULT_CFLAGS)
+CFLAGS  += -I$(COMMON_INCLUDE)
+
+ASFLAGS  = $(CFLAGS)
+CPPFLAGS = $(CFLAGS)
+
+LDFLAGS += $(MFP_BUILD_DEFAULT_FLAGS) 
+LDFLAGS += $(MFP_BUILD_DEFAULT_LDFLAGS) 
+LDFLAGS += -T $(LDSCRIPT)
+
+ASOURCES += $(BOOTS)
+AOBJECTS  = $(ASOURCES:.S=.o)
+COBJECTS  = $(CSOURCES:.c=.o)
+CASMS     = $(CSOURCES:.c=.s)
+
+AOUT_ELF := $(MFP_BUILD_DEFAULT_AOUT)
+AOUT     := $(basename $(AOUT_ELF))
+
+compile:  $(CASMS)
+build:    $(AOUT_ELF)
+disasm:   $(AOUT).dis
+readmemh: $(AOUT).hex32
+srecord:  $(AOUT).rec
+all:      compile build disasm readmemh srecord report
+
+$(AOUT_ELF) : $(AOBJECTS) $(COBJECTS) 
+	$(LD) $(LDFLAGS) $^ -o $@
+
+.c.s:
+	$(CC) -S $(CFLAGS) $< -o $@
+
+report: $(AOUT_ELF)
+	$(ELFSIZE) $<
+	$(READELF) -l $<
+
+$(AOUT).dis: $(AOUT_ELF)
+	$(OBJDUMP) -DSl $< > $@
+$(AOUT).rec: $(AOUT_ELF)
+	$(OBJCOPY) $< -O srec $@
+
+$(AOUT).hex: $(AOUT_ELF)
+	$(OBJCOPY) $< -O verilog $@
+
+%.hex32: %.hex
+	cat $< | $(HEXCONV) > $@
+
+clean:
+	$(RM) $(AOUT_ELF) $(AOBJECTS) $(COBJECTS) $(CASMS)
+	$(RM) *.map *.dis *.hex *.hex32 *.rec *.log 
+
 # #########################################################
 # # Icarus verilog simulation
 
@@ -169,3 +271,46 @@ modelsim_gui: $(DIR_BUILD_SIM) $(MODELSIM_QIP_TCL)
 # # How to make a bat replacement
 # #  make --no-print-directory -n debug > debug.bat
 # #  make --no-print-directory -n debug > attach.bat
+
+
+# #########################################################
+# # On Board Debug
+
+# # OpenOCD debugger
+# OCD = openocd
+# OCD_CONF = ../../scripts/load/openocd.cfg
+
+# GDBCMD_ATTACH  = --silent
+# GDBCMD_ATTACH += -ex "set pagination off"
+# GDBCMD_ATTACH += -ex "file program.elf"
+# GDBCMD_ATTACH += -ex "target remote | $(OCD) -f $(OCD_CONF) -p -c 'log_output openocd.log'"
+
+# GDBCMD_LOAD   += -ex "monitor reset halt"
+# GDBCMD_LOAD   += -ex "load"
+# GDBCMD_LOAD   += -ex "compare-sections"
+
+# GDBCMD_BREAK  += -ex "b main"
+# GDBCMD_BREAK  += -ex "continue"
+
+# GDBCMD_INT    += -ex "interrupt"
+
+# GDBCMD_RESRUN += -ex "monitor reset run"
+
+# attach:
+# 	$(GDB) $(GDBCMD_ATTACH) $(GDBCMD_INT)
+
+# load:
+# 	$(GDB) --batch $(GDBCMD_ATTACH) $(GDBCMD_LOAD) $(GDBCMD_RESRUN)
+
+# debug:
+# 	$(GDB) $(GDBCMD_ATTACH) $(GDBCMD_LOAD) $(GDBCMD_BREAK)
+
+# #########################################################
+# # UART programming
+
+# # UART interface for memory programming
+# UART_MEM_LOADER_DEV=/dev/ttyUSB0
+
+# uart:
+# 	stty -F $(UART_MEM_LOADER_DEV) raw speed 115200 -crtscts cs8 -parenb -cstopb
+# 	cat program.rec > $(UART_MEM_LOADER_DEV)

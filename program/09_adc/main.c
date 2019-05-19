@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <mips/cpu.h>
 
-#include "mfp_memory_mapped_registers.h"
+#include "mfp_gpio.h"
 #include "adc_m10.h"
 
 #define SIMULATION  0

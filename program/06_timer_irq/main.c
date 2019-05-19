@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <mips/cpu.h>
 
-#include "mfp_memory_mapped_registers.h"
+#include "mfp_gpio.h"
 
 // run types
 #define COMPATIBILITY   0
