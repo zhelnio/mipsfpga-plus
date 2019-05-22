@@ -144,9 +144,9 @@ module de10_lite
         wire EJ_GND    = 1'b0;
         wire EJ_NC     = 1'bz; 
         wire EJ_TCK    = GPIO[17];
-        wire EJ_RST_N  = 1'b1; //GPIO[20];
+        wire EJ_RST_N  = GPIO[20];
         wire EJ_TDI    = GPIO[21];
-        wire EJ_TRST_N = 1'b1; //GPIO[22];
+        wire EJ_TRST_N = GPIO[22];
         wire EJ_TMS    = GPIO[23];
         wire EJ_DINT   = 1'b0;
         wire EJ_TDO;

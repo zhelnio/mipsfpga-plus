@@ -220,8 +220,6 @@ module mfp_system
     // mfp_synczer s_EJ_TCK  (clk, EJ_TCK,  EJ_TCK_sync  );
     // mfp_synczer s_EJ_DINT (clk, EJ_DINT, EJ_DINT_sync );
 
-    wire EJ_TRST_N_sync = EJ_TRST_N & SI_ColdReset;
-
     mfp_reset mfp_reset
     (
         .clk           ( clk           ),
@@ -232,7 +230,7 @@ module mfp_system
         .pin_ej_trst_n ( EJ_TRST_N     ),
         .SI_Reset      ( SI_Reset      ),
         .SI_ColdReset  ( SI_ColdReset  ),
-        .EJ_TRST_N     (   )
+        .EJ_TRST_N     ( EJ_TRST_N_sync)
     );
 
     m14k_top m14k_top
