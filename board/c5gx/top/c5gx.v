@@ -155,9 +155,9 @@ module c5gx (
         wire EJ_GND    = 1'b0;
         wire EJ_NC     = 1'bz;
         wire EJ_TCK    = GPIO[15];
-        // wire EJ_RST_N  = GPIO[18];
+        wire EJ_RST_N  = GPIO[18];
         wire EJ_TDI    = GPIO[19];
-        // wire EJ_TRST_N = GPIO[20];
+        wire EJ_TRST_N = GPIO[20];
         wire EJ_TMS    = GPIO[21];
         wire EJ_DINT   = 1'b0;
         wire EJ_TDO;
@@ -171,29 +171,9 @@ module c5gx (
         assign GPIO[17] = EJ_TDO;
     `endif
 
-    wire pll_locked    = CLK_Lock;
-    wire pin_rst_cold  = 1'b0;
-    wire pin_rst_soft  = ~CPU_RESET_n;
-
-    wire pin_ej_rst_n  = GPIO[18];
-    wire pin_ej_trst_n = GPIO[20];
-
-    wire SI_Reset;
+    wire pin_rst_cold = 1'b0;
+    wire pin_rst_soft = ~CPU_RESET_n;
     wire SI_ColdReset;
-    wire EJ_TRST_N;
-
-    mfp_reset mfp_reset
-    (
-        .clk           ( clk           ),
-        .pll_locked    ( pll_locked    ),
-        .pin_rst_cold  ( pin_rst_cold  ),
-        .pin_rst_soft  ( pin_rst_soft  ),
-        .pin_ej_rst_n  ( pin_ej_rst_n  ),
-        .pin_ej_trst_n ( pin_ej_trst_n ),
-        .SI_Reset      ( SI_Reset      ),
-        .SI_ColdReset  ( SI_ColdReset  ),
-        .EJ_TRST_N     ( EJ_TRST_N     ) 
-    );
 
     // TODO: remap connections
     // `ifdef MFP_DEMO_LIGHT_SENSOR
@@ -265,9 +245,12 @@ module c5gx (
 
     mfp_system mfp_system
     (
-        .SI_ClkIn         (   clk             ),
-        .SI_Reset         (   SI_Reset        ),
-        .SI_ColdReset     (   SI_ColdReset    ),
+        .clk              (  clk              ),
+        .clk_locked       (  CLK_Lock         ),
+        .pin_rst_cold     (  pin_rst_cold     ),
+        .pin_rst_soft     (  pin_rst_soft     ),
+        .SI_ColdReset     (  SI_ColdReset     ),
+        .SI_Reset         (                   ),
                           
         .HADDR            (   HADDR           ),
         .HRDATA           (   HRDATA          ),
@@ -291,11 +274,12 @@ module c5gx (
         `endif
 
         `ifdef MFP_EJTAG_DEBUGGER
-        .EJ_TRST_N_probe  (   EJ_TRST_N       ),
+        .EJ_TRST_N        (   EJ_TRST_N       ),
         .EJ_TDI           (   EJ_TDI          ),
         .EJ_TDO           (   EJ_TDO          ),
         .EJ_TMS           (   EJ_TMS          ),
         .EJ_TCK           (   EJ_TCK          ),
+        .EJ_RST_N         (   EJ_RST_N        ),
         .EJ_DINT          (   EJ_DINT         ),
         `endif
 
