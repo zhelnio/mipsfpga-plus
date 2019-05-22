@@ -25,9 +25,11 @@ module sdp_bram
     always @(posedge clk)
         if (re) rdata <= ram [ra];
 
+    // BUG: implemented as DFF
+    // TODO: fix, implement as ROM in another module
     generate
         if(INIT_RMEMH != "")
-            initial $readmemh (INIT_RMEMH, ram);
+           initial $readmemh (INIT_RMEMH, ram);
     endgenerate
 
 endmodule

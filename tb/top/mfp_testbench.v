@@ -8,8 +8,6 @@
 module mfp_testbench;
 
     reg         SI_ClkIn;
-    reg         SI_ColdReset;
-    reg         SI_Reset;
 
     wire [31:0] HADDR;
     wire [31:0] HRDATA;
@@ -18,7 +16,8 @@ module mfp_testbench;
     wire        HREADY;
     wire [ 1:0] HTRANS;
 
-    reg         EJ_TRST_N_probe;
+    reg         EJ_RST_N;
+    reg         EJ_TRST_N;
     reg         EJ_TDI;
     wire        EJ_TDO;
     reg         EJ_TMS;
@@ -100,12 +99,20 @@ module mfp_testbench;
 
     //----------------------------------------------------------------
 
+    reg rst_cold;
+    reg rst_soft;
+    reg SI_ColdReset;
+    reg SI_Reset;
+
     mfp_system system
     (
-        .SI_ClkIn         ( SI_ClkIn         ),
-        .SI_ColdReset     ( SI_ColdReset     ),
-        .SI_Reset         ( SI_Reset         ),
-                                              
+        .clk              (  SI_ClkIn        ),
+        .clk_locked       (  1'b1            ),
+        .pin_rst_cold     (  rst_cold        ),
+        .pin_rst_soft     (  rst_soft        ),
+        .SI_ColdReset     (  SI_ColdReset    ),
+        .SI_Reset         (  SI_Reset        ),
+ 
         .HADDR            ( HADDR            ),
         .HRDATA           ( HRDATA           ),
         .HWDATA           ( HWDATA           ),
@@ -113,7 +120,8 @@ module mfp_testbench;
         .HREADY           ( HREADY           ),
         .HTRANS           ( HTRANS           ),
                                               
-        .EJ_TRST_N_probe  ( EJ_TRST_N_probe  ),
+        .EJ_RST_N         ( EJ_RST_N         ),
+        .EJ_TRST_N        ( EJ_TRST_N        ),
         .EJ_TDI           ( EJ_TDI           ),
         .EJ_TDO           ( EJ_TDO           ),
         .EJ_TMS           ( EJ_TMS           ),
@@ -202,7 +210,7 @@ module mfp_testbench;
             .command_startofpacket  ( ADC_C_SOP     ),
             .command_endofpacket    ( ADC_C_EOP     ),
             .command_ready          ( ADC_C_Ready   ),
-            .reset_sink_reset_n     ( ~SI_Reset     ),
+            .reset_sink_reset_n     ( ~SI_ColdReset ),
             .response_valid         ( ADC_R_Valid   ),
             .response_channel       ( ADC_R_Channel ),
             .response_data          ( ADC_R_Data    ),
@@ -279,7 +287,6 @@ module mfp_testbench;
         .avm_write_req   ( avm_write              ),
         .avm_size        ( avm_burstcount [0]     ) 
     );
-    `endif
 
     mobile_ddr2 mobile_ddr2(
         .ck    ( mem_ck    ),
@@ -293,11 +300,14 @@ module mfp_testbench;
         .dqs_n ( mem_dqs_n ) 
     );
 
+    `endif
+
     //----------------------------------------------------------------
 
     initial
     begin
-        EJ_TRST_N_probe <= 1'b1;
+        EJ_RST_N        <= 1'b1;
+        EJ_TRST_N       <= 1'b1;
         EJ_TDI          <= 1'b0;
         EJ_TMS          <= 1'b0;
         EJ_TCK          <= 1'b0;
@@ -309,18 +319,14 @@ module mfp_testbench;
 
     initial
     begin
-        SI_ColdReset <= 0;
-        SI_Reset     <= 0;
+        rst_cold <= 1'b1;
+        rst_soft <= 1'b1;
 
         repeat (10)  @(posedge SI_ClkIn);
+        rst_cold <= 1'b0;
 
-        SI_ColdReset <= 1;
-        SI_Reset     <= 1;
-
-        repeat (20)  @(posedge SI_ClkIn);
-
-        SI_ColdReset <= 0;
-        SI_Reset     <= 0;
+        repeat (10)  @(posedge SI_ClkIn);
+        rst_soft <= 1'b0;
     end
 
     //----------------------------------------------------------------

@@ -1,0 +1,1955 @@
+
+program.elf:     file format elf32-tradlittlemips
+
+
+Disassembly of section .exceptions:
+
+80000000 <.exceptions>:
+	...
+
+Disassembly of section .reset:
+
+9fc00000 <start>:
+start():
+9fc00000:	40804800 	mtc0	zero,c0_count
+
+9fc00004 <init_gpr>:
+init_gpr():
+9fc00004:	3c01dead 	lui	at,0xdead
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:24
+        //
+        // Set all GPRs of all register sets to predefined state.
+        //
+
+init_gpr:
+        li      $1, 0xdeadbeef          # 0xdeadbeef stands out, kseg2 mapped, odd.
+9fc00008:	3421beef 	ori	at,at,0xbeef
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:30
+
+        # Determine how many shadow sets are implemented (in addition to the base register set.)
+        # the first time thru the loop it will initialize using $1 set above.
+        # At the bottom og the loop, 1 is  subtract from $30
+        # and loop back to next_shadow_set to start the next loop and the next lowest set number.
+        mfc0    $29, C0_SRSCTL          # read SRSCtl
+9fc0000c:	401d6002 	mfc0	sp,c0_srsctl
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:31
+        ext     $30, $29, 26, 4         # extract HSS
+9fc00010:	7fbe1e80 	ext	s8,sp,0x1a,0x4
+
+9fc00014 <next_shadow_set>:
+next_shadow_set():
+9fc00014:	7fdd4984 	ins	sp,s8,0x6,0x4
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:35
+
+next_shadow_set:                        # set PSS to shadow set to be initialized
+        ins     $29, $30, 6, 4          # insert PSS
+        mtc0    $29, C0_SRSCTL          # write SRSCtl
+9fc00018:	409d6002 	mtc0	sp,c0_srsctl
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:37
+
+        wrpgpr  $1, $1
+9fc0001c:	41c10800 	wrpgpr	at,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:38
+        wrpgpr  $2, $1
+9fc00020:	41c11000 	wrpgpr	v0,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:39
+        wrpgpr  $3, $1
+9fc00024:	41c11800 	wrpgpr	v1,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:40
+        wrpgpr  $4, $1
+9fc00028:	41c12000 	wrpgpr	a0,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:41
+        wrpgpr  $5, $1
+9fc0002c:	41c12800 	wrpgpr	a1,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:42
+        wrpgpr  $6, $1
+9fc00030:	41c13000 	wrpgpr	a2,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:43
+        wrpgpr  $7, $1
+9fc00034:	41c13800 	wrpgpr	a3,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:44
+        wrpgpr  $8, $1
+9fc00038:	41c14000 	wrpgpr	t0,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:45
+        wrpgpr  $9, $1
+9fc0003c:	41c14800 	wrpgpr	t1,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:46
+        wrpgpr  $10, $1
+9fc00040:	41c15000 	wrpgpr	t2,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:47
+        wrpgpr  $11, $1
+9fc00044:	41c15800 	wrpgpr	t3,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:48
+        wrpgpr  $12, $1
+9fc00048:	41c16000 	wrpgpr	t4,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:49
+        wrpgpr  $13, $1
+9fc0004c:	41c16800 	wrpgpr	t5,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:50
+        wrpgpr  $14, $1
+9fc00050:	41c17000 	wrpgpr	t6,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:51
+        wrpgpr  $15, $1
+9fc00054:	41c17800 	wrpgpr	t7,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:52
+        wrpgpr  $16, $1
+9fc00058:	41c18000 	wrpgpr	s0,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:53
+        wrpgpr  $17, $1
+9fc0005c:	41c18800 	wrpgpr	s1,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:54
+        wrpgpr  $18, $1
+9fc00060:	41c19000 	wrpgpr	s2,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:55
+        wrpgpr  $19, $1
+9fc00064:	41c19800 	wrpgpr	s3,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:56
+        wrpgpr  $20, $1
+9fc00068:	41c1a000 	wrpgpr	s4,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:57
+        wrpgpr  $21, $1
+9fc0006c:	41c1a800 	wrpgpr	s5,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:58
+        wrpgpr  $22, $1
+9fc00070:	41c1b000 	wrpgpr	s6,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:59
+        wrpgpr  $23, $1
+9fc00074:	41c1b800 	wrpgpr	s7,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:60
+        wrpgpr  $24, $1
+9fc00078:	41c1c000 	wrpgpr	t8,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:61
+        wrpgpr  $25, $1
+9fc0007c:	41c1c800 	wrpgpr	t9,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:62
+        wrpgpr  $26, $1
+9fc00080:	41c1d000 	wrpgpr	k0,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:63
+        wrpgpr  $27, $1
+9fc00084:	41c1d800 	wrpgpr	k1,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:64
+        wrpgpr  $28, $1
+9fc00088:	41c1e000 	wrpgpr	gp,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:65
+        beqz    $30, init_cp0
+9fc0008c:	13c00005 	beqz	s8,9fc000a4 <init_cp0>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:66
+        wrpgpr  $29, $1
+9fc00090:	41c1e800 	wrpgpr	sp,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:68
+
+        wrpgpr  $30, $1
+9fc00094:	41c1f000 	wrpgpr	s8,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:69
+        wrpgpr  $31, $1
+9fc00098:	41c1f800 	wrpgpr	ra,at
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:70
+        b       next_shadow_set
+9fc0009c:	1000ffdd 	b	9fc00014 <next_shadow_set>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:71
+        add     $30, -1                 # Decrement to the next lower number
+9fc000a0:	23deffff 	addi	s8,s8,-1
+
+9fc000a4 <init_cp0>:
+init_cp0():
+9fc000a4:	3c030040 	lui	v1,0x40
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:78
+        //
+        // Init CP0 Status, Count, Compare, Watch*, and Cause.
+        //
+init_cp0:
+        # Initialize Status
+	li	v1, 0x00400004		// (M_StatusERL | M_StatusBEV)
+9fc000a8:	34630004 	ori	v1,v1,0x4
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:79
+        mtc0    v1, C0_STATUS           # write Status
+9fc000ac:	40836000 	mtc0	v1,c0_status
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:82
+
+        # Initialize Watch registers if implemented.
+        mfc0    v0, C0_CONFIG1          # read Config1
+9fc000b0:	40028001 	mfc0	v0,c0_config1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:83
+        ext     v1, v0, 3, 1            # extract bit 3 WR (Watch registers implemented)
+9fc000b4:	7c4300c0 	ext	v1,v0,0x3,0x1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:84
+        beq     v1, zero, done_wr
+9fc000b8:	1060001f 	beqz	v1,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:85
+        li      v1, 0x7                 # (M_WatchHiI | M_WatchHiR | M_WatchHiW)
+9fc000bc:	24030007 	li	v1,7
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:88
+
+        # Clear Watch Status bits and disable watch exceptions
+        mtc0    v1, C0_WATCHHI          # write WatchHi0
+9fc000c0:	40839800 	mtc0	v1,c0_watchhi
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:89
+        mfc0    v0, C0_WATCHHI          # read WatchHi0
+9fc000c4:	40029800 	mfc0	v0,c0_watchhi
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:90
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc000c8:	0441001b 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:91
+        mtc0    zero, C0_WATCHLO        # clear WatchLo0
+9fc000cc:	40809000 	mtc0	zero,c0_watchlo
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:93
+
+        mtc0    v1, C0_WATCHHI, 1       # write WatchHi1
+9fc000d0:	40839801 	mtc0	v1,c0_watchhi,1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:94
+        mfc0    v0, C0_WATCHHI, 1       # read WatchHi1
+9fc000d4:	40029801 	mfc0	v0,c0_watchhi,1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:95
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc000d8:	04410017 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:96
+        mtc0    zero, C0_WATCHLO,1      # clear WatchLo1
+9fc000dc:	40809001 	mtc0	zero,c0_watchlo,1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:98
+
+        mtc0    v1, C0_WATCHHI, 2       # write WatchHi2
+9fc000e0:	40839802 	mtc0	v1,c0_watchhi,2
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:99
+        mfc0    v0, C0_WATCHHI, 2       # read WatchHi2
+9fc000e4:	40029802 	mfc0	v0,c0_watchhi,2
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:100
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc000e8:	04410013 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:101
+        mtc0    zero, C0_WATCHLO, 2     # clear WatchLo2
+9fc000ec:	40809002 	mtc0	zero,c0_watchlo,2
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:103
+
+        mtc0    v1, C0_WATCHHI, 3       # write WatchHi3
+9fc000f0:	40839803 	mtc0	v1,c0_watchhi,3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:104
+        mfc0    v0, C0_WATCHHI, 3       # read WatchHi3
+9fc000f4:	40029803 	mfc0	v0,c0_watchhi,3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:105
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc000f8:	0441000f 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:106
+        mtc0    zero, C0_WATCHLO, 3     # clear WatchLo3
+9fc000fc:	40809003 	mtc0	zero,c0_watchlo,3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:108
+
+        mtc0    v1, C0_WATCHHI, 4       # write WatchHi4
+9fc00100:	40839804 	mtc0	v1,c0_watchhi,4
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:109
+        mfc0    v0, C0_WATCHHI, 4       # read WatchHi4
+9fc00104:	40029804 	mfc0	v0,c0_watchhi,4
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:110
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc00108:	0441000b 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:111
+        mtc0    zero, C0_WATCHLO, 4     # clear WatchLo4
+9fc0010c:	40809004 	mtc0	zero,c0_watchlo,4
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:113
+
+        mtc0    v1, C0_WATCHHI, 5       # write WatchHi5
+9fc00110:	40839805 	mtc0	v1,c0_watchhi,5
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:114
+        mfc0    v0, C0_WATCHHI, 5       # read WatchHi5
+9fc00114:	40029805 	mfc0	v0,c0_watchhi,5
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:115
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc00118:	04410007 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:116
+        mtc0    zero, C0_WATCHLO, 5     # clear WatchLo5
+9fc0011c:	40809005 	mtc0	zero,c0_watchlo,5
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:118
+
+        mtc0    v1, C0_WATCHHI, 6       # write WatchHi6
+9fc00120:	40839806 	mtc0	v1,c0_watchhi,6
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:119
+        mfc0    v0, C0_WATCHHI, 6       # read WatchHi6
+9fc00124:	40029806 	mfc0	v0,c0_watchhi,6
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:120
+        bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
+9fc00128:	04410003 	bgez	v0,9fc00138 <done_wr>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:121
+        mtc0    zero, C0_WATCHLO, 6     # clear WatchLo6
+9fc0012c:	40809006 	mtc0	zero,c0_watchlo,6
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:123
+
+        mtc0    v1, C0_WATCHHI, 7       # write WatchHi7
+9fc00130:	40839807 	mtc0	v1,c0_watchhi,7
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:124
+        mtc0    zero, C0_WATCHLO, 7     # clear WatchLo7
+9fc00134:	40809007 	mtc0	zero,c0_watchlo,7
+
+9fc00138 <done_wr>:
+done_wr():
+9fc00138:	40806800 	mtc0	zero,c0_cause
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:131
+done_wr:
+        # Clear WP bit to avoid watch exception upon user code entry, IV, and software interrupts.
+        mtc0    zero, C0_CAUSE          # clear Cause: init AFTER init of WatchHi/Lo registers.
+
+        # Clear timer interrupt. (Count was cleared at the reset vector to allow timing boot.)
+        mtc0    zero, C0_COMPARE        # clear Compare
+9fc0013c:	40805800 	mtc0	zero,c0_compare
+
+9fc00140 <init_tlb>:
+init_tlb():
+9fc00140:	40038000 	mfc0	v1,c0_config
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:142
+        // Clear TLB: generate unique EntryHi contents per entry pair.
+        //
+init_tlb:
+        # Determine if we have a TLB
+        mfc0    v1, C0_CONFIG           # read Config
+        ext     v1, v1, 7, 3            # extract MT field
+9fc00144:	7c6311c0 	ext	v1,v1,0x7,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:143
+        li      a3, 0x1                 # load a 1 to check against
+9fc00148:	24070001 	li	a3,1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:144
+        bne     v1, a3, init_icache
+9fc0014c:	1467000e 	bne	v1,a3,9fc00188 <init_icache>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:147
+
+        # Config1MMUSize == Number of TLB entries - 1
+        mfc0    v0, C0_CONFIG1          # Config1
+9fc00150:	40028001 	mfc0	v0,c0_config1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:148
+        ext     v1, v0, 25, 6           # extract MMU Size
+9fc00154:	7c432e40 	ext	v1,v0,0x19,0x6
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:149
+        mtc0    zero, C0_ENTRYLO0       # clear EntryLo0
+9fc00158:	40801000 	mtc0	zero,c0_entrylo0
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:150
+        mtc0    zero, C0_ENTRYLO1       # clear EntryLo1
+9fc0015c:	40801800 	mtc0	zero,c0_entrylo1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:151
+        mtc0    zero, C0_PAGEMASK       # clear PageMask
+9fc00160:	40802800 	mtc0	zero,c0_pagemask
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:152
+        mtc0    zero, C0_WIRED          # clear Wired
+9fc00164:	40803000 	mtc0	zero,c0_wired
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:153
+        li      a0, 0x80000000
+9fc00168:	3c048000 	lui	a0,0x8000
+
+9fc0016c <next_tlb_entry>:
+next_tlb_entry():
+9fc0016c:	40830000 	mtc0	v1,c0_index
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:157
+
+next_tlb_entry:
+        mtc0    v1, C0_INDEX            # write Index
+        mtc0    a0, C0_ENTRYHI          # write EntryHi
+9fc00170:	40845000 	mtc0	a0,c0_entryhi
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:158
+        ehb
+9fc00174:	000000c0 	ehb
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:159
+        tlbwi
+9fc00178:	42000002 	tlbwi
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:160
+        add     a0, 2 << 13             # Add 8K to the address to avoid TLB conflict with previous entry
+9fc0017c:	20844000 	addi	a0,a0,16384
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:162
+
+        bne     v1, zero, next_tlb_entry
+9fc00180:	1460fffa 	bnez	v1,9fc0016c <next_tlb_entry>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:163
+        add     v1, -1
+9fc00184:	2063ffff 	addi	v1,v1,-1
+
+9fc00188 <init_icache>:
+init_icache():
+9fc00188:	40028001 	mfc0	v0,c0_config1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:171
+        // Clear L1 instruction cache.
+        //
+init_icache:
+        # Determine how big the I-cache is
+        mfc0    v0, C0_CONFIG1          # read Config1
+        ext     v1, v0, 19, 3           # extract I-cache line size
+9fc0018c:	7c4314c0 	ext	v1,v0,0x13,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:172
+        beq     v1, zero, done_icache   # Skip ahead if no I-cache
+9fc00190:	10600010 	beqz	v1,9fc001d4 <done_icache>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:173
+        nop
+9fc00194:	00000000 	nop
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:175
+
+        li      a2, 2
+9fc00198:	24060002 	li	a2,2
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:176
+        sllv    v1, a2, v1              # Now have true I-cache line size in bytes
+9fc0019c:	00661804 	sllv	v1,a2,v1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:178
+
+        ext     a0, v0, 22, 3           # extract IS
+9fc001a0:	7c441580 	ext	a0,v0,0x16,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:179
+        li      a2, 64
+9fc001a4:	24060040 	li	a2,64
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:180
+        sllv    a0, a2, a0              # I-cache sets per way
+9fc001a8:	00862004 	sllv	a0,a2,a0
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:182
+
+        ext     a1, v0, 16, 3           # extract I-cache Assoc - 1
+9fc001ac:	7c451400 	ext	a1,v0,0x10,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:183
+        add     a1, 1
+9fc001b0:	20a50001 	addi	a1,a1,1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:184
+        mul     a0, a0, a1              # Total number of sets
+9fc001b4:	70852002 	mul	a0,a0,a1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:185
+        lui     a2, 0x8000              # Get a KSeg0 address for cacheops
+9fc001b8:	3c068000 	lui	a2,0x8000
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:187
+
+        mtc0    zero, C0_ITAGLO         # Clear ITagLo register
+9fc001bc:	4080e000 	mtc0	zero,c0_taglo
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:188
+        move    a3, a0
+9fc001c0:	00803825 	move	a3,a0
+
+9fc001c4 <next_icache_tag>:
+next_icache_tag():
+9fc001c4:	bcc80000 	cache	0x8,0(a2)
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:194
+
+next_icache_tag:
+        # Index Store Tag Cache Op
+        # Will invalidate the tag entry, clear the lock bit, and clear the LRF bit
+        cache   0x8, 0 (a2)             # ICIndexStTag
+        add     a3, -1                  # Decrement set counter
+9fc001c8:	20e7ffff 	addi	a3,a3,-1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:195
+        bne     a3, zero, next_icache_tag
+9fc001cc:	14e0fffd 	bnez	a3,9fc001c4 <next_icache_tag>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:196
+        add     a2, v1                  # Get next line address
+9fc001d0:	00c33020 	add	a2,a2,v1
+
+9fc001d4 <done_icache>:
+done_icache():
+9fc001d4:	40028000 	mfc0	v0,c0_config
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:209
+        //
+enable_k0_cache:
+        # Set CCA for kseg0 to cacheable.
+        # NOTE! This code must be executed in KSEG1 (not KSEG0 uncached)
+        mfc0    v0, C0_CONFIG           # read Config
+        li      v1, 3                   # CCA for single-core processors
+9fc001d8:	24030003 	li	v1,3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:210
+        ins     v0, v1, 0, 3            # insert K0
+9fc001dc:	7c621004 	ins	v0,v1,0x0,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:211
+        mtc0    v0, C0_CONFIG           # write Config
+9fc001e0:	40828000 	mtc0	v0,c0_config
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:213
+
+        la      a2, init_dcache
+9fc001e4:	3c069fc0 	lui	a2,0x9fc0
+9fc001e8:	24c601f4 	addiu	a2,a2,500
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:214
+        jr      a2                      # switch back to KSEG0
+9fc001ec:	00c00008 	jr	a2
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:215
+        ehb
+9fc001f0:	000000c0 	ehb
+
+9fc001f4 <init_dcache>:
+init_dcache():
+9fc001f4:	40028001 	mfc0	v0,c0_config1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:222
+        //
+        // Initialize the L1 data cache
+        //
+init_dcache:
+        mfc0    v0, C0_CONFIG1          # read Config1
+        ext     v1, v0, 10, 3           # extract D-cache line size
+9fc001f8:	7c431280 	ext	v1,v0,0xa,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:223
+        beq     v1, zero, done_dcache   # Skip ahead if no D-cache
+9fc001fc:	10600011 	beqz	v1,9fc00244 <done_dcache>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:224
+        nop
+9fc00200:	00000000 	nop
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:226
+
+        li      a2, 2
+9fc00204:	24060002 	li	a2,2
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:227
+        sllv    v1, a2, v1              # Now have true D-cache line size in bytes
+9fc00208:	00661804 	sllv	v1,a2,v1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:229
+
+        ext     a0, v0, 13, 3           # extract DS
+9fc0020c:	7c441340 	ext	a0,v0,0xd,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:230
+        li      a2, 64
+9fc00210:	24060040 	li	a2,64
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:231
+        sllv    a0, a2, a0              # D-cache sets per way
+9fc00214:	00862004 	sllv	a0,a2,a0
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:233
+
+        ext     a1, v0, 7, 3            # extract D-cache Assoc - 1
+9fc00218:	7c4511c0 	ext	a1,v0,0x7,0x3
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:234
+        add     a1, 1
+9fc0021c:	20a50001 	addi	a1,a1,1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:235
+        mul     a0, a0, a1              # Get total number of sets
+9fc00220:	70852002 	mul	a0,a0,a1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:236
+        lui     a2, 0x8000              # Get a KSeg0 address for cacheops
+9fc00224:	3c068000 	lui	a2,0x8000
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:238
+
+        mtc0    zero, C0_ITAGLO         # Clear ITagLo/DTagLo registers
+9fc00228:	4080e000 	mtc0	zero,c0_taglo
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:239
+        mtc0    zero, C0_DTAGLO
+9fc0022c:	4080e002 	mtc0	zero,c0_taglo1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:240
+        move    a3, a0
+9fc00230:	00803825 	move	a3,a0
+
+9fc00234 <next_dcache_tag>:
+next_dcache_tag():
+9fc00234:	bcc90000 	cache	0x9,0(a2)
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:246
+
+next_dcache_tag:
+        # Index Store Tag Cache Op
+        # Will invalidate the tag entry, clear the lock bit, and clear the LRF bit
+        cache   0x9, 0 (a2)             # DCIndexStTag
+        add     a3, -1                  # Decrement set counter
+9fc00238:	20e7ffff 	addi	a3,a3,-1
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:247
+        bne     a3, zero, next_dcache_tag
+9fc0023c:	14e0fffd 	bnez	a3,9fc00234 <next_dcache_tag>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:248
+        add     a2, v1                  # Get next line address
+9fc00240:	00c33020 	add	a2,a2,v1
+
+9fc00244 <done_dcache>:
+done_dcache():
+9fc00244:	3c1f9fc0 	lui	ra,0x9fc0
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:253
+done_dcache:
+
+        # Prepare for eret to main.
+
+        la      ra, all_done        # If main returns then go to all_done:.
+9fc00248:	27ff0274 	addiu	ra,ra,628
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:254
+        move    a0, zero            # Indicate that there are no arguments available.
+9fc0024c:	00002025 	move	a0,zero
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:256
+
+        la      v0, main            # load the address of the CRT entry point _start.
+9fc00250:	3c028000 	lui	v0,0x8000
+9fc00254:	24421200 	addiu	v0,v0,4608
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:257
+        mtc0    v0, $30             # Write ErrorEPC with the address of main
+9fc00258:	4082f000 	mtc0	v0,c0_errorepc
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:258
+        ehb                         # clear hazards (makes sure write to ErrorPC has completed)
+9fc0025c:	000000c0 	ehb
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:262
+
+        # Set stack and global data
+
+        la	sp, __stack
+9fc00260:	3c1d8004 	lui	sp,0x8004
+9fc00264:	27bd0000 	addiu	sp,sp,0
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:263
+        la      gp, _gp
+9fc00268:	3c1c8001 	lui	gp,0x8001
+9fc0026c:	279c93b8 	addiu	gp,gp,-27720
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:267
+
+        # Return from exception will now execute code in main
+
+        eret                        # Exit reset exception handler and start execution of _start.
+9fc00270:	42000018 	eret
+
+9fc00274 <all_done>:
+all_done():
+9fc00274:	1000ffff 	b	9fc00274 <all_done>
+/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:274
+
+/**************************************************************************************/
+all_done:
+        # If main returns it will return to this point.  Just spin here.
+        b       all_done
+        nop
+9fc00278:	00000000 	nop
+9fc0027c:	00000000 	nop
+
+Disassembly of section .pdr:
+
+00000000 <.pdr>:
+   0:	800011a8 	lb	zero,4520(zero)
+	...
+  18:	0000001d 	0x1d
+  1c:	0000001f 	0x1f
+  20:	800011c8 	lb	zero,4552(zero)
+	...
+  38:	0000001d 	0x1d
+  3c:	0000001f 	0x1f
+  40:	800011dc 	lb	zero,4572(zero)
+	...
+  58:	0000001d 	0x1d
+  5c:	0000001f 	0x1f
+  60:	800011f8 	lb	zero,4600(zero)
+	...
+  78:	0000001d 	0x1d
+  7c:	0000001f 	0x1f
+  80:	80001200 	lb	zero,4608(zero)
+  84:	c0ff0000 	ll	ra,0(a3)
+  88:	fffffffc 	sdc3	$31,-4(ra)
+	...
+  94:	00000038 	0x38
+  98:	0000001d 	0x1d
+  9c:	0000001f 	0x1f
+
+Disassembly of section .gnu.attributes:
+
+00000000 <.gnu.attributes>:
+   0:	00000f41 	0xf41
+   4:	756e6700 	jalx	5b99c00 <_ftext_ram-0x7a467400>
+   8:	00070100 	sll	zero,a3,0x4
+   c:	03040000 	0x3040000
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	3a434347 	xori	v1,s2,0x4347
+   4:	6f432820 	0x6f432820
+   8:	63736564 	0x63736564
+   c:	20657061 	addi	a1,v1,28769
+  10:	20554e47 	addi	s5,v0,20039
+  14:	6c6f6f54 	0x6c6f6f54
+  18:	30322073 	andi	s2,at,0x2073
+  1c:	312e3731 	andi	t6,t1,0x3731
+  20:	35302d30 	ori	s0,t1,0x2d30
+  24:	726f6620 	0x726f6620
+  28:	50494d20 	beql	v0,t1,134ac <_ftext_ram-0x7ffedb54>
+  2c:	544d2053 	bnel	v0,t5,817c <_ftext_ram-0x7fff8e84>
+  30:	61422049 	0x61422049
+  34:	4d206572 	0x4d206572
+  38:	6c617465 	0x6c617465
+  3c:	2e362029 	sltiu	s6,s1,8233
+  40:	00302e33 	tltu	at,s0,0xb8
+
+Disassembly of section .text_ram:
+
+80001000 <deregister_tm_clones>:
+deregister_tm_clones():
+80001000:	3c048000 	lui	a0,0x8000
+80001004:	3c028000 	lui	v0,0x8000
+80001008:	248413d4 	addiu	a0,a0,5076
+8000100c:	244213d7 	addiu	v0,v0,5079
+80001010:	00441023 	subu	v0,v0,a0
+80001014:	2c420007 	sltiu	v0,v0,7
+80001018:	14400006 	bnez	v0,80001034 <deregister_tm_clones+0x34>
+8000101c:	3c190000 	lui	t9,0x0
+80001020:	27390000 	addiu	t9,t9,0
+80001024:	13200003 	beqz	t9,80001034 <deregister_tm_clones+0x34>
+80001028:	00000000 	nop
+8000102c:	03200008 	jr	t9
+80001030:	00000000 	nop
+80001034:	03e00008 	jr	ra
+80001038:	00000000 	nop
+
+8000103c <register_tm_clones>:
+register_tm_clones():
+8000103c:	3c048000 	lui	a0,0x8000
+80001040:	3c058000 	lui	a1,0x8000
+80001044:	248413d4 	addiu	a0,a0,5076
+80001048:	24a513d4 	addiu	a1,a1,5076
+8000104c:	00a42823 	subu	a1,a1,a0
+80001050:	00052883 	sra	a1,a1,0x2
+80001054:	000517c2 	srl	v0,a1,0x1f
+80001058:	00452821 	addu	a1,v0,a1
+8000105c:	00052843 	sra	a1,a1,0x1
+80001060:	10a00006 	beqz	a1,8000107c <register_tm_clones+0x40>
+80001064:	3c190000 	lui	t9,0x0
+80001068:	27390000 	addiu	t9,t9,0
+8000106c:	13200003 	beqz	t9,8000107c <register_tm_clones+0x40>
+80001070:	00000000 	nop
+80001074:	03200008 	jr	t9
+80001078:	00000000 	nop
+8000107c:	03e00008 	jr	ra
+80001080:	00000000 	nop
+
+80001084 <__do_global_dtors_aux>:
+__do_global_dtors_aux():
+80001084:	27bdffd8 	addiu	sp,sp,-40
+80001088:	afb10018 	sw	s1,24(sp)
+8000108c:	3c118000 	lui	s1,0x8000
+80001090:	afb00014 	sw	s0,20(sp)
+80001094:	afb2001c 	sw	s2,28(sp)
+80001098:	afb30020 	sw	s3,32(sp)
+8000109c:	afbf0024 	sw	ra,36(sp)
+800010a0:	922213d4 	lbu	v0,5076(s1)
+800010a4:	14400019 	bnez	v0,8000110c <__do_global_dtors_aux+0x88>
+800010a8:	3c108000 	lui	s0,0x8000
+800010ac:	3c138000 	lui	s3,0x8000
+800010b0:	260213c8 	addiu	v0,s0,5064
+800010b4:	3c108000 	lui	s0,0x8000
+800010b8:	261013cc 	addiu	s0,s0,5068
+800010bc:	02028023 	subu	s0,s0,v0
+800010c0:	3c028000 	lui	v0,0x8000
+800010c4:	00108083 	sra	s0,s0,0x2
+800010c8:	245213c8 	addiu	s2,v0,5064
+800010cc:	2610ffff 	addiu	s0,s0,-1
+800010d0:	8e6213d8 	lw	v0,5080(s3)
+800010d4:	0050182b 	sltu	v1,v0,s0
+800010d8:	14600013 	bnez	v1,80001128 <__do_global_dtors_aux+0xa4>
+800010dc:	24420001 	addiu	v0,v0,1
+800010e0:	0c000400 	jal	80001000 <deregister_tm_clones>
+800010e4:	00000000 	nop
+800010e8:	3c020000 	lui	v0,0x0
+800010ec:	24420000 	addiu	v0,v0,0
+800010f0:	10400005 	beqz	v0,80001108 <__do_global_dtors_aux+0x84>
+800010f4:	24020001 	li	v0,1
+800010f8:	3c048000 	lui	a0,0x8000
+800010fc:	0c000000 	jal	80000000 <_ftext_ram-0x1000>
+80001100:	248413b0 	addiu	a0,a0,5040
+80001104:	24020001 	li	v0,1
+80001108:	a22213d4 	sb	v0,5076(s1)
+8000110c:	8fb00014 	lw	s0,20(sp)
+80001110:	8fb10018 	lw	s1,24(sp)
+80001114:	8fb2001c 	lw	s2,28(sp)
+80001118:	8fb30020 	lw	s3,32(sp)
+8000111c:	8fbf0024 	lw	ra,36(sp)
+80001120:	03e00008 	jr	ra
+80001124:	27bd0028 	addiu	sp,sp,40
+80001128:	ae6213d8 	sw	v0,5080(s3)
+8000112c:	00021080 	sll	v0,v0,0x2
+80001130:	02421021 	addu	v0,s2,v0
+80001134:	8c420000 	lw	v0,0(v0)
+80001138:	0040f809 	jalr	v0
+8000113c:	00000000 	nop
+80001140:	1000ffe4 	b	800010d4 <__do_global_dtors_aux+0x50>
+80001144:	8e6213d8 	lw	v0,5080(s3)
+
+80001148 <frame_dummy>:
+frame_dummy():
+80001148:	27bdffe8 	addiu	sp,sp,-24
+8000114c:	3c020000 	lui	v0,0x0
+80001150:	24420000 	addiu	v0,v0,0
+80001154:	10400006 	beqz	v0,80001170 <frame_dummy+0x28>
+80001158:	afbf0014 	sw	ra,20(sp)
+8000115c:	3c058000 	lui	a1,0x8000
+80001160:	3c048000 	lui	a0,0x8000
+80001164:	24a513dc 	addiu	a1,a1,5084
+80001168:	0c000000 	jal	80000000 <_ftext_ram-0x1000>
+8000116c:	248413b0 	addiu	a0,a0,5040
+80001170:	3c028000 	lui	v0,0x8000
+80001174:	244413d0 	addiu	a0,v0,5072
+80001178:	8c820000 	lw	v0,0(a0)
+8000117c:	10400008 	beqz	v0,800011a0 <frame_dummy+0x58>
+80001180:	8fbf0014 	lw	ra,20(sp)
+80001184:	3c020000 	lui	v0,0x0
+80001188:	24420000 	addiu	v0,v0,0
+8000118c:	10400004 	beqz	v0,800011a0 <frame_dummy+0x58>
+80001190:	00000000 	nop
+80001194:	0040f809 	jalr	v0
+80001198:	00000000 	nop
+8000119c:	8fbf0014 	lw	ra,20(sp)
+800011a0:	0800040f 	j	8000103c <register_tm_clones>
+800011a4:	27bd0018 	addiu	sp,sp,24
+
+800011a8 <_delay>:
+_delay():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:33
+    #define TEST_COUNT      0xff
+#endif
+
+void _delay(uint32_t val)
+{
+    for (uint32_t i = 0; i < val; i++)
+800011a8:	10800005 	beqz	a0,800011c0 <_delay+0x18>
+800011ac:	00001025 	move	v0,zero
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:34 (discriminator 3)
+        __asm__ volatile("nop");
+800011b0:	00000000 	nop
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:33 (discriminator 3)
+    for (uint32_t i = 0; i < val; i++)
+800011b4:	24420001 	addiu	v0,v0,1
+800011b8:	1482fffd 	bne	a0,v0,800011b0 <_delay+0x8>
+800011bc:	00000000 	nop
+800011c0:	03e00008 	jr	ra
+800011c4:	00000000 	nop
+
+800011c8 <statOut>:
+statOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:51
+        //HEX = CCEE, where CC - check num, EE - found errors count
+        uint32_t out = (((uint32_t)iterationNum) << 8) +  (uint8_t)errCount;
+        MFP_7_SEGMENT_HEX = out;
+
+    #elif   HEX_SEGMENT_COUNT == 2
+        MFP_7_SEGMENT_HEX = errCount;
+800011c8:	3c02bf80 	lui	v0,0xbf80
+800011cc:	ac450010 	sw	a1,16(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:52
+        MFP_GREEN_LEDS    = iterationNum;
+800011d0:	ac440004 	sw	a0,4(v0)
+800011d4:	03e00008 	jr	ra
+800011d8:	00000000 	nop
+
+800011dc <stepOut>:
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:59
+}
+
+//current step out
+void stepOut(uint8_t stepNum)
+{
+    uint16_t out = (1 << stepNum);
+800011dc:	24020001 	li	v0,1
+800011e0:	00822004 	sllv	a0,v0,a0
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+800011e4:	3084ffff 	andi	a0,a0,0xffff
+800011e8:	3c02bf80 	lui	v0,0xbf80
+800011ec:	ac440000 	sw	a0,0(v0)
+800011f0:	03e00008 	jr	ra
+800011f4:	00000000 	nop
+
+800011f8 <cacheFlush>:
+cacheFlush():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:66
+    //MFP_GREEN_LEDS = out;
+}
+
+void cacheFlush(uint32_t *addr)
+{
+    __asm__ volatile(
+800011f8:	03e00008 	jr	ra
+800011fc:	bc950000 	cache	0x15,0(a0)
+
+80001200 <main>:
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:75
+}
+
+uint32_t arr[TEST_ARRSIZE];
+
+int main ()
+{
+80001200:	27bdffc8 	addiu	sp,sp,-56
+80001204:	afbf0034 	sw	ra,52(sp)
+80001208:	afbe0030 	sw	s8,48(sp)
+8000120c:	afb7002c 	sw	s7,44(sp)
+80001210:	afb60028 	sw	s6,40(sp)
+80001214:	afb50024 	sw	s5,36(sp)
+80001218:	afb40020 	sw	s4,32(sp)
+8000121c:	afb3001c 	sw	s3,28(sp)
+80001220:	afb20018 	sw	s2,24(sp)
+80001224:	afb10014 	sw	s1,20(sp)
+80001228:	afb00010 	sw	s0,16(sp)
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+8000122c:	24030001 	li	v1,1
+80001230:	3c02bf80 	lui	v0,0xbf80
+80001234:	ac430000 	sw	v1,0(v0)
+80001238:	3c148000 	lui	s4,0x8000
+8000123c:	269413f4 	addiu	s4,s4,5108
+80001240:	02801825 	move	v1,s4
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:80
+    uint16_t errCount = 0;
+
+    //write to mem
+    stepOut(0);
+    for (uint32_t i = 0; i < TEST_ARRSIZE; i++)
+80001244:	00001025 	move	v0,zero
+80001248:	3c0400a0 	lui	a0,0xa0
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:81 (discriminator 3)
+        arr[i] = i;
+8000124c:	ac620000 	sw	v0,0(v1)
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:80 (discriminator 3)
+    for (uint32_t i = 0; i < TEST_ARRSIZE; i++)
+80001250:	24420001 	addiu	v0,v0,1
+80001254:	1444fffd 	bne	v0,a0,8000124c <main+0x4c>
+80001258:	24630004 	addiu	v1,v1,4
+8000125c:	00009825 	move	s3,zero
+80001260:	00008025 	move	s0,zero
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+80001264:	3c11bf80 	lui	s1,0xbf80
+80001268:	241e0002 	li	s8,2
+8000126c:	3c128280 	lui	s2,0x8280
+80001270:	265213f4 	addiu	s2,s2,5108
+80001274:	24170004 	li	s7,4
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:93
+        for (uint32_t i = 0; i < TEST_ARRSIZE; i++)
+            cacheFlush(&arr[i]);
+
+        //delay
+        stepOut(2);
+        _delay(TEST_DELAY);
+80001278:	3c15000f 	lui	s5,0xf
+8000127c:	26b54240 	addiu	s5,s5,16960
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+80001280:	10000012 	b	800012cc <main+0xcc>
+80001284:	24160008 	li	s6,8
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:97 (discriminator 2)
+
+        //read
+        stepOut(3);
+        for (uint32_t i = 0; i < TEST_ARRSIZE; i++) {
+80001288:	1045000a 	beq	v0,a1,800012b4 <main+0xb4>
+8000128c:	24630004 	addiu	v1,v1,4
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:98
+            if(arr[i] != i){
+80001290:	8c640000 	lw	a0,0(v1)
+80001294:	5082fffc 	beql	a0,v0,80001288 <main+0x88>
+80001298:	24420001 	addiu	v0,v0,1
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:99
+                errCount++;
+8000129c:	26100001 	addiu	s0,s0,1
+800012a0:	3210ffff 	andi	s0,s0,0xffff
+statOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:51
+        MFP_7_SEGMENT_HEX = errCount;
+800012a4:	ae300010 	sw	s0,16(s1)
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:52
+        MFP_GREEN_LEDS    = iterationNum;
+800012a8:	ae330004 	sw	s3,4(s1)
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:97
+        for (uint32_t i = 0; i < TEST_ARRSIZE; i++) {
+800012ac:	1000fff6 	b	80001288 <main+0x88>
+800012b0:	24420001 	addiu	v0,v0,1
+statOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:51
+        MFP_7_SEGMENT_HEX = errCount;
+800012b4:	ae300010 	sw	s0,16(s1)
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:52
+        MFP_GREEN_LEDS    = iterationNum;
+800012b8:	ae330004 	sw	s3,4(s1)
+800012bc:	26730001 	addiu	s3,s3,1
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:84
+    for (uint8_t j = 0; j < TEST_COUNT; j++)
+800012c0:	240200ff 	li	v0,255
+800012c4:	5262000f 	beql	s3,v0,80001304 <main+0x104>
+800012c8:	0010802b 	sltu	s0,zero,s0
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+800012cc:	ae3e0000 	sw	s8,0(s1)
+800012d0:	02801025 	move	v0,s4
+cacheFlush():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:66 (discriminator 3)
+    __asm__ volatile(
+800012d4:	bc550000 	cache	0x15,0(v0)
+800012d8:	24420004 	addiu	v0,v0,4
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:88 (discriminator 3)
+        for (uint32_t i = 0; i < TEST_ARRSIZE; i++)
+800012dc:	1452fffd 	bne	v0,s2,800012d4 <main+0xd4>
+800012e0:	00000000 	nop
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+800012e4:	ae370000 	sw	s7,0(s1)
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:93
+        _delay(TEST_DELAY);
+800012e8:	0c00046a 	jal	800011a8 <_delay>
+800012ec:	02a02025 	move	a0,s5
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+800012f0:	ae360000 	sw	s6,0(s1)
+800012f4:	02801825 	move	v1,s4
+main():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:97
+        for (uint32_t i = 0; i < TEST_ARRSIZE; i++) {
+800012f8:	00001025 	move	v0,zero
+800012fc:	1000ffe4 	b	80001290 <main+0x90>
+80001300:	3c0500a0 	lui	a1,0xa0
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:108
+        statOut(j, errCount);
+    }
+        
+    //end
+    //4 - no errors, 5 - some errors
+    stepOut(!errCount ? 4 : 5);
+80001304:	26100004 	addiu	s0,s0,4
+stepOut():
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:59
+    uint16_t out = (1 << stepNum);
+80001308:	24020001 	li	v0,1
+8000130c:	02028004 	sllv	s0,v0,s0
+/home/zsl/work/github/mipsfpga-plus_zsl/program/04_memtest/main.c:60
+    MFP_RED_LEDS     = out;
+80001310:	3202ffff 	andi	v0,s0,0xffff
+80001314:	3c03bf80 	lui	v1,0xbf80
+80001318:	ac620000 	sw	v0,0(v1)
+8000131c:	1000ffff 	b	8000131c <main+0x11c>
+80001320:	00000000 	nop
+
+80001324 <__do_global_ctors_aux>:
+__do_global_ctors_aux():
+80001324:	27bdffe0 	addiu	sp,sp,-32
+80001328:	afb00014 	sw	s0,20(sp)
+8000132c:	3c108000 	lui	s0,0x8000
+80001330:	afb10018 	sw	s1,24(sp)
+80001334:	2411ffff 	li	s1,-1
+80001338:	261013c0 	addiu	s0,s0,5056
+8000133c:	afbf001c 	sw	ra,28(sp)
+80001340:	8e020000 	lw	v0,0(s0)
+80001344:	14510005 	bne	v0,s1,8000135c <__do_global_ctors_aux+0x38>
+80001348:	8fbf001c 	lw	ra,28(sp)
+8000134c:	8fb00014 	lw	s0,20(sp)
+80001350:	8fb10018 	lw	s1,24(sp)
+80001354:	03e00008 	jr	ra
+80001358:	27bd0020 	addiu	sp,sp,32
+8000135c:	0040f809 	jalr	v0
+80001360:	2610fffc 	addiu	s0,s0,-4
+80001364:	1000fff7 	b	80001344 <__do_global_ctors_aux+0x20>
+80001368:	8e020000 	lw	v0,0(s0)
+8000136c:	00000000 	nop
+
+Disassembly of section .init:
+
+80001370 <_init>:
+_init():
+80001370:	27bdffe0 	addiu	sp,sp,-32
+80001374:	afbf0014 	sw	ra,20(sp)
+80001378:	0c000452 	jal	80001148 <frame_dummy>
+8000137c:	00000000 	nop
+80001380:	0c0004c9 	jal	80001324 <__do_global_ctors_aux>
+80001384:	00000000 	nop
+
+80001388 <init>:
+init():
+80001388:	8fbf0014 	lw	ra,20(sp)
+8000138c:	03e00008 	jr	ra
+80001390:	27bd0020 	addiu	sp,sp,32
+
+Disassembly of section .fini:
+
+80001394 <_fini>:
+_fini():
+80001394:	27bdffe0 	addiu	sp,sp,-32
+80001398:	afbf0014 	sw	ra,20(sp)
+8000139c:	0c000421 	jal	80001084 <__do_global_dtors_aux>
+800013a0:	00000000 	nop
+
+800013a4 <fini>:
+fini():
+800013a4:	8fbf0014 	lw	ra,20(sp)
+800013a8:	03e00008 	jr	ra
+800013ac:	27bd0020 	addiu	sp,sp,32
+
+Disassembly of section .eh_frame:
+
+800013b0 <__EH_FRAME_BEGIN__>:
+800013b0:	00000000 	nop
+
+Disassembly of section .data:
+
+800013b4 <__dso_handle-0x4>:
+800013b4:	00000000 	nop
+
+800013b8 <__dso_handle>:
+	...
+
+Disassembly of section .ctors:
+
+800013c0 <__CTOR_LIST__>:
+800013c0:	ffffffff 	sdc3	$31,-1(ra)
+
+800013c4 <__CTOR_END__>:
+800013c4:	00000000 	nop
+
+Disassembly of section .dtors:
+
+800013c8 <__DTOR_LIST__>:
+800013c8:	ffffffff 	sdc3	$31,-1(ra)
+
+800013cc <__DTOR_END__>:
+800013cc:	00000000 	nop
+
+Disassembly of section .jcr:
+
+800013d0 <__JCR_END__>:
+800013d0:	00000000 	nop
+
+Disassembly of section .bss:
+
+800013d4 <completed.3599>:
+800013d4:	00000000 	nop
+
+800013d8 <dtor_idx.3601>:
+800013d8:	00000000 	nop
+
+800013dc <object.3611>:
+	...
+
+800013f4 <arr>:
+	...
+
+Disassembly of section .debug_line:
+
+00000000 <.debug_line>:
+   0:	00000104 	0x104
+   4:	00540002 	0x540002
+   8:	01010000 	0x1010000
+   c:	000d0efb 	0xd0efb
+  10:	01010101 	0x1010101
+  14:	01000000 	0x1000000
+  18:	2f010000 	sltiu	at,t8,0
+  1c:	656d6f68 	0x656d6f68
+  20:	6c737a2f 	0x6c737a2f
+  24:	726f772f 	0x726f772f
+  28:	69672f6b 	0x69672f6b
+  2c:	62756874 	0x62756874
+  30:	70696d2f 	0x70696d2f
+  34:	67706673 	0x67706673
+  38:	6c702d61 	0x6c702d61
+  3c:	7a5f7375 	0x7a5f7375
+  40:	632f6c73 	0x632f6c73
+  44:	6f6d6d6f 	0x6f6d6d6f
+  48:	72702f6e 	0x72702f6e
+  4c:	6172676f 	0x6172676f
+  50:	6200006d 	0x6200006d
+  54:	2e746f6f 	sltiu	s4,s3,28527
+  58:	00010053 	0x10053
+  5c:	05000000 	bltz	t0,60 <_ftext_ram-0x80000fa0>
+  60:	c0000002 	ll	zero,2(zero)
+  64:	0110039f 	0x110039f
+  68:	4d4b8851 	0x4d4b8851
+  6c:	4b4b4c4b 	c2	0x14b4c4b
+  70:	4b4b4b4b 	c2	0x14b4b4b
+  74:	4b4b4b4b 	c2	0x14b4b4b
+  78:	4b4b4b4b 	c2	0x14b4b4b
+  7c:	4b4b4b4b 	c2	0x14b4b4b
+  80:	4b4b4b4b 	c2	0x14b4b4b
+  84:	4b4b4b4b 	c2	0x14b4b4b
+  88:	4c4b4b4b 	0x4c4b4b4b
+  8c:	514b4b4b 	beql	t2,t3,12dbc <_ftext_ram-0x7ffee244>
+  90:	4b4b4d83 	c2	0x14b4d83
+  94:	4b4b4d4b 	c2	0x14b4d4b
+  98:	4b4b4c4b 	c2	0x14b4c4b
+  9c:	4b4b4c4b 	c2	0x14b4c4b
+  a0:	4b4b4c4b 	c2	0x14b4c4b
+  a4:	4b4b4c4b 	c2	0x14b4c4b
+  a8:	4b4b4c4b 	c2	0x14b4c4b
+  ac:	4b4b4c4b 	c2	0x14b4c4b
+  b0:	4e4b4c4b 	c3	0x4b4c4b
+  b4:	4a0a034d 	c2	0xa034d
+  b8:	4d4b4b4b 	0x4d4b4b4b
+  bc:	4b4b4b4b 	c2	0x14b4b4b
+  c0:	4b4d4b4b 	c2	0x14d4b4b
+  c4:	4c4b4b4b 	0x4c4b4b4b
+  c8:	4b4b514b 	c2	0x14b514b
+  cc:	4c4b4c4b 	0x4c4b4c4b
+  d0:	4b4c4b4b 	c2	0x14c4b4b
+  d4:	4b4c4b4b 	c2	0x14c4b4b
+  d8:	4b4b4b4f 	c2	0x14b4b4f
+  dc:	4b4a0c03 	c2	0x14a0c03
+  e0:	834c4b4b 	lb	t4,19275(k0)
+  e4:	4b4b504b 	c2	0x14b504b
+  e8:	4c4b4c4b 	0x4c4b4c4b
+  ec:	4b4c4b4b 	c2	0x14c4b4b
+  f0:	4b4c4b4b 	c2	0x14c4b4b
+  f4:	4b4b4f4b 	c2	0x14b4f4b
+  f8:	4c834f4b 	0x4c834f4b
+  fc:	834e4b83 	lb	t6,19331(k0)
+ 100:	024b5086 	0x24b5086
+ 104:	01010004 	sllv	zero,at,t0
+ 108:	00000158 	0x158
+ 10c:	00d20002 	0xd20002
+ 110:	01010000 	0x1010000
+ 114:	000d0efb 	0xd0efb
+ 118:	01010101 	0x1010101
+ 11c:	01000000 	0x1000000
+ 120:	2f010000 	sltiu	at,t8,0
+ 124:	2f74706f 	sltiu	s4,k1,28783
+ 128:	74676d69 	jalx	19db5a4 <_ftext_ram-0x7e625a5c>
+ 12c:	542f6365 	bnel	at,t7,18ec4 <_ftext_ram-0x7ffe813c>
+ 130:	636c6f6f 	0x636c6f6f
+ 134:	6e696168 	0x6e696168
+ 138:	696d2f73 	0x696d2f73
+ 13c:	6d2d7370 	0x6d2d7370
+ 140:	652d6974 	0x652d6974
+ 144:	322f666c 	andi	t7,s1,0x666c
+ 148:	2e373130 	sltiu	s7,s1,12592
+ 14c:	302d3031 	andi	t5,at,0x3031
+ 150:	696d2f35 	0x696d2f35
+ 154:	6d2d7370 	0x6d2d7370
+ 158:	652d6974 	0x652d6974
+ 15c:	692f666c 	0x692f666c
+ 160:	756c636e 	jalx	5b18db8 <_ftext_ram-0x7a4e8248>
+ 164:	6d2f6564 	0x6d2f6564
+ 168:	69686361 	0x69686361
+ 16c:	2f00656e 	sltiu	zero,t8,25966
+ 170:	2f74706f 	sltiu	s4,k1,28783
+ 174:	74676d69 	jalx	19db5a4 <_ftext_ram-0x7e625a5c>
+ 178:	542f6365 	bnel	at,t7,18f10 <_ftext_ram-0x7ffe80f0>
+ 17c:	636c6f6f 	0x636c6f6f
+ 180:	6e696168 	0x6e696168
+ 184:	696d2f73 	0x696d2f73
+ 188:	6d2d7370 	0x6d2d7370
+ 18c:	652d6974 	0x652d6974
+ 190:	322f666c 	andi	t7,s1,0x666c
+ 194:	2e373130 	sltiu	s7,s1,12592
+ 198:	302d3031 	andi	t5,at,0x3031
+ 19c:	696d2f35 	0x696d2f35
+ 1a0:	6d2d7370 	0x6d2d7370
+ 1a4:	652d6974 	0x652d6974
+ 1a8:	692f666c 	0x692f666c
+ 1ac:	756c636e 	jalx	5b18db8 <_ftext_ram-0x7a4e8248>
+ 1b0:	732f6564 	0x732f6564
+ 1b4:	00007379 	0x7379
+ 1b8:	6e69616d 	0x6e69616d
+ 1bc:	0000632e 	0x632e
+ 1c0:	645f0000 	0x645f0000
+ 1c4:	75616665 	jalx	5859994 <_ftext_ram-0x7a7a766c>
+ 1c8:	745f746c 	jalx	17dd1b0 <_ftext_ram-0x7e823e50>
+ 1cc:	73657079 	0x73657079
+ 1d0:	0100682e 	0x100682e
+ 1d4:	735f0000 	madd	k0,ra
+ 1d8:	6e696474 	0x6e696474
+ 1dc:	00682e74 	teq	v1,t0,0xb9
+ 1e0:	00000002 	srl	zero,zero,0x0
+ 1e4:	a8020500 	swl	v0,1280(zero)
+ 1e8:	03800011 	mthi	gp
+ 1ec:	0013011f 	0x13011f
+ 1f0:	83030402 	lb	v1,1026(t8)
+ 1f4:	03040200 	0x3040200
+ 1f8:	03420849 	0x3420849
+ 1fc:	c083010c 	ll	v1,268(a0)
+ 200:	41088313 	0x41088313
+ 204:	82090313 	lb	t1,787(s0)
+ 208:	2c027103 	sltiu	v0,zero,28931
+ 20c:	08140301 	j	500c04 <_ftext_ram-0x7fb003fc>
+ 210:	04020074 	bltzl	zero,3e4 <_ftext_ram-0x80000c1c>
+ 214:	02008303 	0x2008303
+ 218:	03490304 	0x3490304
+ 21c:	033c086c 	0x33c086c
+ 220:	033c0821 	addu	at,t9,gp
+ 224:	0200825f 	0x200825f
+ 228:	25030204 	addiu	v1,t0,516
+ 22c:	03bb8382 	0x3bb8382
+ 230:	034b8250 	0x34b8250
+ 234:	52034a2d 	beql	s0,v1,12aec <_ftext_ram-0x7ffee514>
+ 238:	20034b82 	addi	v1,zero,19330
+ 23c:	ba680382 	swr	t0,898(s3)
+ 240:	03040200 	0x3040200
+ 244:	04020088 	bltzl	zero,468 <_ftext_ram-0x80000b98>
+ 248:	82160303 	lb	s6,771(s0)
+ 24c:	03826403 	0x3826403
+ 250:	5f034a21 	0x5f034a21
+ 254:	82250382 	lb	a1,898(s1)
+ 258:	03ba0b03 	0x3ba0b03
+ 25c:	02834a4f 	0x2834a4f
+ 260:	01010014 	0x1010014
+
+Disassembly of section .debug_info:
+
+00000000 <.debug_info>:
+   0:	00000022 	neg	zero,zero
+   4:	00000002 	srl	zero,zero,0x0
+   8:	01040000 	0x1040000
+   c:	00000000 	nop
+  10:	9fc00000 	0x9fc00000
+  14:	9fc0027c 	0x9fc0027c
+  18:	00000000 	nop
+  1c:	0000003e 	0x3e
+  20:	00000079 	0x79
+  24:	03af8001 	0x3af8001
+  28:	00020000 	sll	zero,v0,0x0
+  2c:	00000014 	0x14
+  30:	00ac0104 	0xac0104
+  34:	cc0c0000 	pref	0xc,0(zero)
+  38:	3e000001 	0x3e000001
+  3c:	a8000000 	swl	zero,0(zero)
+  40:	24800011 	addiu	zero,a0,17
+  44:	08800013 	j	200004c <_ftext_ram-0x7e000fb4>
+  48:	02000001 	movf	zero,s0,$fcc0
+  4c:	014a0601 	0x14a0601
+  50:	88030000 	lwl	v1,0(zero)
+  54:	02000000 	0x2000000
+  58:	0000372b 	0x372b
+  5c:	08010200 	j	40800 <_ftext_ram-0x7ffc0800>
+  60:	00000148 	0x148
+  64:	d3050202 	0xd3050202
+  68:	03000001 	movf	zero,t8,$fcc0
+  6c:	00000178 	0x178
+  70:	00503902 	0x503902
+  74:	02020000 	0x2020000
+  78:	00015e07 	0x15e07
+  7c:	05040200 	0x5040200
+  80:	000001c3 	sra	zero,zero,0x7
+  84:	00018303 	sra	s0,at,0xc
+  88:	694f0200 	0x694f0200
+  8c:	02000000 	0x2000000
+  90:	01980704 	0x1980704
+  94:	08020000 	j	80000 <_ftext_ram-0x7ff81000>
+  98:	0001be05 	0x1be05
+  9c:	07080200 	tgei	t8,512
+  a0:	00000193 	0x193
+  a4:	00008a03 	sra	s1,zero,0x8
+  a8:	2c180300 	sltiu	t8,zero,768
+  ac:	03000000 	0x3000000
+  b0:	0000017a 	0x17a
+  b4:	00452403 	0x452403
+  b8:	85030000 	lh	v1,0(t0)
+  bc:	03000001 	movf	zero,t8,$fcc0
+  c0:	00005e30 	tge	zero,zero,0x178
+  c4:	05040400 	0x5040400
+  c8:	00746e69 	0x746e69
+  cc:	9d070402 	0x9d070402
+  d0:	05000001 	bltz	t0,d8 <_ftext_ram-0x80000f28>
+  d4:	00000094 	0x94
+  d8:	000000c0 	ehb
+  dc:	0000c006 	srlv	t8,zero,zero
+  e0:	9fffff00 	0x9fffff00
+  e4:	04020000 	bltzl	zero,e8 <_ftext_ram-0x80000f18>
+  e8:	0001b507 	0x1b507
+  ec:	72610700 	0x72610700
+  f0:	48010072 	0x48010072
+  f4:	000000ad 	0xad
+  f8:	f4030501 	sdc1	$f3,1281(zero)
+  fc:	08800013 	j	200004c <_ftext_ram-0x7e000fb4>
+ 100:	00018e01 	0x18e01
+ 104:	9f4a0100 	0x9f4a0100
+ 108:	00000000 	nop
+ 10c:	24800012 	addiu	zero,a0,18
+ 110:	00800013 	mtlo	a0
+ 114:	01000000 	0x1000000
+ 118:	000002a5 	0x2a5
+ 11c:	0001e509 	0x1e509
+ 120:	894c0100 	lwl	t4,256(t2)
+ 124:	20000000 	addi	zero,zero,0
+ 128:	0a000000 	j	8000000 <_ftext_ram-0x78001000>
+ 12c:	80001244 	lb	zero,4676(zero)
+ 130:	80001264 	lb	zero,4708(zero)
+ 134:	00000120 	0x120
+ 138:	0100690b 	0x100690b
+ 13c:	00009450 	0x9450
+ 140:	00004a00 	sll	t1,zero,0x8
+ 144:	000c0000 	sll	zero,t4,0x0
+ 148:	53000000 	beqzl	t8,14c <_ftext_ram-0x80000eb4>
+ 14c:	0b000002 	j	c000008 <_ftext_ram-0x74000ff8>
+ 150:	5401006a 	bnel	zero,at,2fc <_ftext_ram-0x80000d04>
+ 154:	0000007e 	0x7e
+ 158:	00000069 	0x69
+ 15c:	0012d40a 	0x12d40a
+ 160:	0012e480 	sll	gp,s2,0x12
+ 164:	00016a80 	sll	t5,at,0xa
+ 168:	00690b00 	0x690b00
+ 16c:	00945801 	movf	t3,a0,$fcc5
+ 170:	00940000 	0x940000
+ 174:	a50d0000 	sh	t5,0(t0)
+ 178:	d4000002 	ldc1	$f0,2(zero)
+ 17c:	dc800012 	ldc3	$0,18(a0)
+ 180:	01800012 	0x1800012
+ 184:	02b30e59 	0x2b30e59
+ 188:	00a80000 	0xa80000
+ 18c:	00000000 	nop
+ 190:	0000500c 	syscall	0x140
+ 194:	0001a300 	sll	s4,at,0xc
+ 198:	00690b00 	0x690b00
+ 19c:	00946101 	0x946101
+ 1a0:	00bb0000 	0xbb0000
+ 1a4:	ea0d0000 	swc2	$13,0(s0)
+ 1a8:	a4000002 	sh	zero,2(zero)
+ 1ac:	ac800012 	sw	zero,18(a0)
+ 1b0:	01800012 	0x1800012
+ 1b4:	03030e64 	0x3030e64
+ 1b8:	00da0000 	0xda0000
+ 1bc:	f80e0000 	sdc2	$14,0(zero)
+ 1c0:	ed000002 	swc3	$0,2(t0)
+ 1c4:	00000000 	nop
+ 1c8:	02c50f00 	0x2c50f00
+ 1cc:	12640000 	beq	s3,a0,1d0 <_ftext_ram-0x80000e30>
+ 1d0:	00208000 	0x208000
+ 1d4:	57010000 	bnel	t8,at,1d8 <_ftext_ram-0x80000e28>
+ 1d8:	000001c8 	0x1c8
+ 1dc:	0002d310 	0x2d310
+ 1e0:	20110100 	addi	s1,zero,256
+ 1e4:	12000000 	beqz	s0,1e8 <_ftext_ram-0x80000e18>
+ 1e8:	0000038f 	sync	0xe
+ 1ec:	c50f0000 	lwc1	$f15,0(t0)
+ 1f0:	74000002 	jalx	8 <_ftext_ram-0x80000ff8>
+ 1f4:	38800012 	xori	zero,a0,0x12
+ 1f8:	01000000 	0x1000000
+ 1fc:	0001f05c 	0x1f05c
+ 200:	02d30e00 	0x2d30e00
+ 204:	01000000 	0x1000000
+ 208:	38110000 	xori	s1,zero,0x0
+ 20c:	12000000 	beqz	s0,210 <_ftext_ram-0x80000df0>
+ 210:	0000038f 	sync	0xe
+ 214:	ea130000 	swc2	$19,0(s0)
+ 218:	b4000002 	0xb4000002
+ 21c:	c0800012 	ll	zero,18(a0)
+ 220:	01800012 	0x1800012
+ 224:	00021667 	0x21667
+ 228:	03030e00 	0x3030e00
+ 22c:	01140000 	0x1140000
+ 230:	f80e0000 	sdc2	$14,0(zero)
+ 234:	27000002 	addiu	zero,t8,2
+ 238:	00000001 	movf	zero,zero,$fcc0
+ 23c:	0002c513 	0x2c513
+ 240:	0012f000 	sll	s8,s2,0x0
+ 244:	0012f880 	sll	ra,s2,0x2
+ 248:	42600180 	c0	0x600180
+ 24c:	0e000002 	jal	8000008 <_ftext_ram-0x78000ff8>
+ 250:	000002d3 	0x2d3
+ 254:	0000013a 	0x13a
+ 258:	0012f014 	0x12f014
+ 25c:	0012f880 	sll	ra,s2,0x2
+ 260:	038f1280 	0x38f1280
+ 264:	00000000 	nop
+ 268:	0012f015 	0x12f015
+ 26c:	00030f80 	sll	at,v1,0x1e
+ 270:	54011600 	bnel	zero,at,5a74 <_ftext_ram-0x7fffb58c>
+ 274:	00008502 	srl	s0,zero,0x14
+ 278:	02c51300 	0x2c51300
+ 27c:	122c0000 	beq	s1,t4,280 <_ftext_ram-0x80000d80>
+ 280:	12448000 	beq	s2,a0,fffe0284 <hwreset+0x403e0284>
+ 284:	4f018000 	c3	0x1018000
+ 288:	0000027c 	0x27c
+ 28c:	0002d310 	0x2d310
+ 290:	2c140000 	sltiu	s4,zero,0
+ 294:	44800012 	0x44800012
+ 298:	12800012 	beqz	s4,2e4 <_ftext_ram-0x80000d1c>
+ 29c:	0000038f 	sync	0xe
+ 2a0:	c50d0000 	lwc1	$f13,0(t0)
+ 2a4:	08000002 	j	8 <_ftext_ram-0x80000ff8>
+ 2a8:	24800013 	addiu	zero,a0,19
+ 2ac:	01800013 	mtlo	t4
+ 2b0:	02d30e6c 	0x2d30e6c
+ 2b4:	015a0000 	0x15a0000
+ 2b8:	08140000 	j	500000 <_ftext_ram-0x7fb01000>
+ 2bc:	24800013 	addiu	zero,a0,19
+ 2c0:	12800013 	beqz	s4,310 <_ftext_ram-0x80000cf0>
+ 2c4:	0000038f 	sync	0xe
+ 2c8:	17000000 	bnez	t8,2cc <_ftext_ram-0x80000d34>
+ 2cc:	0001aa01 	0x1aa01
+ 2d0:	01400100 	0x1400100
+ 2d4:	0002bf01 	0x2bf01
+ 2d8:	00a71800 	0xa71800
+ 2dc:	40010000 	mfc0	at,c0_index
+ 2e0:	000002bf 	0x2bf
+ 2e4:	94041900 	lhu	a0,6400(zero)
+ 2e8:	17000000 	bnez	t8,2ec <_ftext_ram-0x80000d14>
+ 2ec:	00015601 	0x15601
+ 2f0:	01390100 	0x1390100
+ 2f4:	0002ea01 	0x2ea01
+ 2f8:	01dd1800 	0x1dd1800
+ 2fc:	39010000 	xori	at,t0,0x0
+ 300:	0000007e 	0x7e
+ 304:	74756f1a 	jalx	1d5bc68 <_ftext_ram-0x7e2a5398>
+ 308:	893b0100 	lwl	k1,256(t1)
+ 30c:	00000000 	nop
+ 310:	00920117 	0x920117
+ 314:	26010000 	addiu	at,s0,0
+ 318:	030f0101 	0x30f0101
+ 31c:	9a180000 	lwr	t8,0(s0)
+ 320:	01000000 	0x1000000
+ 324:	00007e26 	0x7e26
+ 328:	01e51800 	0x1e51800
+ 32c:	26010000 	addiu	at,s0,0
+ 330:	00000089 	0x89
+ 334:	71011b00 	0x71011b00
+ 338:	01000001 	movf	zero,t0,$fcc0
+ 33c:	11a8011f 	beq	t5,t0,7bc <_ftext_ram-0x80000844>
+ 340:	11c88000 	beq	t6,t0,fffe0344 <hwreset+0x403e0344>
+ 344:	8d028000 	lw	v0,-32768(t0)
+ 348:	034d0100 	0x34d0100
+ 34c:	761c0000 	jalx	8700000 <_ftext_ram-0x77901000>
+ 350:	01006c61 	0x1006c61
+ 354:	0000941f 	0x941f
+ 358:	14540100 	bne	v0,s4,75c <_ftext_ram-0x800008a4>
+ 35c:	800011a8 	lb	zero,4520(zero)
+ 360:	800011c8 	lb	zero,4552(zero)
+ 364:	0100690b 	0x100690b
+ 368:	00009421 	0x9421
+ 36c:	00016d00 	sll	t5,at,0x14
+ 370:	1d000000 	bgtz	t0,374 <_ftext_ram-0x80000c8c>
+ 374:	000002ea 	0x2ea
+ 378:	800011c8 	lb	zero,4552(zero)
+ 37c:	800011dc 	lb	zero,4572(zero)
+ 380:	01008d02 	0x1008d02
+ 384:	00000371 	tgeu	zero,zero,0xd
+ 388:	0002f81e 	0x2f81e
+ 38c:	1e540100 	0x1e540100
+ 390:	00000303 	sra	zero,zero,0xc
+ 394:	1d005501 	bgtz	t0,1579c <_ftext_ram-0x7ffeb864>
+ 398:	000002c5 	0x2c5
+ 39c:	800011dc 	lb	zero,4572(zero)
+ 3a0:	800011f8 	lb	zero,4600(zero)
+ 3a4:	01008d02 	0x1008d02
+ 3a8:	00000399 	0x399
+ 3ac:	0002d30e 	0x2d30e
+ 3b0:	00018c00 	sll	s1,at,0x10
+ 3b4:	02de1f00 	0x2de1f00
+ 3b8:	01ad0000 	0x1ad0000
+ 3bc:	20000000 	addi	zero,zero,0
+ 3c0:	000002a5 	0x2a5
+ 3c4:	800011f8 	lb	zero,4600(zero)
+ 3c8:	80001200 	lb	zero,4608(zero)
+ 3cc:	01008d02 	0x1008d02
+ 3d0:	0002b31e 	0x2b31e
+ 3d4:	00540100 	0x540100
+	...
+
+Disassembly of section .debug_abbrev:
+
+00000000 <.debug_abbrev>:
+   0:	10001101 	b	4408 <_ftext_ram-0x7fffcbf8>
+   4:	12011106 	beq	s0,at,4420 <_ftext_ram-0x7fffcbe0>
+   8:	1b0e0301 	0x1b0e0301
+   c:	130e250e 	beq	t8,t6,9448 <_ftext_ram-0x7fff7bb8>
+  10:	00000005 	lsa	zero,zero,zero,0x1
+  14:	25011101 	addiu	at,t0,4353
+  18:	030b130e 	0x30b130e
+  1c:	110e1b0e 	beq	t0,t6,6c58 <_ftext_ram-0x7fffa3a8>
+  20:	10011201 	beq	zero,at,4828 <_ftext_ram-0x7fffc7d8>
+  24:	02000006 	srlv	zero,zero,s0
+  28:	0b0b0024 	j	c2c0090 <_ftext_ram-0x73d40f70>
+  2c:	0e030b3e 	jal	80c2cf8 <_ftext_ram-0x77f3e308>
+  30:	16030000 	bne	s0,v1,34 <_ftext_ram-0x80000fcc>
+  34:	3a0e0300 	xori	t6,s0,0x300
+  38:	490b3b0b 	bc2tl	$cc2,ec68 <_ftext_ram-0x7fff2398>
+  3c:	04000013 	bltz	zero,8c <_ftext_ram-0x80000f74>
+  40:	0b0b0024 	j	c2c0090 <_ftext_ram-0x73d40f70>
+  44:	08030b3e 	j	c2cf8 <_ftext_ram-0x7ff3e308>
+  48:	01050000 	0x1050000
+  4c:	01134901 	0x1134901
+  50:	06000013 	bltz	s0,a0 <_ftext_ram-0x80000f60>
+  54:	13490021 	beq	k0,t1,dc <_ftext_ram-0x80000f24>
+  58:	0000062f 	0x62f
+  5c:	03003407 	0x3003407
+  60:	3b0b3a08 	xori	t3,t8,0x3a08
+  64:	3f13490b 	0x3f13490b
+  68:	000a020c 	syscall	0x2808
+  6c:	012e0800 	0x12e0800
+  70:	0e030c3f 	jal	80c30fc <_ftext_ram-0x77f3df04>
+  74:	0b3b0b3a 	j	cec2ce8 <_ftext_ram-0x7313e318>
+  78:	01111349 	0x1111349
+  7c:	06400112 	bltz	s2,4c8 <_ftext_ram-0x80000b38>
+  80:	010c4297 	0x10c4297
+  84:	09000013 	j	400004c <_ftext_ram-0x7c000fb4>
+  88:	0e030034 	jal	80c00d0 <_ftext_ram-0x77f40f30>
+  8c:	0b3b0b3a 	j	cec2ce8 <_ftext_ram-0x7313e318>
+  90:	06021349 	bltzl	s0,4db8 <_ftext_ram-0x7fffc248>
+  94:	0b0a0000 	j	c280000 <_ftext_ram-0x73d81000>
+  98:	12011101 	beq	s0,at,44a0 <_ftext_ram-0x7fffcb60>
+  9c:	00130101 	0x130101
+  a0:	00340b00 	0x340b00
+  a4:	0b3a0803 	j	ce8200c <_ftext_ram-0x7317eff4>
+  a8:	13490b3b 	beq	k0,t1,2d98 <_ftext_ram-0x7fffe268>
+  ac:	00000602 	srl	zero,zero,0x18
+  b0:	55010b0c 	bnel	t0,at,2ce4 <_ftext_ram-0x7fffe31c>
+  b4:	00130106 	0x130106
+  b8:	011d0d00 	0x11d0d00
+  bc:	01111331 	tgeu	t0,s1,0x4c
+  c0:	0b580112 	j	d600448 <_ftext_ram-0x72a00bb8>
+  c4:	00000b59 	0xb59
+  c8:	3100050e 	andi	zero,t0,0x50e
+  cc:	00060213 	0x60213
+  d0:	011d0f00 	0x11d0f00
+  d4:	01521331 	tgeu	t2,s2,0x4c
+  d8:	0b580655 	j	d601954 <_ftext_ram-0x729ff6ac>
+  dc:	13010b59 	beq	t8,at,2e44 <_ftext_ram-0x7fffe1bc>
+  e0:	05100000 	bltzal	t0,e4 <_ftext_ram-0x80000f1c>
+  e4:	1c133100 	0x1c133100
+  e8:	1100000b 	beqz	t0,118 <_ftext_ram-0x80000ee8>
+  ec:	0655010b 	0x655010b
+  f0:	34120000 	li	s2,0x0
+  f4:	00133100 	sll	a2,s3,0x4
+  f8:	011d1300 	0x11d1300
+  fc:	01111331 	tgeu	t0,s1,0x4c
+ 100:	0b580112 	j	d600448 <_ftext_ram-0x72a00bb8>
+ 104:	13010b59 	beq	t8,at,2e6c <_ftext_ram-0x7fffe194>
+ 108:	0b140000 	j	c500000 <_ftext_ram-0x73b01000>
+ 10c:	12011101 	beq	s0,at,4514 <_ftext_ram-0x7fffcaec>
+ 110:	15000001 	bnez	t0,118 <_ftext_ram-0x80000ee8>
+ 114:	01018289 	0x1018289
+ 118:	13310111 	beq	t9,s1,560 <_ftext_ram-0x80000aa0>
+ 11c:	8a160000 	lwl	s6,0(s0)
+ 120:	02000182 	0x2000182
+ 124:	0a42910a 	j	90a4428 <_ftext_ram-0x76f5cbd8>
+ 128:	2e170000 	sltiu	s7,s0,0
+ 12c:	030c3f01 	0x30c3f01
+ 130:	3b0b3a0e 	xori	t3,t8,0x3a0e
+ 134:	200c270b 	addi	t4,zero,9995
+ 138:	0013010b 	0x13010b
+ 13c:	00051800 	sll	v1,a1,0x0
+ 140:	0b3a0e03 	j	ce8380c <_ftext_ram-0x7317d7f4>
+ 144:	13490b3b 	beq	k0,t1,2e34 <_ftext_ram-0x7fffe1cc>
+ 148:	0f190000 	jal	c640000 <_ftext_ram-0x739c1000>
+ 14c:	490b0b00 	bc2tl	$cc2,2d50 <_ftext_ram-0x7fffe2b0>
+ 150:	1a000013 	blez	s0,1a0 <_ftext_ram-0x80000e60>
+ 154:	08030034 	j	c00d0 <_ftext_ram-0x7ff40f30>
+ 158:	0b3b0b3a 	j	cec2ce8 <_ftext_ram-0x7313e318>
+ 15c:	00001349 	0x1349
+ 160:	3f012e1b 	0x3f012e1b
+ 164:	3a0e030c 	xori	t6,s0,0x30c
+ 168:	270b3b0b 	addiu	t3,t8,15115
+ 16c:	1201110c 	beq	s0,at,45a0 <_ftext_ram-0x7fffca60>
+ 170:	970a4001 	lhu	t2,16385(t8)
+ 174:	13010c42 	beq	t8,at,3280 <_ftext_ram-0x7fffdd80>
+ 178:	051c0000 	0x51c0000
+ 17c:	3a080300 	xori	t0,s0,0x300
+ 180:	490b3b0b 	bc2tl	$cc2,edb0 <_ftext_ram-0x7fff2250>
+ 184:	000a0213 	0xa0213
+ 188:	012e1d00 	0x12e1d00
+ 18c:	01111331 	tgeu	t0,s1,0x4c
+ 190:	0a400112 	j	9000448 <_ftext_ram-0x77000bb8>
+ 194:	010c4297 	0x10c4297
+ 198:	1e000013 	bgtz	s0,1e8 <_ftext_ram-0x80000e18>
+ 19c:	13310005 	beq	t9,s1,1b4 <_ftext_ram-0x80000e4c>
+ 1a0:	00000a02 	srl	at,zero,0x8
+ 1a4:	3100341f 	andi	zero,t0,0x341f
+ 1a8:	00060213 	0x60213
+ 1ac:	012e2000 	0x12e2000
+ 1b0:	01111331 	tgeu	t0,s1,0x4c
+ 1b4:	0a400112 	j	9000448 <_ftext_ram-0x77000bb8>
+ 1b8:	000c4297 	0xc4297
+	...
+
+Disassembly of section .debug_aranges:
+
+00000000 <.debug_aranges>:
+   0:	0000001c 	0x1c
+   4:	00000002 	srl	zero,zero,0x0
+   8:	00040000 	sll	zero,a0,0x0
+   c:	00000000 	nop
+  10:	9fc00000 	0x9fc00000
+  14:	0000027c 	0x27c
+	...
+  20:	0000001c 	0x1c
+  24:	00260002 	ror	zero,a2,0x0
+  28:	00040000 	sll	zero,a0,0x0
+  2c:	00000000 	nop
+  30:	800011a8 	lb	zero,4520(zero)
+  34:	0000017c 	0x17c
+	...
+
+Disassembly of section .debug_str:
+
+00000000 <.debug_str>:
+   0:	6d6f682f 	0x6d6f682f
+   4:	737a2f65 	0x737a2f65
+   8:	6f772f6c 	0x6f772f6c
+   c:	672f6b72 	0x672f6b72
+  10:	75687469 	jalx	5a1d1a4 <_ftext_ram-0x7a5e3e5c>
+  14:	696d2f62 	0x696d2f62
+  18:	70667370 	0x70667370
+  1c:	702d6167 	0x702d6167
+  20:	5f73756c 	0x5f73756c
+  24:	2f6c737a 	sltiu	t4,k1,29562
+  28:	6d6d6f63 	0x6d6d6f63
+  2c:	702f6e6f 	0x702f6e6f
+  30:	72676f72 	0x72676f72
+  34:	622f6d61 	0x622f6d61
+  38:	2e746f6f 	sltiu	s4,s3,28527
+  3c:	682f0053 	0x682f0053
+  40:	2f656d6f 	sltiu	a1,k1,28015
+  44:	2f6c737a 	sltiu	t4,k1,29562
+  48:	6b726f77 	0x6b726f77
+  4c:	7469672f 	jalx	1a59cbc <_ftext_ram-0x7e5a7344>
+  50:	2f627568 	sltiu	v0,k1,30056
+  54:	7370696d 	0x7370696d
+  58:	61677066 	0x61677066
+  5c:	756c702d 	jalx	5b1c0b4 <_ftext_ram-0x7a4e4f4c>
+  60:	737a5f73 	0x737a5f73
+  64:	72702f6c 	0x72702f6c
+  68:	6172676f 	0x6172676f
+  6c:	34302f6d 	ori	s0,at,0x2f6d
+  70:	6d656d5f 	0x6d656d5f
+  74:	74736574 	jalx	1cd95d0 <_ftext_ram-0x7e327a30>
+  78:	554e4700 	bnel	t2,t6,11c7c <_ftext_ram-0x7ffef384>
+  7c:	20534120 	addi	s3,v0,16672
+  80:	38322e32 	xori	s2,at,0x2e32
+  84:	0031352e 	0x31352e
+  88:	69755f5f 	0x69755f5f
+  8c:	5f38746e 	0x5f38746e
+  90:	74730074 	jalx	1cc01d0 <_ftext_ram-0x7e340e30>
+  94:	754f7461 	jalx	53dd184 <_ftext_ram-0x7ac23e7c>
+  98:	74690074 	jalx	1a401d0 <_ftext_ram-0x7e5c0e30>
+  9c:	74617265 	jalx	185c994 <_ftext_ram-0x7e7a466c>
+  a0:	4e6e6f69 	msub.d	$f29,$f19,$f13,$f14
+  a4:	61006d75 	0x61006d75
+  a8:	00726464 	0x726464
+  ac:	20554e47 	addi	s5,v0,20039
+  b0:	20393943 	addi	t9,at,14659
+  b4:	2e332e36 	sltiu	s3,s1,11830
+  b8:	6d2d2030 	0x6d2d2030
+  bc:	2d206c65 	sltiu	zero,t1,27749
+  c0:	6372616d 	0x6372616d
+  c4:	316d3d68 	andi	t5,t3,0x3d68
+  c8:	20636b34 	addi	v1,v1,27444
+  cc:	6f736d2d 	0x6f736d2d
+  d0:	662d7466 	0x662d7466
+  d4:	74616f6c 	jalx	185bdb0 <_ftext_ram-0x7e7a5250>
+  d8:	616d2d20 	0x616d2d20
+  dc:	3d686372 	0x3d686372
+  e0:	6b34316d 	0x6b34316d
+  e4:	6d2d2063 	0x6d2d2063
+  e8:	74666f73 	jalx	199bdcc <_ftext_ram-0x7e665234>
+  ec:	6f6c662d 	0x6f6c662d
+  f0:	2d207461 	sltiu	zero,t1,29793
+  f4:	746c706d 	jalx	1b1c1b4 <_ftext_ram-0x7e4e4e4c>
+  f8:	696d2d20 	0x696d2d20
+  fc:	32337370 	andi	s3,s1,0x7370
+ 100:	2d203272 	sltiu	zero,t1,12914
+ 104:	6e79736d 	0x6e79736d
+ 108:	2d206963 	sltiu	zero,t1,26979
+ 10c:	6962616d 	0x6962616d
+ 110:	2032333d 	addi	s2,at,13117
+ 114:	2d20672d 	sltiu	zero,t1,26413
+ 118:	61776467 	0x61776467
+ 11c:	322d6672 	andi	t5,s1,0x6672
+ 120:	20672d20 	addi	a3,v1,11552
+ 124:	7764672d 	jalx	d919cb4 <_ftext_ram-0x726e734c>
+ 128:	2d667261 	sltiu	a2,t3,29281
+ 12c:	4f2d2032 	c3	0x12d2032
+ 130:	4f2d2031 	nmadd.d	$f0,$f25,$f4,$f13
+ 134:	732d2031 	0x732d2031
+ 138:	633d6474 	0x633d6474
+ 13c:	2d203939 	sltiu	zero,t1,14649
+ 140:	3d647473 	0x3d647473
+ 144:	00393963 	0x393963
+ 148:	69736e75 	0x69736e75
+ 14c:	64656e67 	0x64656e67
+ 150:	61686320 	0x61686320
+ 154:	74730072 	jalx	1cc01c8 <_ftext_ram-0x7e340e38>
+ 158:	754f7065 	jalx	53dc194 <_ftext_ram-0x7ac24e6c>
+ 15c:	68730074 	0x68730074
+ 160:	2074726f 	addi	s4,v1,29295
+ 164:	69736e75 	0x69736e75
+ 168:	64656e67 	0x64656e67
+ 16c:	746e6920 	jalx	1b9a480 <_ftext_ram-0x7e466b80>
+ 170:	65645f00 	0x65645f00
+ 174:	0079616c 	0x79616c
+ 178:	69755f5f 	0x69755f5f
+ 17c:	3631746e 	ori	s1,s1,0x746e
+ 180:	5f00745f 	bgtzl	t8,1d300 <_ftext_ram-0x7ffe3d00>
+ 184:	6e69755f 	0x6e69755f
+ 188:	5f323374 	0x5f323374
+ 18c:	616d0074 	0x616d0074
+ 190:	6c006e69 	0x6c006e69
+ 194:	20676e6f 	addi	a3,v1,28271
+ 198:	676e6f6c 	0x676e6f6c
+ 19c:	736e7520 	0x736e7520
+ 1a0:	656e6769 	0x656e6769
+ 1a4:	6e692064 	0x6e692064
+ 1a8:	61630074 	0x61630074
+ 1ac:	46656863 	c1	0x656863
+ 1b0:	6873756c 	0x6873756c
+ 1b4:	7a697300 	nori.b	$w12,$w14,0x69
+ 1b8:	70797465 	0x70797465
+ 1bc:	6f6c0065 	0x6f6c0065
+ 1c0:	6c20676e 	0x6c20676e
+ 1c4:	20676e6f 	addi	a3,v1,28271
+ 1c8:	00746e69 	0x746e69
+ 1cc:	6e69616d 	0x6e69616d
+ 1d0:	7300632e 	0x7300632e
+ 1d4:	74726f68 	jalx	1c9bda0 <_ftext_ram-0x7e365260>
+ 1d8:	746e6920 	jalx	1b9a480 <_ftext_ram-0x7e466b80>
+ 1dc:	65747300 	0x65747300
+ 1e0:	6d754e70 	0x6d754e70
+ 1e4:	72726500 	0x72726500
+ 1e8:	6e756f43 	0x6e756f43
+ 1ec:	Address 0x00000000000001ec is out of bounds.
+
+
+Disassembly of section .debug_loc:
+
+00000000 <.debug_loc>:
+   0:	00000058 	0x58
+   4:	0000005c 	0x5c
+   8:	008d0002 	0x8d0002
+   c:	0000005c 	0x5c
+  10:	0000017c 	0x17c
+  14:	388d0002 	xori	t5,a0,0x2
+	...
+  20:	00000084 	0x84
+  24:	000000e0 	0xe0
+  28:	9f300002 	0x9f300002
+  2c:	000000e0 	0xe0
+  30:	000000f8 	0xf8
+  34:	fc600001 	sdc3	$0,1(v1)
+  38:	5c000000 	bgtzl	zero,3c <_ftext_ram-0x80000fc4>
+  3c:	01000001 	movf	zero,t0,$fcc0
+  40:	00006000 	sll	t4,zero,0x0
+  44:	00000000 	nop
+  48:	00900000 	0x900000
+  4c:	00a40000 	0xa40000
+  50:	00020000 	sll	zero,v0,0x0
+  54:	00a49f30 	tge	a1,a0,0x27c
+  58:	00e00000 	0xe00000
+  5c:	00010000 	sll	zero,at,0x0
+  60:	00000052 	mflhxu	zero
+  64:	00000000 	nop
+  68:	0000e000 	sll	gp,zero,0x0
+  6c:	00011400 	sll	v0,at,0x10
+  70:	63000100 	0x63000100
+  74:	00000114 	0x114
+  78:	00000118 	0x118
+  7c:	01830003 	0x1830003
+  80:	0001249f 	0x1249f
+  84:	00015c00 	sll	t3,at,0x10
+  88:	63000100 	0x63000100
+	...
+  94:	00000128 	0x128
+  98:	0000012c 	0x12c
+  9c:	9f300002 	0x9f300002
+	...
+  a8:	0000012c 	0x12c
+  ac:	00000130 	tge	zero,zero,0x4
+  b0:	00520001 	0x520001
+  b4:	00000000 	nop
+  b8:	e0000000 	sc	zero,0(zero)
+  bc:	1c000000 	bgtz	zero,c0 <_ftext_ram-0x80000f40>
+  c0:	01000001 	movf	zero,t0,$fcc0
+  c4:	014c5200 	0x14c5200
+  c8:	015c0000 	0x15c0000
+  cc:	00020000 	sll	zero,v0,0x0
+  d0:	00009f30 	tge	zero,zero,0x27c
+  d4:	00000000 	nop
+  d8:	00fc0000 	0xfc0000
+  dc:	010c0000 	0x10c0000
+  e0:	00010000 	sll	zero,at,0x0
+  e4:	00000060 	0x60
+  e8:	00000000 	nop
+  ec:	0000fc00 	sll	ra,zero,0x10
+  f0:	00010c00 	sll	at,at,0x10
+  f4:	63000100 	0x63000100
+	...
+ 100:	0000013c 	0x13c
+ 104:	00000140 	pause
+ 108:	9f320002 	0x9f320002
+	...
+ 114:	0000010c 	syscall	0x4
+ 118:	00000114 	0x114
+ 11c:	00600001 	movf	zero,v1,$fcc0
+ 120:	00000000 	nop
+ 124:	0c000000 	jal	0 <_ftext_ram-0x80001000>
+ 128:	14000001 	bnez	zero,130 <_ftext_ram-0x80000ed0>
+ 12c:	01000001 	movf	zero,t0,$fcc0
+ 130:	00006300 	sll	t4,zero,0xc
+ 134:	00000000 	nop
+ 138:	00e00000 	0xe00000
+ 13c:	01240000 	0x1240000
+ 140:	00020000 	sll	zero,v0,0x0
+ 144:	01489f33 	tltu	t2,t0,0x27c
+ 148:	017c0000 	0x17c0000
+ 14c:	00020000 	sll	zero,v0,0x0
+ 150:	00009f33 	tltu	zero,zero,0x27c
+ 154:	00000000 	nop
+ 158:	01600000 	0x1600000
+ 15c:	01680000 	0x1680000
+ 160:	00010000 	sll	zero,at,0x0
+ 164:	00000060 	0x60
+	...
+ 170:	00000800 	sll	at,zero,0x0
+ 174:	30000200 	andi	zero,zero,0x200
+ 178:	0000089f 	0x89f
+ 17c:	00001800 	sll	v1,zero,0x0
+ 180:	52000100 	beqzl	s0,584 <_ftext_ram-0x80000a7c>
+ 184:	00000000 	nop
+ 188:	00000000 	nop
+ 18c:	00000034 	teq	zero,zero
+ 190:	0000003c 	0x3c
+ 194:	3c540001 	0x3c540001
+ 198:	50000000 	beqzl	zero,19c <_ftext_ram-0x80000e64>
+ 19c:	04000000 	bltz	zero,1a0 <_ftext_ram-0x80000e60>
+ 1a0:	5401f300 	bnel	zero,at,ffffcda4 <hwreset+0x403fcda4>
+ 1a4:	0000009f 	0x9f
+ 1a8:	00000000 	nop
+ 1ac:	00003400 	sll	a2,zero,0x10
+ 1b0:	00003c00 	sll	a3,zero,0x10
+ 1b4:	31000800 	andi	zero,t0,0x800
+ 1b8:	ff080074 	sdc3	$8,116(t8)
+ 1bc:	3c9f241a 	0x3c9f241a
+ 1c0:	50000000 	beqzl	zero,1c4 <_ftext_ram-0x80000e3c>
+ 1c4:	09000000 	j	4000000 <_ftext_ram-0x7c001000>
+ 1c8:	01f33100 	0x1f33100
+ 1cc:	1aff0854 	0x1aff0854
+ 1d0:	00009f24 	0x9f24
+ 1d4:	00000000 	nop
+	...
+
+Disassembly of section .debug_ranges:
+
+00000000 <.debug_ranges>:
+   0:	000000bc 	0xbc
+   4:	000000d8 	0xd8
+   8:	000000e0 	0xe0
+   c:	00000104 	0x104
+  10:	0000010c 	syscall	0x4
+  14:	00000154 	0x154
+	...
+  20:	000000bc 	0xbc
+  24:	000000cc 	syscall	0x3
+  28:	00000124 	0x124
+  2c:	0000012c 	0x12c
+	...
+  38:	000000cc 	syscall	0x3
+  3c:	000000d0 	0xd0
+  40:	0000013c 	0x13c
+  44:	00000140 	pause
+	...
+  50:	000000e0 	0xe0
+  54:	00000104 	0x104
+  58:	00000150 	0x150
+  5c:	00000154 	0x154
+	...
+
+Disassembly of section .debug_frame:
+
+00000000 <.debug_frame>:
+   0:	0000000c 	syscall
+   4:	ffffffff 	sdc3	$31,-1(ra)
+   8:	7c010001 	0x7c010001
+   c:	001d0d1f 	0x1d0d1f
+  10:	0000000c 	syscall
+  14:	00000000 	nop
+  18:	800011a8 	lb	zero,4520(zero)
+  1c:	00000020 	add	zero,zero,zero
+  20:	0000000c 	syscall
+  24:	00000000 	nop
+  28:	800011c8 	lb	zero,4552(zero)
+  2c:	00000014 	0x14
+  30:	0000000c 	syscall
+  34:	00000000 	nop
+  38:	800011dc 	lb	zero,4572(zero)
+  3c:	0000001c 	0x1c
+  40:	0000000c 	syscall
+  44:	00000000 	nop
+  48:	800011f8 	lb	zero,4600(zero)
+  4c:	00000008 	jr	zero
+  50:	00000024 	and	zero,zero,zero
+  54:	00000000 	nop
+  58:	80001200 	lb	zero,4608(zero)
+  5c:	00000124 	0x124
+  60:	68380e44 	0x68380e44
+  64:	029e019f 	0x29e019f
+  68:	04960397 	0x4960397
+  6c:	06940595 	0x6940595
+  70:	08920793 	j	2481e4c <_ftext_ram-0x7db7f1b4>
+  74:	0a900991 	j	a402644 <_ftext_ram-0x75bfe9bc>

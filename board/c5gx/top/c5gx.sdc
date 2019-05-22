@@ -48,6 +48,7 @@ derive_clock_uncertainty
 #**************************************************************
 # Set Clock Groups
 #**************************************************************
+set_clock_groups -asynchronous -group [get_clocks {CLOCK_50_B5B}]
 
 
 

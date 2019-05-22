@@ -8,7 +8,7 @@
 
 // config start
 
-#define RUNTYPE     SIMULATION
+#define RUNTYPE     HARDWARE
 
 // config end
 

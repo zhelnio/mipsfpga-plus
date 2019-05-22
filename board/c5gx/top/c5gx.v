@@ -69,9 +69,13 @@ module c5gx (
       inout       [3:0]  DDR2LP_DQS_p,
       input              DDR2LP_OCT_RZQ,
 
+    `ifdef FULL_GPIO
       inout       [35:0] GPIO,
-    //   output      [6:0]  HEX2,
-    //   output      [6:0]  HEX3,
+    `else
+      inout       [21:0] GPIO,
+      output      [6:0]  HEX2,
+      output      [6:0]  HEX3,
+    `endif
       output      [6:0]  HEX0,
       output      [6:0]  HEX1,
       input       [3:0]  KEY,
@@ -140,59 +144,80 @@ module c5gx (
         // MIPSfpga EJTAG BusBluster 3 connector pinout
         // EJTAG     DIRECTION   PIN      CONN      PIN    DIRECTION EJTAG 
         // =====     ========= ======== ========= ======== ========= ======
-        //  VCC       output   GPIO[12]  15 | 16  GPIO[13]  output    VCC  
-        //  GND       output   GPIO[14]  17 | 18  GPIO[15]  output    GND  
-        //  NC        output   GPIO[16]  19 | 20  GPIO[17]  input    EJ_TCK
-        //  NC        output   GPIO[18]  21 | 22  GPIO[19]  output   EJ_TDO
-        //  EJ_RST    input    GPIO[20]  23 | 24  GPIO[21]  input    EJ_TDI
-        //  EJ_TRST   input    GPIO[22]  25 | 26  GPIO[23]  input    EJ_TMS
+        //  VCC       output   GPIO[10]  13 | 14  GPIO[11]  output    VCC  
+        //  GND       output   GPIO[12]  15 | 16  GPIO[13]  output    GND  
+        //  NC        output   GPIO[14]  17 | 18  GPIO[15]  input    EJ_TCK
+        //  NC        output   GPIO[16]  19 | 20  GPIO[17]  output   EJ_TDO
+        //  EJ_RST_N  input    GPIO[18]  21 | 22  GPIO[19]  input    EJ_TDI
+        //  EJ_TRST_N input    GPIO[20]  23 | 24  GPIO[21]  input    EJ_TMS
 
-        wire EJ_VCC  = 1'b1;
-        wire EJ_GND  = 1'b0;
-        wire EJ_NC   = 1'bz;
-        wire EJ_TCK  = GPIO[17];
-        wire EJ_RST  = GPIO[20];
-        wire EJ_TDI  = GPIO[21];
-        wire EJ_TRST = GPIO[22];
-        wire EJ_TMS  = GPIO[23];
-        wire EJ_DINT = 1'b0;
+        wire EJ_VCC    = 1'b1;
+        wire EJ_GND    = 1'b0;
+        wire EJ_NC     = 1'bz;
+        wire EJ_TCK    = GPIO[15];
+        // wire EJ_RST_N  = GPIO[18];
+        wire EJ_TDI    = GPIO[19];
+        // wire EJ_TRST_N = GPIO[20];
+        wire EJ_TMS    = GPIO[21];
+        wire EJ_DINT   = 1'b0;
         wire EJ_TDO;
 
-        assign GPIO[12] = EJ_VCC;
-        assign GPIO[13] = EJ_VCC;
-        assign GPIO[14] = EJ_GND;
-        assign GPIO[15] = EJ_GND;
+        assign GPIO[10] = EJ_VCC;
+        assign GPIO[11] = EJ_VCC;
+        assign GPIO[12] = EJ_GND;
+        assign GPIO[13] = EJ_GND;
+        assign GPIO[14] = EJ_NC;
         assign GPIO[16] = EJ_NC;
-        assign GPIO[18] = EJ_NC;
-        assign GPIO[19] = EJ_TDO;
+        assign GPIO[17] = EJ_TDO;
     `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
-        //  ALS   CONN   PIN         DIRECTION
-        // ===== ====== =====      =============
-        //  VCC    29   3.3V
-        //  GND    31   GPIO[26]   output
-        //  SCK    33   GPIO[28]   output
-        //  SDO    35   GPIO[30]   input
-        //  NC     37   GPIO[32]   not connected
-        //  CS     39   GPIO[34]   output
+    wire pll_locked    = CLK_Lock;
+    wire pin_rst_cold  = 1'b0;
+    wire pin_rst_soft  = ~CPU_RESET_n;
 
-        wire    ALS_GND = 1'b0;
-        wire    ALS_SCK;
-        wire    ALS_SDO;
-        wire    ALS_NC  = 1'bz;
-        wire    ALS_CS;
+    wire pin_ej_rst_n  = GPIO[18];
+    wire pin_ej_trst_n = GPIO[20];
 
-        assign GPIO[26] = ALS_GND;
-        assign GPIO[28] = ALS_SCK;
-        assign ALS_SDO  = GPIO[30];
-        assign GPIO[32] = ALS_NC;
-        assign GPIO[34] = ALS_CS;
-    `endif
+    wire SI_Reset;
+    wire SI_ColdReset;
+    wire EJ_TRST_N;
 
-    //This is a workaround to make EJTAG working
-    //TODO: add complex reset signals handling module
-    wire RESETn = KEY [0] & GPIO [20] & CLK_Lock;
+    mfp_reset mfp_reset
+    (
+        .clk           ( clk           ),
+        .pll_locked    ( pll_locked    ),
+        .pin_rst_cold  ( pin_rst_cold  ),
+        .pin_rst_soft  ( pin_rst_soft  ),
+        .pin_ej_rst_n  ( pin_ej_rst_n  ),
+        .pin_ej_trst_n ( pin_ej_trst_n ),
+        .SI_Reset      ( SI_Reset      ),
+        .SI_ColdReset  ( SI_ColdReset  ),
+        .EJ_TRST_N     ( EJ_TRST_N     ) 
+    );
+
+    // TODO: remap connections
+    // `ifdef MFP_DEMO_LIGHT_SENSOR
+    //     //  ALS   CONN   PIN         DIRECTION
+    //     // ===== ====== =====      =============
+    //     //  VCC    29   3.3V
+    //     //  GND    31   GPIO[26]   output
+    //     //  SCK    33   GPIO[28]   output
+    //     //  SDO    35   GPIO[30]   input
+    //     //  NC     37   GPIO[32]   not connected
+    //     //  CS     39   GPIO[34]   output
+
+    //     wire    ALS_GND = 1'b0;
+    //     wire    ALS_SCK;
+    //     wire    ALS_SDO;
+    //     wire    ALS_NC  = 1'bz;
+    //     wire    ALS_CS;
+
+    //     assign GPIO[26] = ALS_GND;
+    //     assign GPIO[28] = ALS_SCK;
+    //     assign ALS_SDO  = GPIO[30];
+    //     assign GPIO[32] = ALS_NC;
+    //     assign GPIO[34] = ALS_CS;
+    // `endif
 
     `ifdef MFP_USE_AVALON_MEMORY
     wire          avm_clk;
@@ -212,7 +237,7 @@ module c5gx (
     lpddr2_wrapper lpddr2_wrapper
     (
         .clk_global      ( clk                    ),
-        .rst_global_n    ( RESETn                 ),
+        .rst_global_n    ( ~SI_ColdReset          ),
         .mem_ca          ( DDR2LP_CA              ),
         .mem_ck          ( DDR2LP_CK_p            ),
         .mem_ck_n        ( DDR2LP_CK_n            ),
@@ -241,7 +266,8 @@ module c5gx (
     mfp_system mfp_system
     (
         .SI_ClkIn         (   clk             ),
-        .SI_Reset         (   ~RESETn         ),
+        .SI_Reset         (   SI_Reset        ),
+        .SI_ColdReset     (   SI_ColdReset    ),
                           
         .HADDR            (   HADDR           ),
         .HRDATA           (   HRDATA          ),
@@ -265,12 +291,11 @@ module c5gx (
         `endif
 
         `ifdef MFP_EJTAG_DEBUGGER
-        .EJ_TRST_N_probe  (   EJ_TRST         ),
+        .EJ_TRST_N_probe  (   EJ_TRST_N       ),
         .EJ_TDI           (   EJ_TDI          ),
         .EJ_TDO           (   EJ_TDO          ),
         .EJ_TMS           (   EJ_TMS          ),
         .EJ_TCK           (   EJ_TCK          ),
-        .SI_ColdReset     ( ~ EJ_RST          ),
         .EJ_DINT          (   EJ_DINT         ),
         `endif
 
@@ -281,8 +306,8 @@ module c5gx (
         .IO_7_SegmentHEX  (   IO_7_SegmentHEX ),
 
         `ifdef MFP_USE_DUPLEX_UART
-        .UART_SRX         (   GPIO [33]       ), 
-        .UART_STX         (   GPIO [35]       ),
+        .UART_SRX         (   UART_RX         ), 
+        .UART_STX         (   UART_TX         ),
         `endif
 
         `ifdef MFP_DEMO_LIGHT_SENSOR
@@ -291,14 +316,12 @@ module c5gx (
         .SPI_SDO          (   ALS_SDO         ),
         `endif
 
-        .UART_RX          (   GPIO [31]       ),
-        .UART_TX          (   GPIO [32]       )
+        .UART_RX          (   GPIO [1]        ),
+        .UART_TX          (   GPIO [3]        )
     );
 
-    //TODO: HEX2-3 pinout overlaps with GPIO - fix it
-
-    // mfp_single_digit_seven_segment_display digit_3 ( IO_7_SegmentHEX [15:12] , HEX3 [6:0] );
-    // mfp_single_digit_seven_segment_display digit_2 ( IO_7_SegmentHEX [11: 8] , HEX2 [6:0] );
+    mfp_single_digit_seven_segment_display digit_3 ( IO_7_SegmentHEX [15:12] , HEX3 [6:0] );
+    mfp_single_digit_seven_segment_display digit_2 ( IO_7_SegmentHEX [11: 8] , HEX2 [6:0] );
     mfp_single_digit_seven_segment_display digit_1 ( IO_7_SegmentHEX [ 7: 4] , HEX1 [6:0] );
     mfp_single_digit_seven_segment_display digit_0 ( IO_7_SegmentHEX [ 3: 0] , HEX0 [6:0] );
 

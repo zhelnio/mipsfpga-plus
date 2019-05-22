@@ -50,13 +50,28 @@ ifeq ($(MFP_CONFIG_BOARD_C5GX),y)
 include $(DIR_BOARD)/c5gx/top/files.mk
 endif
 
+ifeq ($(MFP_CONFIG_BOARD_DE10LITE),y)
+include $(DIR_BOARD)/de10_lite/top/files.mk
+endif
+
+ifeq ($(MFP_CONFIG_BOARD_DE10LITE_ADC),y)
+include $(DIR_BOARD)/de10_lite/adc/files.mk
+endif
+
+ifeq ($(MFP_CONFIG_BOARD_DE10LITE_PLL),y)
+include $(DIR_BOARD)/de10_lite/pll/files.mk
+endif
+
+
 ifeq ($(abspath $(PWD)/..),$(DIR_PROGRAM))
     RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_DEFAULT))
 else
     RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_INIT))
 endif
-QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
-MSIM_MACRO      += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
+ifneq ($(RESET_RAM_INIT),)
+    QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
+    MSIM_MACRO      += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
+endif
 
 # convert config path to abs path
 # program      => program
@@ -73,9 +88,12 @@ mrproper:
 	rm -rf $(DIR_BUILD)
 
 ##############################################
-# Quartus MegaWizard qip and rtl generation
+# Quartus MegaWizard & QSYS rtl generation    
 
-QUARTUS_MW_QIP  = $(patsubst $(DIR_BOARD)%.v, $(DIR_BUILD)%.qip, $(QUARTUS_MW_IP))
+QUARTUS_BUILD_QIP  = $(filter %.qip,  $(patsubst $(DIR_BOARD)%.v,    $(DIR_BUILD)%.qip,  $(QUARTUS_IP)))
+QUARTUS_BUILD_QSYS = $(filter %.qsys, $(patsubst $(DIR_BOARD)%.qsys, $(DIR_BUILD)%.qsys, $(QUARTUS_IP)))
+QUARTUS_BUILD_IP   = $(QUARTUS_BUILD_QIP)
+QUARTUS_BUILD_IP  += $(QUARTUS_BUILD_QSYS)
 
 $(DIR_BUILD)/%.qip: $(DIR_BOARD)/%.v
 	mkdir -p $(dir $@)
@@ -84,16 +102,19 @@ $(DIR_BUILD)/%.qip: $(DIR_BOARD)/%.v
 	cd $(@D) && qmegawiz -silent OPTIONAL_FILES="SIM_NETLIST|SYNTH_NETLIST" $(^F)
 	mv $(@D)/$(^F).bak $(@D)/$(^F)
 
-# TODO: generation from qsys
-#qsys-generate -syn -sim adc.qsys
+$(DIR_BUILD)/%.qsys: $(DIR_BOARD)/%.qsys
+	mkdir -p $(dir $@)
+	cp $^ $(@D)/$(^F)
+	cd $(@D) && qsys-generate -syn -sim $@
 
 ##############################################
 # Quartus
 
-BOARD_NAME    ?= c5gx
+BOARD_NAME    ?= de10_lite
+# BOARD_NAME    ?= c5gx
 
 QUARTUS_FILES += $(RTL_SYN_FILES)
-QUARTUS_FILES += $(QUARTUS_MW_QIP)
+QUARTUS_FILES += $(QUARTUS_BUILD_IP)
 QUARTUS_FILES += $(RESET_RAM_INIT)
 export QUARTUS_FILES
 export QUARTUS_PROJECT ?= system
@@ -102,15 +123,26 @@ export QUARTUS_MACRO
 
 QUARTUS_BUILD_DIR = $(DIR_BUILD)/$(BOARD_NAME)
 QUARTUS_BUILD_QPF = $(QUARTUS_BUILD_DIR)/$(QUARTUS_PROJECT).qpf
+QUARTUS_BUILD_QSF = $(QUARTUS_BUILD_DIR)/$(QUARTUS_PROJECT).qsf
+QUARTUS_BUILD_SOF = $(QUARTUS_BUILD_DIR)/$(QUARTUS_PROJECT).sof
 
-$(QUARTUS_BUILD_QPF): $(QUARTUS_FILES)
+$(QUARTUS_BUILD_QSF): $(QUARTUS_FILES)
 	mkdir -p $(QUARTUS_BUILD_DIR)
 	cd $(QUARTUS_BUILD_DIR) && quartus_sh -t $(COMMON_RUN)/quartus_create.tcl
 
-quartus_create: $(QUARTUS_BUILD_QPF)
+$(QUARTUS_BUILD_QPF): $(QUARTUS_BUILD_QSF)
+
+quartus_create: $(QUARTUS_BUILD_QPF) $(QUARTUS_BUILD_QSF)
 
 quartus_open:
 	cd $(QUARTUS_BUILD_DIR) && quartus $(QUARTUS_PROJECT) &
+
+quartus_build:
+	cd $(QUARTUS_BUILD_DIR) && quartus_sh --flow compile $(QUARTUS_PROJECT)
+
+CABLE_NAME ?= "USB-Blaster"
+quartus_load:
+	quartus_pgm -c $(CABLE_NAME) -m JTAG -o "p;$(QUARTUS_BUILD_SOF)"
 
 quartus_clean:
 	rm -rf $(QUARTUS_BUILD_DIR)
@@ -141,7 +173,7 @@ $(DIR_BUILD_SIM):
 # Modelsim
 
 # quartus ip init file for modelsim
-MODELSIM_QIP_TCL = $(if $(QUARTUS_MW_QIP), $(DIR_BUILD_SIM)/mentor/msim_setup.tcl )
+MODELSIM_QIP_TCL = $(if $(strip $(QUARTUS_BUILD_IP)), $(DIR_BUILD_SIM)/mentor/msim_setup.tcl )
 $(MODELSIM_QIP_TCL): quartus_sim
 
 # extract lib list from msim_setup.tcl
@@ -240,6 +272,38 @@ clean:
 	$(RM) *.map *.dis *.hex *.hex32 *.rec *.log 
 
 # #########################################################
+# # On Board Debug
+
+# # OpenOCD debugger
+# OCD      = $(call conf2path,$(MFP_DEBUG_DEFAULT_OCD_BIN))
+# OCD_CONF = $(call conf2path,$(MFP_DEBUG_DEFAULT_OCD_CONF))
+
+# GDBCMD_ATTACH  = --silent
+# GDBCMD_ATTACH += -ex "set pagination off"
+# GDBCMD_ATTACH += -ex "file program.elf"
+# GDBCMD_ATTACH += -ex "target remote | $(OCD) -f $(OCD_CONF) -p -c 'log_output openocd.log'"
+
+# GDBCMD_LOAD   += -ex "monitor reset halt"
+# GDBCMD_LOAD   += -ex "load"
+# GDBCMD_LOAD   += -ex "compare-sections"
+
+# GDBCMD_BREAK  += -ex "b main"
+# GDBCMD_BREAK  += -ex "continue"
+
+# GDBCMD_INT    += -ex "interrupt"
+
+# GDBCMD_RESRUN += -ex "monitor reset run"
+
+# attach:
+# 	$(GDB) $(GDBCMD_ATTACH) $(GDBCMD_INT)
+
+# load:
+# 	$(GDB) --batch $(GDBCMD_ATTACH) $(GDBCMD_LOAD) $(GDBCMD_RESRUN)
+
+# debug:
+# 	$(GDB) $(GDBCMD_ATTACH) $(GDBCMD_LOAD) $(GDBCMD_BREAK)
+
+# #########################################################
 # # Icarus verilog simulation
 
 # TOPMODULE=mfp_testbench
@@ -273,37 +337,7 @@ clean:
 # #  make --no-print-directory -n debug > attach.bat
 
 
-# #########################################################
-# # On Board Debug
 
-# # OpenOCD debugger
-# OCD = openocd
-# OCD_CONF = ../../scripts/load/openocd.cfg
-
-# GDBCMD_ATTACH  = --silent
-# GDBCMD_ATTACH += -ex "set pagination off"
-# GDBCMD_ATTACH += -ex "file program.elf"
-# GDBCMD_ATTACH += -ex "target remote | $(OCD) -f $(OCD_CONF) -p -c 'log_output openocd.log'"
-
-# GDBCMD_LOAD   += -ex "monitor reset halt"
-# GDBCMD_LOAD   += -ex "load"
-# GDBCMD_LOAD   += -ex "compare-sections"
-
-# GDBCMD_BREAK  += -ex "b main"
-# GDBCMD_BREAK  += -ex "continue"
-
-# GDBCMD_INT    += -ex "interrupt"
-
-# GDBCMD_RESRUN += -ex "monitor reset run"
-
-# attach:
-# 	$(GDB) $(GDBCMD_ATTACH) $(GDBCMD_INT)
-
-# load:
-# 	$(GDB) --batch $(GDBCMD_ATTACH) $(GDBCMD_LOAD) $(GDBCMD_RESRUN)
-
-# debug:
-# 	$(GDB) $(GDBCMD_ATTACH) $(GDBCMD_LOAD) $(GDBCMD_BREAK)
 
 # #########################################################
 # # UART programming

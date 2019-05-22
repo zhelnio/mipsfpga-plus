@@ -137,18 +137,18 @@ module de10_lite
         //  GND       output   GPIO[14]  17 | 18  GPIO[15]  output    GND  
         //  NC        output   GPIO[16]  19 | 20  GPIO[17]  input    EJ_TCK
         //  NC        output   GPIO[18]  21 | 22  GPIO[19]  output   EJ_TDO
-        //  EJ_RST    input    GPIO[20]  23 | 24  GPIO[21]  input    EJ_TDI
-        //  EJ_TRST   input    GPIO[22]  25 | 26  GPIO[23]  input    EJ_TMS
+        //  EJ_RST_N  input    GPIO[20]  23 | 24  GPIO[21]  input    EJ_TDI
+        //  EJ_TRST_N input    GPIO[22]  25 | 26  GPIO[23]  input    EJ_TMS
 
-        wire EJ_VCC  = 1'b1;
-        wire EJ_GND  = 1'b0;
-        wire EJ_NC   = 1'bz;
-        wire EJ_TCK  = GPIO[17];
-        wire EJ_RST  = GPIO[20];
-        wire EJ_TDI  = GPIO[21];
-        wire EJ_TRST = GPIO[22];
-        wire EJ_TMS  = GPIO[23];
-        wire EJ_DINT = 1'b0;
+        wire EJ_VCC    = 1'b1;
+        wire EJ_GND    = 1'b0;
+        wire EJ_NC     = 1'bz; 
+        wire EJ_TCK    = GPIO[17];
+        wire EJ_RST_N  = 1'b1; //GPIO[20];
+        wire EJ_TDI    = GPIO[21];
+        wire EJ_TRST_N = 1'b1; //GPIO[22];
+        wire EJ_TMS    = GPIO[23];
+        wire EJ_DINT   = 1'b0;
         wire EJ_TDO;
 
         assign GPIO[12] = EJ_VCC;
@@ -183,15 +183,19 @@ module de10_lite
         assign GPIO[34] = ALS_CS;
     `endif
 
-    //This is a workaround to make EJTAG working
-    //TODO: add complex reset signals handling module
-    wire RESETn = KEY [0] & GPIO [20] & CLK_Lock;
+    wire pin_rst_cold = 1'b0;
+    wire pin_rst_soft = ~KEY[0];
+    wire SI_ColdReset;
 
     mfp_system mfp_system
     (
-        .SI_ClkIn         (   clk             ),
-        .SI_Reset         (   ~RESETn         ),
-                          
+        .clk              (  clk              ),
+        .clk_locked       (  CLK_Lock         ),
+        .pin_rst_cold     (  pin_rst_cold     ),
+        .pin_rst_soft     (  pin_rst_soft     ),
+        .SI_ColdReset     (  SI_ColdReset     ),
+        .SI_Reset         (                   ),
+
         .HADDR            (   HADDR           ),
         .HRDATA           (   HRDATA          ),
         .HWDATA           (   HWDATA          ),
@@ -210,12 +214,12 @@ module de10_lite
         `endif
 
         `ifdef MFP_EJTAG_DEBUGGER
-        .EJ_TRST_N_probe  (   EJ_TRST         ),
+        .EJ_TRST_N        (   EJ_TRST_N       ),
         .EJ_TDI           (   EJ_TDI          ),
         .EJ_TDO           (   EJ_TDO          ),
         .EJ_TMS           (   EJ_TMS          ),
         .EJ_TCK           (   EJ_TCK          ),
-        .SI_ColdReset     ( ~ EJ_RST          ),
+        .EJ_RST_N         (   EJ_RST_N        ),
         .EJ_DINT          (   EJ_DINT         ),
         `endif
 
@@ -264,7 +268,7 @@ module de10_lite
             .command_startofpacket  ( ADC_C_SOP     ),
             .command_endofpacket    ( ADC_C_EOP     ),
             .command_ready          ( ADC_C_Ready   ),
-            .reset_sink_reset_n     ( RESETn        ),
+            .reset_sink_reset_n     ( SI_ColdReset  ),
             .response_valid         ( ADC_R_Valid   ),
             .response_channel       ( ADC_R_Channel ),
             .response_data          ( ADC_R_Data    ),
