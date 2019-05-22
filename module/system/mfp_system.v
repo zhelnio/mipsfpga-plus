@@ -3,7 +3,10 @@
 `include "mfp_eic_core.vh"
 
 module mfp_system
-(
+#(
+    parameter MFP_EJTAG_MANUFID = 11'b0, //11'h02;
+              MFP_EJTAG_PARTNUM = 16'b0  //16'hF1;
+)(
     input         clk,
     input         clk_locked,
     input         pin_rst_cold,
@@ -211,15 +214,6 @@ module mfp_system
         wire ADC_Interrupt  = 1'b0;
     `endif
 
-    wire EJ_TDI_sync = EJ_TDI;
-    wire EJ_TMS_sync = EJ_TMS;
-    wire EJ_TCK_sync = EJ_TCK;
-    wire EJ_DINT_sync = EJ_DINT;
-    // mfp_synczer s_EJ_TDI  (clk, EJ_TDI,  EJ_TDI_sync  );
-    // mfp_synczer s_EJ_TMS  (clk, EJ_TMS,  EJ_TMS_sync  );
-    // mfp_synczer s_EJ_TCK  (clk, EJ_TCK,  EJ_TCK_sync  );
-    // mfp_synczer s_EJ_DINT (clk, EJ_DINT, EJ_DINT_sync );
-
     mfp_reset mfp_reset
     (
         .clk           ( clk           ),
@@ -242,7 +236,7 @@ module mfp_system
         .DSP_fromdsp           ( DSP_fromdsp           ),
         .DSP_todsp             ( DSP_todsp             ),
         .EJ_DebugM             ( EJ_DebugM             ),
-        .EJ_DINT               ( EJ_DINT_sync          ),
+        .EJ_DINT               ( EJ_DINT               ),
         .EJ_DINTsup            ( EJ_DINTsup            ),
         .EJ_DisableProbeDebug  ( EJ_DisableProbeDebug  ),
         .EJ_ECREjtagBrk        ( EJ_ECREjtagBrk        ),
@@ -251,11 +245,11 @@ module mfp_system
         .EJ_PerRst             ( EJ_PerRst             ),
         .EJ_PrRst              ( EJ_PrRst              ),
         .EJ_SRstE              ( EJ_SRstE              ),
-        .EJ_TCK                ( EJ_TCK_sync           ),
-        .EJ_TDI                ( EJ_TDI_sync           ),
+        .EJ_TCK                ( EJ_TCK                ),
+        .EJ_TDI                ( EJ_TDI                ),
         .EJ_TDO                ( EJ_TDO                ),
         .EJ_TDOzstate          ( EJ_TDOzstate          ),
-        .EJ_TMS                ( EJ_TMS_sync           ),
+        .EJ_TMS                ( EJ_TMS                ),
         .EJ_TRST_N             ( EJ_TRST_N_sync        ),
         .EJ_Version            ( EJ_Version            ),
         .gmb_dc_algorithm      ( gmb_dc_algorithm      ),
@@ -397,30 +391,9 @@ module mfp_system
         assign TC_Stall              =   1'b0;
         assign UDI_toudi             = 128'b0;
 
-
-    // `ifdef MFP_USE_MPSSE_DEBUGGER
-    //     // reset module is not used because mfp_reset_controller interferes
-    //     // with work of debugger. This is not good: this configutation faults
-    //     // inside the simulator but works on hardware (Altera MAX10)
-    //     //
-    //     // TODO: create universal reset module (power/cold/hot/ejtag)
-    //     assign EJ_TRST_N        = 1'b1;
-    //     assign EJ_ManufID       = 11'h02;
-    //     assign EJ_PartNumber    = 16'hF1;
-    // `else
-    //     // Module for hardware reset of EJTAG just after FPGA configuration
-    //     // It pulses EJ_TRST_N low for 16 clock cycles.
-    //     mfp_reset_controller reset_control (.clk (SI_ClkIn), .trst_n (trst_n));
-
-    //     assign EJ_TRST_N        = trst_n & EJ_TRST_N_probe;
-        assign EJ_ManufID       = 11'b0;
-        assign EJ_PartNumber    = 16'b0;
-    // `endif //MFP_USE_MPSSE_DEBUGGER
-
-    // assign EJ_ManufID    = 11'h02;
-    // assign EJ_PartNumber = 16'hF1;
-
-    assign SI_ClkIn      = clk;
+        assign EJ_ManufID            = MFP_EJTAG_MANUFID;
+        assign EJ_PartNumber         = MFP_EJTAG_PARTNUM;
+        assign SI_ClkIn              = clk;
 
     // Interrupt settings
     //     
@@ -588,28 +561,5 @@ module mfp_system
                                                
         .MFP_Reset        (   MFP_Reset        )
     );
-
-endmodule
-
-//--------------------------------------------------------------------
-
-module mfp_reset_controller
-(
-    input      clk,
-    output reg trst_n
-);
-
-    reg [3:0] trst_delay;
-  
-    always @ (posedge clk)
-    begin
-        if (trst_delay == 4'hf)
-            trst_n     <= 1'b1;
-        else
-        begin
-            trst_n     <= 1'b0;
-            trst_delay <= trst_delay + 4'b1;
-        end
-    end
 
 endmodule
