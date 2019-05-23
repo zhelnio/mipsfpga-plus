@@ -30,31 +30,17 @@ module lpddr2_reset
     //   deasserting the MPFE FIFO reset signals. This will ensure that read/write activity cannot occur until
     //   the interface is successfully calibrated.
 
-    // common async reset
-    wire rst_n = rst_global_n & avm_rst_n;
-
-    // status wires (CDC to Avalon domain)
-    reg a_pll_locked, a_pll_locked_buf;
-    always @(posedge avm_clk or negedge rst_n)
-        if(~rst_n) { a_pll_locked, a_pll_locked_buf } <= 2'b0;
-        else       { a_pll_locked, a_pll_locked_buf } <= { a_pll_locked_buf, pll_locked };
+    reg soft_reset_n_buf;
+    always @(posedge afi_half_clk)
+        { soft_reset_n, soft_reset_n_buf } <= { soft_reset_n_buf, rst_global_n & pll_locked };
 
     reg a_cal_success, a_cal_success_buf;
-    always @(posedge avm_clk or negedge rst_n)
-        if(~rst_n) { a_cal_success, a_cal_success_buf } <= 2'b0;
-        else       { a_cal_success, a_cal_success_buf } <= { a_cal_success_buf, local_cal_success };
+    always @(posedge avm_clk)
+        { a_cal_success, a_cal_success_buf } <= { a_cal_success_buf, local_cal_success };
 
-    // soft reset (CDC from Avalon domain to AFI domain)
-    wire soft_rst_nx = a_pll_locked & avm_rst_n;
-    reg  soft_rst_buf;
-    always @(posedge afi_half_clk or negedge rst_n)
-        if(~rst_n) { soft_reset_n, soft_rst_buf } <= 2'b0;
-        else       { soft_reset_n, soft_rst_buf } <= { soft_rst_buf, soft_rst_nx };
+    assign mpfe_clk     = avm_clk;
 
-    // MPFE side (Avalon domain)
-    assign mpfe_clk = avm_clk;
-    always @(posedge avm_clk or negedge rst_n)
-        if(~rst_n) mpfe_reset_n <= 1'b0;
-        else       mpfe_reset_n <= a_pll_locked & avm_rst_n & a_cal_success;
+    always @(posedge avm_clk)
+        mpfe_reset_n <= avm_rst_n & a_cal_success;
 
 endmodule

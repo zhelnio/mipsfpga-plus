@@ -51,7 +51,7 @@ module mfp_testbench;
     wire [ 31:0 ] avm_readdata;
     wire          avm_write;
     wire          avm_read;
-    wire [ 31:0 ] avm_address;
+    wire [ 26:0 ] avm_address;
     wire [  3:0 ] avm_byteenable;
     wire [  2:0 ] avm_burstcount;
     wire          avm_beginbursttransfer;
@@ -261,32 +261,61 @@ module mfp_testbench;
     //----------------------------------------------------------------
 
     `ifdef MFP_USE_AVALON_MEMORY
-    lpddr2_wrapper lpddr2_wrapper
-    (
-        .clk_global      ( SI_ClkIn               ),
-        .rst_global_n    (~SI_ColdReset           ),
-        .mem_ca          ( mem_ca                 ),
-        .mem_ck          ( mem_ck                 ),
-        .mem_ck_n        ( mem_ck_n               ),
-        .mem_cke         ( mem_cke                ),
-        .mem_cs_n        ( mem_cs_n               ),
-        .mem_dm          ( mem_dm                 ),
-        .mem_dq          ( mem_dq                 ),
-        .mem_dqs         ( mem_dqs                ),
-        .mem_dqs_n       ( mem_dqs_n              ),
-        .avm_clk         ( avm_clk                ),
-        .avm_rst_n       ( avm_rst_n              ),
-        .avm_waitrequest ( avm_waitrequest        ),
-        .avm_burstbegin  ( avm_beginbursttransfer ),
-        .avm_addr        ( avm_address     [26:0] ),
-        .avm_rdata_valid ( avm_readdatavalid      ),
-        .avm_rdata       ( avm_readdata           ),
-        .avm_wdata       ( avm_writedata          ),
-        .avm_be          ( avm_byteenable         ),
-        .avm_read_req    ( avm_read               ),
-        .avm_write_req   ( avm_write              ),
-        .avm_size        ( avm_burstcount [0]     ) 
+    // lpddr2_wrapper lpddr2_wrapper
+    // (
+    //     .clk_global      ( SI_ClkIn               ),
+    //     .rst_global_n    (~SI_ColdReset           ),
+    //     .mem_ca          ( mem_ca                 ),
+    //     .mem_ck          ( mem_ck                 ),
+    //     .mem_ck_n        ( mem_ck_n               ),
+    //     .mem_cke         ( mem_cke                ),
+    //     .mem_cs_n        ( mem_cs_n               ),
+    //     .mem_dm          ( mem_dm                 ),
+    //     .mem_dq          ( mem_dq                 ),
+    //     .mem_dqs         ( mem_dqs                ),
+    //     .mem_dqs_n       ( mem_dqs_n              ),
+    //     .avm_clk         ( avm_clk                ),
+    //     .avm_rst_n       ( avm_rst_n              ),
+    //     .avm_waitrequest ( avm_waitrequest        ),
+    //     .avm_burstbegin  ( avm_beginbursttransfer ),
+    //     .avm_addr        ( avm_address     [26:0] ),
+    //     .avm_rdata_valid ( avm_readdatavalid      ),
+    //     .avm_rdata       ( avm_readdata           ),
+    //     .avm_wdata       ( avm_writedata          ),
+    //     .avm_be          ( avm_byteenable         ),
+    //     .avm_read_req    ( avm_read               ),
+    //     .avm_write_req   ( avm_write              ),
+    //     .avm_size        ( avm_burstcount [0]     ) 
+    // );
+
+    lpddr2_mm lpddr2_mm (
+        .avm_waitrequest   ( avm_waitrequest    ),
+        .avm_readdata      ( avm_readdata       ),
+        .avm_readdatavalid ( avm_readdatavalid  ),
+        .avm_burstcount    ( avm_burstcount     ),
+        .avm_writedata     ( avm_writedata      ),
+        .avm_address       ( avm_address        ),
+        .avm_write         ( avm_write          ),
+        .avm_read          ( avm_read           ),
+        .avm_byteenable    ( avm_byteenable     ),
+        .avm_debugaccess   ( 1'b0               ),
+        .gclk_clk          ( SI_ClkIn           ),
+        .grst_reset_n      ( ~SI_ColdReset      ),
+        .srst_reset_n      ( ~SI_Reset          ),
+        .mclk_clk          ( avm_clk            ),
+        .mrst_reset        ( ~avm_rst_n         ),
+        .oct_rzqin         (                    ),
+        .lpddr2_mem_ca     ( mem_ca             ),
+        .lpddr2_mem_ck     ( mem_ck             ),
+        .lpddr2_mem_ck_n   ( mem_ck_n           ),
+        .lpddr2_mem_cke    ( mem_cke            ),
+        .lpddr2_mem_cs_n   ( mem_cs_n           ),
+        .lpddr2_mem_dm     ( mem_dm             ),
+        .lpddr2_mem_dq     ( mem_dq             ),
+        .lpddr2_mem_dqs    ( mem_dqs            ),
+        .lpddr2_mem_dqs_n  ( mem_dqs_n          ) 
     );
+
 
     mobile_ddr2 mobile_ddr2(
         .ck    ( mem_ck    ),

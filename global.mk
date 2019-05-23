@@ -42,7 +42,7 @@ include $(DIR_MODULE)/files.mk
 include $(DIR_TB)/top/files.mk
 
 ifeq ($(MFP_CONFIG_C5GX_LPDDR2),y)
-include $(DIR_BOARD)/c5gx/lpddr2/files.mk
+include $(DIR_BOARD)/c5gx/lpddr2_mm/files.mk
 include $(DIR_TB)/micron_ddr2/files.mk
 endif
 
@@ -110,8 +110,8 @@ $(DIR_BUILD)/%.qsys: $(DIR_BOARD)/%.qsys
 ##############################################
 # Quartus
 
-BOARD_NAME    ?= de10_lite
-# BOARD_NAME    ?= c5gx
+# BOARD_NAME    ?= de10_lite
+BOARD_NAME    ?= c5gx
 
 QUARTUS_FILES += $(RTL_SYN_FILES)
 QUARTUS_FILES += $(QUARTUS_BUILD_IP)
@@ -149,6 +149,9 @@ quartus_clean:
 
 quartus_sim: $(QUARTUS_BUILD_QPF) $(DIR_BUILD_SIM)
 	cd $(DIR_BUILD_SIM) && ip-setup-simulation --quartus-project=$(QUARTUS_BUILD_QPF)
+
+test:
+	cd $(DIR_BOARD)/$(BOARD_NAME)/lpddr2_mm && qsys-edit lpddr2_mm.qsys
 
 ##############################################
 # Memory image

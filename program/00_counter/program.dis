@@ -11,7 +11,7 @@ start():
 9fc00004 <init_gpr>:
 init_gpr():
 9fc00004:	3c01dead 	lui	at,0xdead
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:24
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:24
         //
         // Set all GPRs of all register sets to predefined state.
         //
@@ -19,7 +19,7 @@ init_gpr():
 init_gpr:
         li      $1, 0xdeadbeef          # 0xdeadbeef stands out, kseg2 mapped, odd.
 9fc00008:	3421beef 	ori	at,at,0xbeef
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:30
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:30
 
         # Determine how many shadow sets are implemented (in addition to the base register set.)
         # the first time thru the loop it will initialize using $1 set above.
@@ -27,128 +27,128 @@ init_gpr:
         # and loop back to next_shadow_set to start the next loop and the next lowest set number.
         mfc0    $29, C0_SRSCTL          # read SRSCtl
 9fc0000c:	401d6002 	mfc0	sp,c0_srsctl
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:31
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:31
         ext     $30, $29, 26, 4         # extract HSS
 9fc00010:	7fbe1e80 	ext	s8,sp,0x1a,0x4
 
 9fc00014 <next_shadow_set>:
 next_shadow_set():
 9fc00014:	7fdd4984 	ins	sp,s8,0x6,0x4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:35
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:35
 
 next_shadow_set:                        # set PSS to shadow set to be initialized
         ins     $29, $30, 6, 4          # insert PSS
         mtc0    $29, C0_SRSCTL          # write SRSCtl
 9fc00018:	409d6002 	mtc0	sp,c0_srsctl
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:37
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:37
 
         wrpgpr  $1, $1
 9fc0001c:	41c10800 	wrpgpr	at,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:38
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:38
         wrpgpr  $2, $1
 9fc00020:	41c11000 	wrpgpr	v0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:39
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:39
         wrpgpr  $3, $1
 9fc00024:	41c11800 	wrpgpr	v1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:40
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:40
         wrpgpr  $4, $1
 9fc00028:	41c12000 	wrpgpr	a0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:41
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:41
         wrpgpr  $5, $1
 9fc0002c:	41c12800 	wrpgpr	a1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:42
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:42
         wrpgpr  $6, $1
 9fc00030:	41c13000 	wrpgpr	a2,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:43
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:43
         wrpgpr  $7, $1
 9fc00034:	41c13800 	wrpgpr	a3,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:44
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:44
         wrpgpr  $8, $1
 9fc00038:	41c14000 	wrpgpr	t0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:45
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:45
         wrpgpr  $9, $1
 9fc0003c:	41c14800 	wrpgpr	t1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:46
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:46
         wrpgpr  $10, $1
 9fc00040:	41c15000 	wrpgpr	t2,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:47
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:47
         wrpgpr  $11, $1
 9fc00044:	41c15800 	wrpgpr	t3,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:48
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:48
         wrpgpr  $12, $1
 9fc00048:	41c16000 	wrpgpr	t4,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:49
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:49
         wrpgpr  $13, $1
 9fc0004c:	41c16800 	wrpgpr	t5,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:50
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:50
         wrpgpr  $14, $1
 9fc00050:	41c17000 	wrpgpr	t6,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:51
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:51
         wrpgpr  $15, $1
 9fc00054:	41c17800 	wrpgpr	t7,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:52
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:52
         wrpgpr  $16, $1
 9fc00058:	41c18000 	wrpgpr	s0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:53
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:53
         wrpgpr  $17, $1
 9fc0005c:	41c18800 	wrpgpr	s1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:54
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:54
         wrpgpr  $18, $1
 9fc00060:	41c19000 	wrpgpr	s2,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:55
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:55
         wrpgpr  $19, $1
 9fc00064:	41c19800 	wrpgpr	s3,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:56
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:56
         wrpgpr  $20, $1
 9fc00068:	41c1a000 	wrpgpr	s4,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:57
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:57
         wrpgpr  $21, $1
 9fc0006c:	41c1a800 	wrpgpr	s5,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:58
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:58
         wrpgpr  $22, $1
 9fc00070:	41c1b000 	wrpgpr	s6,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:59
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:59
         wrpgpr  $23, $1
 9fc00074:	41c1b800 	wrpgpr	s7,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:60
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:60
         wrpgpr  $24, $1
 9fc00078:	41c1c000 	wrpgpr	t8,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:61
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:61
         wrpgpr  $25, $1
 9fc0007c:	41c1c800 	wrpgpr	t9,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:62
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:62
         wrpgpr  $26, $1
 9fc00080:	41c1d000 	wrpgpr	k0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:63
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:63
         wrpgpr  $27, $1
 9fc00084:	41c1d800 	wrpgpr	k1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:64
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:64
         wrpgpr  $28, $1
 9fc00088:	41c1e000 	wrpgpr	gp,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:65
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:65
         beqz    $30, init_cp0
 9fc0008c:	13c00005 	beqz	s8,9fc000a4 <init_cp0>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:66
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:66
         wrpgpr  $29, $1
 9fc00090:	41c1e800 	wrpgpr	sp,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:68
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:68
 
         wrpgpr  $30, $1
 9fc00094:	41c1f000 	wrpgpr	s8,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:69
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:69
         wrpgpr  $31, $1
 9fc00098:	41c1f800 	wrpgpr	ra,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:70
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:70
         b       next_shadow_set
 9fc0009c:	1000ffdd 	b	9fc00014 <next_shadow_set>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:71
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:71
         add     $30, -1                 # Decrement to the next lower number
 9fc000a0:	23deffff 	addi	s8,s8,-1
 
 9fc000a4 <init_cp0>:
 init_cp0():
 9fc000a4:	3c030040 	lui	v1,0x40
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:78
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:78
         //
         // Init CP0 Status, Count, Compare, Watch*, and Cause.
         //
@@ -156,127 +156,127 @@ init_cp0:
         # Initialize Status
 	li	v1, 0x00400004		// (M_StatusERL | M_StatusBEV)
 9fc000a8:	34630004 	ori	v1,v1,0x4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:79
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:79
         mtc0    v1, C0_STATUS           # write Status
 9fc000ac:	40836000 	mtc0	v1,c0_status
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:82
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:82
 
         # Initialize Watch registers if implemented.
         mfc0    v0, C0_CONFIG1          # read Config1
 9fc000b0:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:83
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:83
         ext     v1, v0, 3, 1            # extract bit 3 WR (Watch registers implemented)
 9fc000b4:	7c4300c0 	ext	v1,v0,0x3,0x1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:84
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:84
         beq     v1, zero, done_wr
 9fc000b8:	1060001f 	beqz	v1,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:85
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:85
         li      v1, 0x7                 # (M_WatchHiI | M_WatchHiR | M_WatchHiW)
 9fc000bc:	24030007 	li	v1,7
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:88
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:88
 
         # Clear Watch Status bits and disable watch exceptions
         mtc0    v1, C0_WATCHHI          # write WatchHi0
 9fc000c0:	40839800 	mtc0	v1,c0_watchhi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:89
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:89
         mfc0    v0, C0_WATCHHI          # read WatchHi0
 9fc000c4:	40029800 	mfc0	v0,c0_watchhi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:90
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:90
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000c8:	0441001b 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:91
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:91
         mtc0    zero, C0_WATCHLO        # clear WatchLo0
 9fc000cc:	40809000 	mtc0	zero,c0_watchlo
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:93
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:93
 
         mtc0    v1, C0_WATCHHI, 1       # write WatchHi1
 9fc000d0:	40839801 	mtc0	v1,c0_watchhi,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:94
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:94
         mfc0    v0, C0_WATCHHI, 1       # read WatchHi1
 9fc000d4:	40029801 	mfc0	v0,c0_watchhi,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:95
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:95
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000d8:	04410017 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:96
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:96
         mtc0    zero, C0_WATCHLO,1      # clear WatchLo1
 9fc000dc:	40809001 	mtc0	zero,c0_watchlo,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:98
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:98
 
         mtc0    v1, C0_WATCHHI, 2       # write WatchHi2
 9fc000e0:	40839802 	mtc0	v1,c0_watchhi,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:99
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:99
         mfc0    v0, C0_WATCHHI, 2       # read WatchHi2
 9fc000e4:	40029802 	mfc0	v0,c0_watchhi,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:100
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:100
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000e8:	04410013 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:101
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:101
         mtc0    zero, C0_WATCHLO, 2     # clear WatchLo2
 9fc000ec:	40809002 	mtc0	zero,c0_watchlo,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:103
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:103
 
         mtc0    v1, C0_WATCHHI, 3       # write WatchHi3
 9fc000f0:	40839803 	mtc0	v1,c0_watchhi,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:104
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:104
         mfc0    v0, C0_WATCHHI, 3       # read WatchHi3
 9fc000f4:	40029803 	mfc0	v0,c0_watchhi,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:105
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:105
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000f8:	0441000f 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:106
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:106
         mtc0    zero, C0_WATCHLO, 3     # clear WatchLo3
 9fc000fc:	40809003 	mtc0	zero,c0_watchlo,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:108
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:108
 
         mtc0    v1, C0_WATCHHI, 4       # write WatchHi4
 9fc00100:	40839804 	mtc0	v1,c0_watchhi,4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:109
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:109
         mfc0    v0, C0_WATCHHI, 4       # read WatchHi4
 9fc00104:	40029804 	mfc0	v0,c0_watchhi,4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:110
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:110
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc00108:	0441000b 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:111
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:111
         mtc0    zero, C0_WATCHLO, 4     # clear WatchLo4
 9fc0010c:	40809004 	mtc0	zero,c0_watchlo,4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:113
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:113
 
         mtc0    v1, C0_WATCHHI, 5       # write WatchHi5
 9fc00110:	40839805 	mtc0	v1,c0_watchhi,5
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:114
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:114
         mfc0    v0, C0_WATCHHI, 5       # read WatchHi5
 9fc00114:	40029805 	mfc0	v0,c0_watchhi,5
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:115
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:115
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc00118:	04410007 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:116
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:116
         mtc0    zero, C0_WATCHLO, 5     # clear WatchLo5
 9fc0011c:	40809005 	mtc0	zero,c0_watchlo,5
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:118
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:118
 
         mtc0    v1, C0_WATCHHI, 6       # write WatchHi6
 9fc00120:	40839806 	mtc0	v1,c0_watchhi,6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:119
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:119
         mfc0    v0, C0_WATCHHI, 6       # read WatchHi6
 9fc00124:	40029806 	mfc0	v0,c0_watchhi,6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:120
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:120
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc00128:	04410003 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:121
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:121
         mtc0    zero, C0_WATCHLO, 6     # clear WatchLo6
 9fc0012c:	40809006 	mtc0	zero,c0_watchlo,6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:123
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:123
 
         mtc0    v1, C0_WATCHHI, 7       # write WatchHi7
 9fc00130:	40839807 	mtc0	v1,c0_watchhi,7
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:124
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:124
         mtc0    zero, C0_WATCHLO, 7     # clear WatchLo7
 9fc00134:	40809007 	mtc0	zero,c0_watchlo,7
 
 9fc00138 <done_wr>:
 done_wr():
 9fc00138:	40806800 	mtc0	zero,c0_cause
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:131
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:131
 done_wr:
         # Clear WP bit to avoid watch exception upon user code entry, IV, and software interrupts.
         mtc0    zero, C0_CAUSE          # clear Cause: init AFTER init of WatchHi/Lo registers.
@@ -288,7 +288,7 @@ done_wr:
 9fc00140 <init_tlb>:
 init_tlb():
 9fc00140:	40038000 	mfc0	v1,c0_config
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:142
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:142
         // Clear TLB: generate unique EntryHi contents per entry pair.
         //
 init_tlb:
@@ -296,66 +296,66 @@ init_tlb:
         mfc0    v1, C0_CONFIG           # read Config
         ext     v1, v1, 7, 3            # extract MT field
 9fc00144:	7c6311c0 	ext	v1,v1,0x7,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:143
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:143
         li      a3, 0x1                 # load a 1 to check against
 9fc00148:	24070001 	li	a3,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:144
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:144
         bne     v1, a3, init_icache
 9fc0014c:	1467000e 	bne	v1,a3,9fc00188 <init_icache>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:147
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:147
 
         # Config1MMUSize == Number of TLB entries - 1
         mfc0    v0, C0_CONFIG1          # Config1
 9fc00150:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:148
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:148
         ext     v1, v0, 25, 6           # extract MMU Size
 9fc00154:	7c432e40 	ext	v1,v0,0x19,0x6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:149
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:149
         mtc0    zero, C0_ENTRYLO0       # clear EntryLo0
 9fc00158:	40801000 	mtc0	zero,c0_entrylo0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:150
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:150
         mtc0    zero, C0_ENTRYLO1       # clear EntryLo1
 9fc0015c:	40801800 	mtc0	zero,c0_entrylo1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:151
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:151
         mtc0    zero, C0_PAGEMASK       # clear PageMask
 9fc00160:	40802800 	mtc0	zero,c0_pagemask
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:152
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:152
         mtc0    zero, C0_WIRED          # clear Wired
 9fc00164:	40803000 	mtc0	zero,c0_wired
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:153
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:153
         li      a0, 0x80000000
 9fc00168:	3c048000 	lui	a0,0x8000
 
 9fc0016c <next_tlb_entry>:
 next_tlb_entry():
 9fc0016c:	40830000 	mtc0	v1,c0_index
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:157
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:157
 
 next_tlb_entry:
         mtc0    v1, C0_INDEX            # write Index
         mtc0    a0, C0_ENTRYHI          # write EntryHi
 9fc00170:	40845000 	mtc0	a0,c0_entryhi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:158
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:158
         ehb
 9fc00174:	000000c0 	ehb
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:159
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:159
         tlbwi
 9fc00178:	42000002 	tlbwi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:160
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:160
         add     a0, 2 << 13             # Add 8K to the address to avoid TLB conflict with previous entry
 9fc0017c:	20844000 	addi	a0,a0,16384
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:162
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:162
 
         bne     v1, zero, next_tlb_entry
 9fc00180:	1460fffa 	bnez	v1,9fc0016c <next_tlb_entry>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:163
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:163
         add     v1, -1
 9fc00184:	2063ffff 	addi	v1,v1,-1
 
 9fc00188 <init_icache>:
 init_icache():
 9fc00188:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:171
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:171
         // Clear L1 instruction cache.
         //
 init_icache:
@@ -363,54 +363,54 @@ init_icache:
         mfc0    v0, C0_CONFIG1          # read Config1
         ext     v1, v0, 19, 3           # extract I-cache line size
 9fc0018c:	7c4314c0 	ext	v1,v0,0x13,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:172
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:172
         beq     v1, zero, done_icache   # Skip ahead if no I-cache
 9fc00190:	10600010 	beqz	v1,9fc001d4 <done_icache>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:173
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:173
         nop
 9fc00194:	00000000 	nop
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:175
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:175
 
         li      a2, 2
 9fc00198:	24060002 	li	a2,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:176
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:176
         sllv    v1, a2, v1              # Now have true I-cache line size in bytes
 9fc0019c:	00661804 	sllv	v1,a2,v1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:178
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:178
 
         ext     a0, v0, 22, 3           # extract IS
 9fc001a0:	7c441580 	ext	a0,v0,0x16,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:179
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:179
         li      a2, 64
 9fc001a4:	24060040 	li	a2,64
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:180
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:180
         sllv    a0, a2, a0              # I-cache sets per way
 9fc001a8:	00862004 	sllv	a0,a2,a0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:182
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:182
 
         ext     a1, v0, 16, 3           # extract I-cache Assoc - 1
 9fc001ac:	7c451400 	ext	a1,v0,0x10,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:183
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:183
         add     a1, 1
 9fc001b0:	20a50001 	addi	a1,a1,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:184
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:184
         mul     a0, a0, a1              # Total number of sets
 9fc001b4:	70852002 	mul	a0,a0,a1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:185
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:185
         lui     a2, 0x8000              # Get a KSeg0 address for cacheops
 9fc001b8:	3c068000 	lui	a2,0x8000
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:187
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:187
 
         mtc0    zero, C0_ITAGLO         # Clear ITagLo register
 9fc001bc:	4080e000 	mtc0	zero,c0_taglo
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:188
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:188
         move    a3, a0
 9fc001c0:	00803825 	move	a3,a0
 
 9fc001c4 <next_icache_tag>:
 next_icache_tag():
 9fc001c4:	bcc80000 	cache	0x8,0(a2)
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:194
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:194
 
 next_icache_tag:
         # Index Store Tag Cache Op
@@ -418,17 +418,17 @@ next_icache_tag:
         cache   0x8, 0 (a2)             # ICIndexStTag
         add     a3, -1                  # Decrement set counter
 9fc001c8:	20e7ffff 	addi	a3,a3,-1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:195
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:195
         bne     a3, zero, next_icache_tag
 9fc001cc:	14e0fffd 	bnez	a3,9fc001c4 <next_icache_tag>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:196
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:196
         add     a2, v1                  # Get next line address
 9fc001d0:	00c33020 	add	a2,a2,v1
 
 9fc001d4 <done_icache>:
 done_icache():
 9fc001d4:	40028000 	mfc0	v0,c0_config
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:209
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:209
         //
 enable_k0_cache:
         # Set CCA for kseg0 to cacheable.
@@ -436,28 +436,28 @@ enable_k0_cache:
         mfc0    v0, C0_CONFIG           # read Config
         li      v1, 3                   # CCA for single-core processors
 9fc001d8:	24030003 	li	v1,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:210
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:210
         ins     v0, v1, 0, 3            # insert K0
 9fc001dc:	7c621004 	ins	v0,v1,0x0,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:211
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:211
         mtc0    v0, C0_CONFIG           # write Config
 9fc001e0:	40828000 	mtc0	v0,c0_config
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:213
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:213
 
         la      a2, init_dcache
 9fc001e4:	3c069fc0 	lui	a2,0x9fc0
 9fc001e8:	24c601f4 	addiu	a2,a2,500
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:214
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:214
         jr      a2                      # switch back to KSEG0
 9fc001ec:	00c00008 	jr	a2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:215
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:215
         ehb
 9fc001f0:	000000c0 	ehb
 
 9fc001f4 <init_dcache>:
 init_dcache():
 9fc001f4:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:222
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:222
         //
         // Initialize the L1 data cache
         //
@@ -465,57 +465,57 @@ init_dcache:
         mfc0    v0, C0_CONFIG1          # read Config1
         ext     v1, v0, 10, 3           # extract D-cache line size
 9fc001f8:	7c431280 	ext	v1,v0,0xa,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:223
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:223
         beq     v1, zero, done_dcache   # Skip ahead if no D-cache
 9fc001fc:	10600011 	beqz	v1,9fc00244 <done_dcache>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:224
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:224
         nop
 9fc00200:	00000000 	nop
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:226
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:226
 
         li      a2, 2
 9fc00204:	24060002 	li	a2,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:227
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:227
         sllv    v1, a2, v1              # Now have true D-cache line size in bytes
 9fc00208:	00661804 	sllv	v1,a2,v1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:229
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:229
 
         ext     a0, v0, 13, 3           # extract DS
 9fc0020c:	7c441340 	ext	a0,v0,0xd,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:230
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:230
         li      a2, 64
 9fc00210:	24060040 	li	a2,64
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:231
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:231
         sllv    a0, a2, a0              # D-cache sets per way
 9fc00214:	00862004 	sllv	a0,a2,a0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:233
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:233
 
         ext     a1, v0, 7, 3            # extract D-cache Assoc - 1
 9fc00218:	7c4511c0 	ext	a1,v0,0x7,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:234
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:234
         add     a1, 1
 9fc0021c:	20a50001 	addi	a1,a1,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:235
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:235
         mul     a0, a0, a1              # Get total number of sets
 9fc00220:	70852002 	mul	a0,a0,a1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:236
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:236
         lui     a2, 0x8000              # Get a KSeg0 address for cacheops
 9fc00224:	3c068000 	lui	a2,0x8000
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:238
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:238
 
         mtc0    zero, C0_ITAGLO         # Clear ITagLo/DTagLo registers
 9fc00228:	4080e000 	mtc0	zero,c0_taglo
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:239
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:239
         mtc0    zero, C0_DTAGLO
 9fc0022c:	4080e002 	mtc0	zero,c0_taglo1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:240
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:240
         move    a3, a0
 9fc00230:	00803825 	move	a3,a0
 
 9fc00234 <next_dcache_tag>:
 next_dcache_tag():
 9fc00234:	bcc90000 	cache	0x9,0(a2)
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:246
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:246
 
 next_dcache_tag:
         # Index Store Tag Cache Op
@@ -523,49 +523,49 @@ next_dcache_tag:
         cache   0x9, 0 (a2)             # DCIndexStTag
         add     a3, -1                  # Decrement set counter
 9fc00238:	20e7ffff 	addi	a3,a3,-1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:247
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:247
         bne     a3, zero, next_dcache_tag
 9fc0023c:	14e0fffd 	bnez	a3,9fc00234 <next_dcache_tag>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:248
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:248
         add     a2, v1                  # Get next line address
 9fc00240:	00c33020 	add	a2,a2,v1
 
 9fc00244 <done_dcache>:
 done_dcache():
 9fc00244:	3c1f9fc0 	lui	ra,0x9fc0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:253
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:253
 done_dcache:
 
         # Prepare for eret to main.
 
         la      ra, all_done        # If main returns then go to all_done:.
 9fc00248:	27ff0274 	addiu	ra,ra,628
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:254
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:254
         move    a0, zero            # Indicate that there are no arguments available.
 9fc0024c:	00002025 	move	a0,zero
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:256
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:256
 
         la      v0, main            # load the address of the CRT entry point _start.
 9fc00250:	3c029fc0 	lui	v0,0x9fc0
 9fc00254:	24420428 	addiu	v0,v0,1064
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:257
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:257
         mtc0    v0, $30             # Write ErrorEPC with the address of main
 9fc00258:	4082f000 	mtc0	v0,c0_errorepc
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:258
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:258
         ehb                         # clear hazards (makes sure write to ErrorPC has completed)
 9fc0025c:	000000c0 	ehb
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:262
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:262
 
         # Set stack and global data
 
         la	sp, __stack
 9fc00260:	3c1d8004 	lui	sp,0x8004
 9fc00264:	27bd0000 	addiu	sp,sp,0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:263
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:263
         la      gp, _gp
 9fc00268:	3c1c9fc1 	lui	gp,0x9fc1
 9fc0026c:	279c84f8 	addiu	gp,gp,-31496
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:267
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:267
 
         # Return from exception will now execute code in main
 
@@ -575,7 +575,7 @@ done_dcache:
 9fc00274 <all_done>:
 all_done():
 9fc00274:	1000ffff 	b	9fc00274 <all_done>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:274
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:274
 
 /**************************************************************************************/
 all_done:
@@ -744,7 +744,7 @@ frame_dummy():
 
 9fc00428 <main>:
 main():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/00_counter/main.c:5
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/00_counter/main.c:5
 #include "mfp_gpio.h"
 
 int main ()
@@ -752,7 +752,7 @@ int main ()
     long long int n = 0;
 9fc00428:	00001025 	move	v0,zero
 9fc0042c:	00002825 	move	a1,zero
-/home/zsl/work/github/mipsfpga-plus_zsl/program/00_counter/main.c:11
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/00_counter/main.c:11
 
     for (;;)
     {
@@ -760,19 +760,19 @@ int main ()
 
         MFP_RED_LEDS      = val >> 8;
 9fc00430:	3c03bf80 	lui	v1,0xbf80
-/home/zsl/work/github/mipsfpga-plus_zsl/program/00_counter/main.c:11 (discriminator 1)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/00_counter/main.c:11 (discriminator 1)
 9fc00434:	00053600 	sll	a2,a1,0x18
 9fc00438:	00022202 	srl	a0,v0,0x8
 9fc0043c:	00c42025 	or	a0,a2,a0
 9fc00440:	ac640000 	sw	a0,0(v1)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/00_counter/main.c:12 (discriminator 1)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/00_counter/main.c:12 (discriminator 1)
         MFP_GREEN_LEDS    = MFP_RED_LEDS;
 9fc00444:	8c640000 	lw	a0,0(v1)
 9fc00448:	ac640004 	sw	a0,4(v1)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/00_counter/main.c:13 (discriminator 1)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/00_counter/main.c:13 (discriminator 1)
         MFP_7_SEGMENT_HEX = val;
 9fc0044c:	ac620010 	sw	v0,16(v1)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/00_counter/main.c:15 (discriminator 1)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/00_counter/main.c:15 (discriminator 1)
 
         n ++;
 9fc00450:	24440001 	addiu	a0,v0,1
@@ -883,8 +883,8 @@ Disassembly of section .bss:
 Disassembly of section .debug_line:
 
 00000000 <.debug_line>:
-   0:	00000104 	0x104
-   4:	00540002 	0x540002
+   0:	00000108 	0x108
+   4:	00580002 	0x580002
    8:	01010000 	0x1010000
    c:	000d0efb 	0xd0efb
   10:	01010101 	0x1010101
@@ -899,75 +899,76 @@ Disassembly of section .debug_line:
   34:	67706673 	0x67706673
   38:	6c702d61 	0x6c702d61
   3c:	7a5f7375 	0x7a5f7375
-  40:	632f6c73 	0x632f6c73
-  44:	6f6d6d6f 	0x6f6d6d6f
-  48:	72702f6e 	0x72702f6e
-  4c:	6172676f 	0x6172676f
-  50:	6200006d 	0x6200006d
-  54:	2e746f6f 	sltiu	s4,s3,28527
-  58:	00010053 	0x10053
-  5c:	05000000 	bltz	t0,60 <_fbss-0x80000fa0>
-  60:	c0000002 	ll	zero,2(zero)
-  64:	0110039f 	0x110039f
-  68:	4d4b8851 	0x4d4b8851
-  6c:	4b4b4c4b 	c2	0x14b4c4b
-  70:	4b4b4b4b 	c2	0x14b4b4b
+  40:	645f6c73 	0x645f6c73
+  44:	632f7665 	0x632f7665
+  48:	6f6d6d6f 	0x6f6d6d6f
+  4c:	72702f6e 	0x72702f6e
+  50:	6172676f 	0x6172676f
+  54:	6200006d 	0x6200006d
+  58:	2e746f6f 	sltiu	s4,s3,28527
+  5c:	00010053 	0x10053
+  60:	05000000 	bltz	t0,64 <_fbss-0x80000f9c>
+  64:	c0000002 	ll	zero,2(zero)
+  68:	0110039f 	0x110039f
+  6c:	4d4b8851 	0x4d4b8851
+  70:	4b4b4c4b 	c2	0x14b4c4b
   74:	4b4b4b4b 	c2	0x14b4b4b
   78:	4b4b4b4b 	c2	0x14b4b4b
   7c:	4b4b4b4b 	c2	0x14b4b4b
   80:	4b4b4b4b 	c2	0x14b4b4b
   84:	4b4b4b4b 	c2	0x14b4b4b
-  88:	4c4b4b4b 	0x4c4b4b4b
-  8c:	514b4b4b 	beql	t2,t3,12dbc <_fbss-0x7ffee244>
-  90:	4b4b4d83 	c2	0x14b4d83
-  94:	4b4b4d4b 	c2	0x14b4d4b
-  98:	4b4b4c4b 	c2	0x14b4c4b
+  88:	4b4b4b4b 	c2	0x14b4b4b
+  8c:	4c4b4b4b 	0x4c4b4b4b
+  90:	514b4b4b 	beql	t2,t3,12dc0 <_fbss-0x7ffee240>
+  94:	4b4b4d83 	c2	0x14b4d83
+  98:	4b4b4d4b 	c2	0x14b4d4b
   9c:	4b4b4c4b 	c2	0x14b4c4b
   a0:	4b4b4c4b 	c2	0x14b4c4b
   a4:	4b4b4c4b 	c2	0x14b4c4b
   a8:	4b4b4c4b 	c2	0x14b4c4b
   ac:	4b4b4c4b 	c2	0x14b4c4b
-  b0:	4e4b4c4b 	c3	0x4b4c4b
-  b4:	4a0a034d 	c2	0xa034d
-  b8:	4d4b4b4b 	0x4d4b4b4b
-  bc:	4b4b4b4b 	c2	0x14b4b4b
-  c0:	4b4d4b4b 	c2	0x14d4b4b
-  c4:	4c4b4b4b 	0x4c4b4b4b
-  c8:	4b4b514b 	c2	0x14b514b
-  cc:	4c4b4c4b 	0x4c4b4c4b
-  d0:	4b4c4b4b 	c2	0x14c4b4b
+  b0:	4b4b4c4b 	c2	0x14b4c4b
+  b4:	4e4b4c4b 	c3	0x4b4c4b
+  b8:	4a0a034d 	c2	0xa034d
+  bc:	4d4b4b4b 	0x4d4b4b4b
+  c0:	4b4b4b4b 	c2	0x14b4b4b
+  c4:	4b4d4b4b 	c2	0x14d4b4b
+  c8:	4c4b4b4b 	0x4c4b4b4b
+  cc:	4b4b514b 	c2	0x14b514b
+  d0:	4c4b4c4b 	0x4c4b4c4b
   d4:	4b4c4b4b 	c2	0x14c4b4b
-  d8:	4b4b4b4f 	c2	0x14b4b4f
-  dc:	4b4a0c03 	c2	0x14a0c03
-  e0:	834c4b4b 	lb	t4,19275(k0)
-  e4:	4b4b504b 	c2	0x14b504b
-  e8:	4c4b4c4b 	0x4c4b4c4b
-  ec:	4b4c4b4b 	c2	0x14c4b4b
+  d8:	4b4c4b4b 	c2	0x14c4b4b
+  dc:	4b4b4b4f 	c2	0x14b4b4f
+  e0:	4b4a0c03 	c2	0x14a0c03
+  e4:	834c4b4b 	lb	t4,19275(k0)
+  e8:	4b4b504b 	c2	0x14b504b
+  ec:	4c4b4c4b 	0x4c4b4c4b
   f0:	4b4c4b4b 	c2	0x14c4b4b
-  f4:	4b4b4f4b 	c2	0x14b4f4b
-  f8:	4c834f4b 	0x4c834f4b
-  fc:	834e4b83 	lb	t6,19331(k0)
- 100:	024b5086 	0x24b5086
- 104:	01010004 	sllv	zero,at,t0
- 108:	00000048 	0x48
- 10c:	001d0002 	srl	zero,sp,0x0
- 110:	01010000 	0x1010000
- 114:	000d0efb 	0xd0efb
- 118:	01010101 	0x1010101
- 11c:	01000000 	0x1000000
- 120:	00010000 	sll	zero,at,0x0
- 124:	6e69616d 	0x6e69616d
- 128:	0000632e 	0x632e
- 12c:	00000000 	nop
- 130:	04280205 	tgei	at,517
- 134:	13159fc0 	beq	t8,s5,fffe8038 <hwreset+0x403e8038>
- 138:	04020088 	bltzl	zero,35c <_fbss-0x80000ca4>
- 13c:	004a0601 	0x4a0601
- 140:	06010402 	bgez	s0,114c <_fbss-0x7ffffeb4>
- 144:	040200f3 	bltzl	zero,514 <_fbss-0x80000aec>
- 148:	02008301 	0x2008301
- 14c:	024c0104 	0x24c0104
- 150:	01010014 	0x1010014
+  f4:	4b4c4b4b 	c2	0x14c4b4b
+  f8:	4b4b4f4b 	c2	0x14b4f4b
+  fc:	4c834f4b 	0x4c834f4b
+ 100:	834e4b83 	lb	t6,19331(k0)
+ 104:	024b5086 	0x24b5086
+ 108:	01010004 	sllv	zero,at,t0
+ 10c:	00000048 	0x48
+ 110:	001d0002 	srl	zero,sp,0x0
+ 114:	01010000 	0x1010000
+ 118:	000d0efb 	0xd0efb
+ 11c:	01010101 	0x1010101
+ 120:	01000000 	0x1000000
+ 124:	00010000 	sll	zero,at,0x0
+ 128:	6e69616d 	0x6e69616d
+ 12c:	0000632e 	0x632e
+ 130:	00000000 	nop
+ 134:	04280205 	tgei	at,517
+ 138:	13159fc0 	beq	t8,s5,fffe803c <hwreset+0x403e803c>
+ 13c:	04020088 	bltzl	zero,360 <_fbss-0x80000ca0>
+ 140:	004a0601 	0x4a0601
+ 144:	06010402 	bgez	s0,1150 <_fbss-0x7ffffeb0>
+ 148:	040200f3 	bltzl	zero,518 <_fbss-0x80000ae8>
+ 14c:	02008301 	0x2008301
+ 150:	024c0104 	0x24c0104
+ 154:	01010014 	0x1010014
 
 Disassembly of section .debug_info:
 
@@ -979,19 +980,19 @@ Disassembly of section .debug_info:
   10:	9fc00000 	0x9fc00000
   14:	9fc0027c 	0x9fc0027c
   18:	00000000 	nop
-  1c:	0000003e 	0x3e
-  20:	00000079 	0x79
+  1c:	00000042 	srl	zero,zero,0x1
+  20:	00000081 	0x81
   24:	00738001 	0x738001
   28:	00020000 	sll	zero,v0,0x0
   2c:	00000014 	0x14
-  30:	00a20104 	0xa20104
-  34:	9b0c0000 	lwr	t4,0(t8)
-  38:	3e000000 	0x3e000000
+  30:	00970104 	0x970104
+  34:	900c0000 	lbu	t4,0(zero)
+  38:	42000000 	c0	0x0
   3c:	28000000 	slti	zero,zero,0
   40:	649fc004 	0x649fc004
-  44:	089fc004 	j	27f0010 <_fbss-0x7d810ff0>
+  44:	0c9fc004 	jal	27f0010 <_fbss-0x7d810ff0>
   48:	02000001 	movf	zero,s0,$fcc0
-  4c:	00009601 	0x9601
+  4c:	00014101 	0x14101
   50:	68030100 	0x68030100
   54:	28000000 	slti	zero,zero,0
   58:	649fc004 	0x649fc004
@@ -1010,7 +1011,7 @@ Disassembly of section .debug_info:
   8c:	04050000 	0x4050000
   90:	746e6905 	jalx	1b9a414 <_fbss-0x7e466bec>
   94:	05080600 	tgei	t0,1536
-  98:	00000088 	0x88
+  98:	00000133 	tltu	zero,zero,0x4
 	...
 
 Disassembly of section .debug_abbrev:
@@ -1075,77 +1076,79 @@ Disassembly of section .debug_str:
   18:	70667370 	0x70667370
   1c:	702d6167 	0x702d6167
   20:	5f73756c 	0x5f73756c
-  24:	2f6c737a 	sltiu	t4,k1,29562
-  28:	6d6d6f63 	0x6d6d6f63
-  2c:	702f6e6f 	0x702f6e6f
-  30:	72676f72 	0x72676f72
-  34:	622f6d61 	0x622f6d61
-  38:	2e746f6f 	sltiu	s4,s3,28527
-  3c:	682f0053 	0x682f0053
-  40:	2f656d6f 	sltiu	a1,k1,28015
-  44:	2f6c737a 	sltiu	t4,k1,29562
-  48:	6b726f77 	0x6b726f77
-  4c:	7469672f 	jalx	1a59cbc <_fbss-0x7e5a7344>
-  50:	2f627568 	sltiu	v0,k1,30056
-  54:	7370696d 	0x7370696d
-  58:	61677066 	0x61677066
-  5c:	756c702d 	jalx	5b1c0b4 <_fbss-0x7a4e4f4c>
-  60:	737a5f73 	0x737a5f73
-  64:	72702f6c 	0x72702f6c
-  68:	6172676f 	0x6172676f
-  6c:	30302f6d 	andi	s0,at,0x2f6d
-  70:	756f635f 	jalx	5bd8d7c <_fbss-0x7a428284>
-  74:	7265746e 	0x7265746e
-  78:	554e4700 	bnel	t2,t6,11c7c <_fbss-0x7ffef384>
-  7c:	20534120 	addi	s3,v0,16672
-  80:	38322e32 	xori	s2,at,0x2e32
-  84:	0031352e 	0x31352e
-  88:	676e6f6c 	0x676e6f6c
-  8c:	6e6f6c20 	0x6e6f6c20
-  90:	6e692067 	0x6e692067
-  94:	616d0074 	0x616d0074
-  98:	6d006e69 	0x6d006e69
-  9c:	2e6e6961 	sltiu	t6,s3,26977
-  a0:	4e470063 	c3	0x470063
-  a4:	39432055 	xori	v1,t2,0x2055
-  a8:	2e362039 	sltiu	s6,s1,8249
-  ac:	20302e33 	addi	s0,at,11827
-  b0:	6c656d2d 	0x6c656d2d
-  b4:	616d2d20 	0x616d2d20
-  b8:	3d686372 	0x3d686372
-  bc:	6b34316d 	0x6b34316d
-  c0:	6d2d2063 	0x6d2d2063
-  c4:	74666f73 	jalx	199bdcc <_fbss-0x7e665234>
-  c8:	6f6c662d 	0x6f6c662d
-  cc:	2d207461 	sltiu	zero,t1,29793
-  d0:	6372616d 	0x6372616d
-  d4:	316d3d68 	andi	t5,t3,0x3d68
-  d8:	20636b34 	addi	v1,v1,27444
-  dc:	6f736d2d 	0x6f736d2d
-  e0:	662d7466 	0x662d7466
-  e4:	74616f6c 	jalx	185bdb0 <_fbss-0x7e7a5250>
-  e8:	706d2d20 	0x706d2d20
-  ec:	2d20746c 	sltiu	zero,t1,29804
-  f0:	7370696d 	0x7370696d
-  f4:	32723233 	andi	s2,s3,0x3233
-  f8:	736d2d20 	0x736d2d20
-  fc:	69636e79 	0x69636e79
- 100:	616d2d20 	0x616d2d20
- 104:	333d6962 	andi	sp,t9,0x6962
- 108:	672d2032 	0x672d2032
- 10c:	64672d20 	0x64672d20
- 110:	66726177 	0x66726177
- 114:	2d20322d 	sltiu	zero,t1,12845
- 118:	672d2067 	0x672d2067
- 11c:	72617764 	0x72617764
- 120:	20322d66 	addi	s2,at,11622
- 124:	20314f2d 	addi	s1,at,20269
- 128:	20314f2d 	addi	s1,at,20269
- 12c:	6474732d 	0x6474732d
- 130:	3939633d 	xori	t9,t1,0x633d
- 134:	74732d20 	jalx	1ccb480 <_fbss-0x7e335b80>
- 138:	39633d64 	xori	v1,t3,0x3d64
- 13c:	Address 0x000000000000013c is out of bounds.
+  24:	5f6c737a 	0x5f6c737a
+  28:	2f766564 	sltiu	s6,k1,25956
+  2c:	6d6d6f63 	0x6d6d6f63
+  30:	702f6e6f 	0x702f6e6f
+  34:	72676f72 	0x72676f72
+  38:	622f6d61 	0x622f6d61
+  3c:	2e746f6f 	sltiu	s4,s3,28527
+  40:	682f0053 	0x682f0053
+  44:	2f656d6f 	sltiu	a1,k1,28015
+  48:	2f6c737a 	sltiu	t4,k1,29562
+  4c:	6b726f77 	0x6b726f77
+  50:	7469672f 	jalx	1a59cbc <_fbss-0x7e5a7344>
+  54:	2f627568 	sltiu	v0,k1,30056
+  58:	7370696d 	0x7370696d
+  5c:	61677066 	0x61677066
+  60:	756c702d 	jalx	5b1c0b4 <_fbss-0x7a4e4f4c>
+  64:	737a5f73 	0x737a5f73
+  68:	65645f6c 	0x65645f6c
+  6c:	72702f76 	0x72702f76
+  70:	6172676f 	0x6172676f
+  74:	30302f6d 	andi	s0,at,0x2f6d
+  78:	756f635f 	jalx	5bd8d7c <_fbss-0x7a428284>
+  7c:	7265746e 	0x7265746e
+  80:	554e4700 	bnel	t2,t6,11c84 <_fbss-0x7ffef37c>
+  84:	20534120 	addi	s3,v0,16672
+  88:	38322e32 	xori	s2,at,0x2e32
+  8c:	0031352e 	0x31352e
+  90:	6e69616d 	0x6e69616d
+  94:	4700632e 	bz.b	$w0,18d50 <_fbss-0x7ffe82b0>
+  98:	4320554e 	c0	0x120554e
+  9c:	36203939 	ori	zero,s1,0x3939
+  a0:	302e332e 	andi	t6,at,0x332e
+  a4:	656d2d20 	0x656d2d20
+  a8:	6d2d206c 	0x6d2d206c
+  ac:	68637261 	0x68637261
+  b0:	34316d3d 	ori	s1,at,0x6d3d
+  b4:	2d20636b 	sltiu	zero,t1,25451
+  b8:	666f736d 	0x666f736d
+  bc:	6c662d74 	0x6c662d74
+  c0:	2074616f 	addi	s4,v1,24943
+  c4:	72616d2d 	0x72616d2d
+  c8:	6d3d6863 	0x6d3d6863
+  cc:	636b3431 	0x636b3431
+  d0:	736d2d20 	0x736d2d20
+  d4:	2d74666f 	sltiu	s4,t3,26223
+  d8:	616f6c66 	0x616f6c66
+  dc:	6d2d2074 	0x6d2d2074
+  e0:	20746c70 	addi	s4,v1,27760
+  e4:	70696d2d 	0x70696d2d
+  e8:	72323373 	0x72323373
+  ec:	6d2d2032 	0x6d2d2032
+  f0:	636e7973 	0x636e7973
+  f4:	6d2d2069 	0x6d2d2069
+  f8:	3d696261 	0x3d696261
+  fc:	2d203233 	sltiu	zero,t1,12851
+ 100:	672d2067 	0x672d2067
+ 104:	72617764 	0x72617764
+ 108:	20322d66 	addi	s2,at,11622
+ 10c:	2d20672d 	sltiu	zero,t1,26413
+ 110:	61776467 	0x61776467
+ 114:	322d6672 	andi	t5,s1,0x6672
+ 118:	314f2d20 	andi	t7,t2,0x2d20
+ 11c:	314f2d20 	andi	t7,t2,0x2d20
+ 120:	74732d20 	jalx	1ccb480 <_fbss-0x7e335b80>
+ 124:	39633d64 	xori	v1,t3,0x3d64
+ 128:	732d2039 	0x732d2039
+ 12c:	633d6474 	0x633d6474
+ 130:	6c003939 	0x6c003939
+ 134:	20676e6f 	addi	a3,v1,28271
+ 138:	676e6f6c 	0x676e6f6c
+ 13c:	746e6920 	jalx	1b9a480 <_fbss-0x7e466b80>
+ 140:	69616d00 	0x69616d00
+ 144:	Address 0x0000000000000144 is out of bounds.
 
 
 Disassembly of section .debug_loc:

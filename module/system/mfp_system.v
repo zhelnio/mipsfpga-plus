@@ -49,7 +49,7 @@ module mfp_system
     input  [                         31:0 ] avm_readdata,
     output                                  avm_write,
     output                                  avm_read,
-    output [                         31:0 ] avm_address,
+    output [                         26:0 ] avm_address,
     output [                          3:0 ] avm_byteenable,
     output [                          2:0 ] avm_burstcount,
     output                                  avm_beginbursttransfer,

@@ -2,6 +2,11 @@
 program.elf:     file format elf32-tradlittlemips
 
 
+Disassembly of section .exceptions:
+
+80000000 <.exceptions>:
+	...
+
 Disassembly of section .reset:
 
 9fc00000 <start>:
@@ -11,7 +16,7 @@ start():
 9fc00004 <init_gpr>:
 init_gpr():
 9fc00004:	3c01dead 	lui	at,0xdead
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:24
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:24
         //
         // Set all GPRs of all register sets to predefined state.
         //
@@ -19,7 +24,7 @@ init_gpr():
 init_gpr:
         li      $1, 0xdeadbeef          # 0xdeadbeef stands out, kseg2 mapped, odd.
 9fc00008:	3421beef 	ori	at,at,0xbeef
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:30
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:30
 
         # Determine how many shadow sets are implemented (in addition to the base register set.)
         # the first time thru the loop it will initialize using $1 set above.
@@ -27,128 +32,128 @@ init_gpr:
         # and loop back to next_shadow_set to start the next loop and the next lowest set number.
         mfc0    $29, C0_SRSCTL          # read SRSCtl
 9fc0000c:	401d6002 	mfc0	sp,c0_srsctl
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:31
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:31
         ext     $30, $29, 26, 4         # extract HSS
 9fc00010:	7fbe1e80 	ext	s8,sp,0x1a,0x4
 
 9fc00014 <next_shadow_set>:
 next_shadow_set():
 9fc00014:	7fdd4984 	ins	sp,s8,0x6,0x4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:35
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:35
 
 next_shadow_set:                        # set PSS to shadow set to be initialized
         ins     $29, $30, 6, 4          # insert PSS
         mtc0    $29, C0_SRSCTL          # write SRSCtl
 9fc00018:	409d6002 	mtc0	sp,c0_srsctl
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:37
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:37
 
         wrpgpr  $1, $1
 9fc0001c:	41c10800 	wrpgpr	at,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:38
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:38
         wrpgpr  $2, $1
 9fc00020:	41c11000 	wrpgpr	v0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:39
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:39
         wrpgpr  $3, $1
 9fc00024:	41c11800 	wrpgpr	v1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:40
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:40
         wrpgpr  $4, $1
 9fc00028:	41c12000 	wrpgpr	a0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:41
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:41
         wrpgpr  $5, $1
 9fc0002c:	41c12800 	wrpgpr	a1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:42
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:42
         wrpgpr  $6, $1
 9fc00030:	41c13000 	wrpgpr	a2,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:43
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:43
         wrpgpr  $7, $1
 9fc00034:	41c13800 	wrpgpr	a3,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:44
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:44
         wrpgpr  $8, $1
 9fc00038:	41c14000 	wrpgpr	t0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:45
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:45
         wrpgpr  $9, $1
 9fc0003c:	41c14800 	wrpgpr	t1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:46
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:46
         wrpgpr  $10, $1
 9fc00040:	41c15000 	wrpgpr	t2,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:47
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:47
         wrpgpr  $11, $1
 9fc00044:	41c15800 	wrpgpr	t3,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:48
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:48
         wrpgpr  $12, $1
 9fc00048:	41c16000 	wrpgpr	t4,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:49
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:49
         wrpgpr  $13, $1
 9fc0004c:	41c16800 	wrpgpr	t5,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:50
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:50
         wrpgpr  $14, $1
 9fc00050:	41c17000 	wrpgpr	t6,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:51
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:51
         wrpgpr  $15, $1
 9fc00054:	41c17800 	wrpgpr	t7,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:52
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:52
         wrpgpr  $16, $1
 9fc00058:	41c18000 	wrpgpr	s0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:53
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:53
         wrpgpr  $17, $1
 9fc0005c:	41c18800 	wrpgpr	s1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:54
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:54
         wrpgpr  $18, $1
 9fc00060:	41c19000 	wrpgpr	s2,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:55
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:55
         wrpgpr  $19, $1
 9fc00064:	41c19800 	wrpgpr	s3,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:56
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:56
         wrpgpr  $20, $1
 9fc00068:	41c1a000 	wrpgpr	s4,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:57
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:57
         wrpgpr  $21, $1
 9fc0006c:	41c1a800 	wrpgpr	s5,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:58
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:58
         wrpgpr  $22, $1
 9fc00070:	41c1b000 	wrpgpr	s6,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:59
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:59
         wrpgpr  $23, $1
 9fc00074:	41c1b800 	wrpgpr	s7,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:60
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:60
         wrpgpr  $24, $1
 9fc00078:	41c1c000 	wrpgpr	t8,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:61
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:61
         wrpgpr  $25, $1
 9fc0007c:	41c1c800 	wrpgpr	t9,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:62
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:62
         wrpgpr  $26, $1
 9fc00080:	41c1d000 	wrpgpr	k0,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:63
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:63
         wrpgpr  $27, $1
 9fc00084:	41c1d800 	wrpgpr	k1,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:64
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:64
         wrpgpr  $28, $1
 9fc00088:	41c1e000 	wrpgpr	gp,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:65
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:65
         beqz    $30, init_cp0
 9fc0008c:	13c00005 	beqz	s8,9fc000a4 <init_cp0>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:66
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:66
         wrpgpr  $29, $1
 9fc00090:	41c1e800 	wrpgpr	sp,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:68
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:68
 
         wrpgpr  $30, $1
 9fc00094:	41c1f000 	wrpgpr	s8,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:69
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:69
         wrpgpr  $31, $1
 9fc00098:	41c1f800 	wrpgpr	ra,at
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:70
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:70
         b       next_shadow_set
 9fc0009c:	1000ffdd 	b	9fc00014 <next_shadow_set>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:71
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:71
         add     $30, -1                 # Decrement to the next lower number
 9fc000a0:	23deffff 	addi	s8,s8,-1
 
 9fc000a4 <init_cp0>:
 init_cp0():
 9fc000a4:	3c030040 	lui	v1,0x40
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:78
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:78
         //
         // Init CP0 Status, Count, Compare, Watch*, and Cause.
         //
@@ -156,127 +161,127 @@ init_cp0:
         # Initialize Status
 	li	v1, 0x00400004		// (M_StatusERL | M_StatusBEV)
 9fc000a8:	34630004 	ori	v1,v1,0x4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:79
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:79
         mtc0    v1, C0_STATUS           # write Status
 9fc000ac:	40836000 	mtc0	v1,c0_status
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:82
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:82
 
         # Initialize Watch registers if implemented.
         mfc0    v0, C0_CONFIG1          # read Config1
 9fc000b0:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:83
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:83
         ext     v1, v0, 3, 1            # extract bit 3 WR (Watch registers implemented)
 9fc000b4:	7c4300c0 	ext	v1,v0,0x3,0x1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:84
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:84
         beq     v1, zero, done_wr
 9fc000b8:	1060001f 	beqz	v1,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:85
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:85
         li      v1, 0x7                 # (M_WatchHiI | M_WatchHiR | M_WatchHiW)
 9fc000bc:	24030007 	li	v1,7
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:88
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:88
 
         # Clear Watch Status bits and disable watch exceptions
         mtc0    v1, C0_WATCHHI          # write WatchHi0
 9fc000c0:	40839800 	mtc0	v1,c0_watchhi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:89
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:89
         mfc0    v0, C0_WATCHHI          # read WatchHi0
 9fc000c4:	40029800 	mfc0	v0,c0_watchhi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:90
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:90
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000c8:	0441001b 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:91
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:91
         mtc0    zero, C0_WATCHLO        # clear WatchLo0
 9fc000cc:	40809000 	mtc0	zero,c0_watchlo
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:93
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:93
 
         mtc0    v1, C0_WATCHHI, 1       # write WatchHi1
 9fc000d0:	40839801 	mtc0	v1,c0_watchhi,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:94
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:94
         mfc0    v0, C0_WATCHHI, 1       # read WatchHi1
 9fc000d4:	40029801 	mfc0	v0,c0_watchhi,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:95
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:95
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000d8:	04410017 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:96
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:96
         mtc0    zero, C0_WATCHLO,1      # clear WatchLo1
 9fc000dc:	40809001 	mtc0	zero,c0_watchlo,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:98
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:98
 
         mtc0    v1, C0_WATCHHI, 2       # write WatchHi2
 9fc000e0:	40839802 	mtc0	v1,c0_watchhi,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:99
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:99
         mfc0    v0, C0_WATCHHI, 2       # read WatchHi2
 9fc000e4:	40029802 	mfc0	v0,c0_watchhi,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:100
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:100
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000e8:	04410013 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:101
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:101
         mtc0    zero, C0_WATCHLO, 2     # clear WatchLo2
 9fc000ec:	40809002 	mtc0	zero,c0_watchlo,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:103
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:103
 
         mtc0    v1, C0_WATCHHI, 3       # write WatchHi3
 9fc000f0:	40839803 	mtc0	v1,c0_watchhi,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:104
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:104
         mfc0    v0, C0_WATCHHI, 3       # read WatchHi3
 9fc000f4:	40029803 	mfc0	v0,c0_watchhi,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:105
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:105
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc000f8:	0441000f 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:106
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:106
         mtc0    zero, C0_WATCHLO, 3     # clear WatchLo3
 9fc000fc:	40809003 	mtc0	zero,c0_watchlo,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:108
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:108
 
         mtc0    v1, C0_WATCHHI, 4       # write WatchHi4
 9fc00100:	40839804 	mtc0	v1,c0_watchhi,4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:109
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:109
         mfc0    v0, C0_WATCHHI, 4       # read WatchHi4
 9fc00104:	40029804 	mfc0	v0,c0_watchhi,4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:110
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:110
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc00108:	0441000b 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:111
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:111
         mtc0    zero, C0_WATCHLO, 4     # clear WatchLo4
 9fc0010c:	40809004 	mtc0	zero,c0_watchlo,4
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:113
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:113
 
         mtc0    v1, C0_WATCHHI, 5       # write WatchHi5
 9fc00110:	40839805 	mtc0	v1,c0_watchhi,5
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:114
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:114
         mfc0    v0, C0_WATCHHI, 5       # read WatchHi5
 9fc00114:	40029805 	mfc0	v0,c0_watchhi,5
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:115
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:115
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc00118:	04410007 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:116
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:116
         mtc0    zero, C0_WATCHLO, 5     # clear WatchLo5
 9fc0011c:	40809005 	mtc0	zero,c0_watchlo,5
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:118
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:118
 
         mtc0    v1, C0_WATCHHI, 6       # write WatchHi6
 9fc00120:	40839806 	mtc0	v1,c0_watchhi,6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:119
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:119
         mfc0    v0, C0_WATCHHI, 6       # read WatchHi6
 9fc00124:	40029806 	mfc0	v0,c0_watchhi,6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:120
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:120
         bgez    v0, done_wr             # Check for bit 31 (sign bit) for more Watch registers
 9fc00128:	04410003 	bgez	v0,9fc00138 <done_wr>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:121
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:121
         mtc0    zero, C0_WATCHLO, 6     # clear WatchLo6
 9fc0012c:	40809006 	mtc0	zero,c0_watchlo,6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:123
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:123
 
         mtc0    v1, C0_WATCHHI, 7       # write WatchHi7
 9fc00130:	40839807 	mtc0	v1,c0_watchhi,7
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:124
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:124
         mtc0    zero, C0_WATCHLO, 7     # clear WatchLo7
 9fc00134:	40809007 	mtc0	zero,c0_watchlo,7
 
 9fc00138 <done_wr>:
 done_wr():
 9fc00138:	40806800 	mtc0	zero,c0_cause
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:131
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:131
 done_wr:
         # Clear WP bit to avoid watch exception upon user code entry, IV, and software interrupts.
         mtc0    zero, C0_CAUSE          # clear Cause: init AFTER init of WatchHi/Lo registers.
@@ -288,7 +293,7 @@ done_wr:
 9fc00140 <init_tlb>:
 init_tlb():
 9fc00140:	40038000 	mfc0	v1,c0_config
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:142
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:142
         // Clear TLB: generate unique EntryHi contents per entry pair.
         //
 init_tlb:
@@ -296,66 +301,66 @@ init_tlb:
         mfc0    v1, C0_CONFIG           # read Config
         ext     v1, v1, 7, 3            # extract MT field
 9fc00144:	7c6311c0 	ext	v1,v1,0x7,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:143
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:143
         li      a3, 0x1                 # load a 1 to check against
 9fc00148:	24070001 	li	a3,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:144
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:144
         bne     v1, a3, init_icache
 9fc0014c:	1467000e 	bne	v1,a3,9fc00188 <init_icache>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:147
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:147
 
         # Config1MMUSize == Number of TLB entries - 1
         mfc0    v0, C0_CONFIG1          # Config1
 9fc00150:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:148
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:148
         ext     v1, v0, 25, 6           # extract MMU Size
 9fc00154:	7c432e40 	ext	v1,v0,0x19,0x6
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:149
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:149
         mtc0    zero, C0_ENTRYLO0       # clear EntryLo0
 9fc00158:	40801000 	mtc0	zero,c0_entrylo0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:150
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:150
         mtc0    zero, C0_ENTRYLO1       # clear EntryLo1
 9fc0015c:	40801800 	mtc0	zero,c0_entrylo1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:151
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:151
         mtc0    zero, C0_PAGEMASK       # clear PageMask
 9fc00160:	40802800 	mtc0	zero,c0_pagemask
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:152
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:152
         mtc0    zero, C0_WIRED          # clear Wired
 9fc00164:	40803000 	mtc0	zero,c0_wired
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:153
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:153
         li      a0, 0x80000000
 9fc00168:	3c048000 	lui	a0,0x8000
 
 9fc0016c <next_tlb_entry>:
 next_tlb_entry():
 9fc0016c:	40830000 	mtc0	v1,c0_index
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:157
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:157
 
 next_tlb_entry:
         mtc0    v1, C0_INDEX            # write Index
         mtc0    a0, C0_ENTRYHI          # write EntryHi
 9fc00170:	40845000 	mtc0	a0,c0_entryhi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:158
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:158
         ehb
 9fc00174:	000000c0 	ehb
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:159
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:159
         tlbwi
 9fc00178:	42000002 	tlbwi
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:160
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:160
         add     a0, 2 << 13             # Add 8K to the address to avoid TLB conflict with previous entry
 9fc0017c:	20844000 	addi	a0,a0,16384
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:162
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:162
 
         bne     v1, zero, next_tlb_entry
 9fc00180:	1460fffa 	bnez	v1,9fc0016c <next_tlb_entry>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:163
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:163
         add     v1, -1
 9fc00184:	2063ffff 	addi	v1,v1,-1
 
 9fc00188 <init_icache>:
 init_icache():
 9fc00188:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:171
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:171
         // Clear L1 instruction cache.
         //
 init_icache:
@@ -363,54 +368,54 @@ init_icache:
         mfc0    v0, C0_CONFIG1          # read Config1
         ext     v1, v0, 19, 3           # extract I-cache line size
 9fc0018c:	7c4314c0 	ext	v1,v0,0x13,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:172
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:172
         beq     v1, zero, done_icache   # Skip ahead if no I-cache
 9fc00190:	10600010 	beqz	v1,9fc001d4 <done_icache>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:173
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:173
         nop
 9fc00194:	00000000 	nop
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:175
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:175
 
         li      a2, 2
 9fc00198:	24060002 	li	a2,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:176
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:176
         sllv    v1, a2, v1              # Now have true I-cache line size in bytes
 9fc0019c:	00661804 	sllv	v1,a2,v1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:178
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:178
 
         ext     a0, v0, 22, 3           # extract IS
 9fc001a0:	7c441580 	ext	a0,v0,0x16,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:179
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:179
         li      a2, 64
 9fc001a4:	24060040 	li	a2,64
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:180
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:180
         sllv    a0, a2, a0              # I-cache sets per way
 9fc001a8:	00862004 	sllv	a0,a2,a0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:182
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:182
 
         ext     a1, v0, 16, 3           # extract I-cache Assoc - 1
 9fc001ac:	7c451400 	ext	a1,v0,0x10,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:183
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:183
         add     a1, 1
 9fc001b0:	20a50001 	addi	a1,a1,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:184
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:184
         mul     a0, a0, a1              # Total number of sets
 9fc001b4:	70852002 	mul	a0,a0,a1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:185
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:185
         lui     a2, 0x8000              # Get a KSeg0 address for cacheops
 9fc001b8:	3c068000 	lui	a2,0x8000
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:187
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:187
 
         mtc0    zero, C0_ITAGLO         # Clear ITagLo register
 9fc001bc:	4080e000 	mtc0	zero,c0_taglo
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:188
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:188
         move    a3, a0
 9fc001c0:	00803825 	move	a3,a0
 
 9fc001c4 <next_icache_tag>:
 next_icache_tag():
 9fc001c4:	bcc80000 	cache	0x8,0(a2)
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:194
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:194
 
 next_icache_tag:
         # Index Store Tag Cache Op
@@ -418,17 +423,17 @@ next_icache_tag:
         cache   0x8, 0 (a2)             # ICIndexStTag
         add     a3, -1                  # Decrement set counter
 9fc001c8:	20e7ffff 	addi	a3,a3,-1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:195
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:195
         bne     a3, zero, next_icache_tag
 9fc001cc:	14e0fffd 	bnez	a3,9fc001c4 <next_icache_tag>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:196
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:196
         add     a2, v1                  # Get next line address
 9fc001d0:	00c33020 	add	a2,a2,v1
 
 9fc001d4 <done_icache>:
 done_icache():
 9fc001d4:	40028000 	mfc0	v0,c0_config
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:209
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:209
         //
 enable_k0_cache:
         # Set CCA for kseg0 to cacheable.
@@ -436,28 +441,28 @@ enable_k0_cache:
         mfc0    v0, C0_CONFIG           # read Config
         li      v1, 3                   # CCA for single-core processors
 9fc001d8:	24030003 	li	v1,3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:210
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:210
         ins     v0, v1, 0, 3            # insert K0
 9fc001dc:	7c621004 	ins	v0,v1,0x0,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:211
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:211
         mtc0    v0, C0_CONFIG           # write Config
 9fc001e0:	40828000 	mtc0	v0,c0_config
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:213
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:213
 
         la      a2, init_dcache
 9fc001e4:	3c069fc0 	lui	a2,0x9fc0
 9fc001e8:	24c601f4 	addiu	a2,a2,500
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:214
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:214
         jr      a2                      # switch back to KSEG0
 9fc001ec:	00c00008 	jr	a2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:215
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:215
         ehb
 9fc001f0:	000000c0 	ehb
 
 9fc001f4 <init_dcache>:
 init_dcache():
 9fc001f4:	40028001 	mfc0	v0,c0_config1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:222
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:222
         //
         // Initialize the L1 data cache
         //
@@ -465,57 +470,57 @@ init_dcache:
         mfc0    v0, C0_CONFIG1          # read Config1
         ext     v1, v0, 10, 3           # extract D-cache line size
 9fc001f8:	7c431280 	ext	v1,v0,0xa,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:223
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:223
         beq     v1, zero, done_dcache   # Skip ahead if no D-cache
 9fc001fc:	10600011 	beqz	v1,9fc00244 <done_dcache>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:224
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:224
         nop
 9fc00200:	00000000 	nop
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:226
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:226
 
         li      a2, 2
 9fc00204:	24060002 	li	a2,2
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:227
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:227
         sllv    v1, a2, v1              # Now have true D-cache line size in bytes
 9fc00208:	00661804 	sllv	v1,a2,v1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:229
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:229
 
         ext     a0, v0, 13, 3           # extract DS
 9fc0020c:	7c441340 	ext	a0,v0,0xd,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:230
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:230
         li      a2, 64
 9fc00210:	24060040 	li	a2,64
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:231
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:231
         sllv    a0, a2, a0              # D-cache sets per way
 9fc00214:	00862004 	sllv	a0,a2,a0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:233
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:233
 
         ext     a1, v0, 7, 3            # extract D-cache Assoc - 1
 9fc00218:	7c4511c0 	ext	a1,v0,0x7,0x3
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:234
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:234
         add     a1, 1
 9fc0021c:	20a50001 	addi	a1,a1,1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:235
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:235
         mul     a0, a0, a1              # Get total number of sets
 9fc00220:	70852002 	mul	a0,a0,a1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:236
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:236
         lui     a2, 0x8000              # Get a KSeg0 address for cacheops
 9fc00224:	3c068000 	lui	a2,0x8000
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:238
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:238
 
         mtc0    zero, C0_ITAGLO         # Clear ITagLo/DTagLo registers
 9fc00228:	4080e000 	mtc0	zero,c0_taglo
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:239
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:239
         mtc0    zero, C0_DTAGLO
 9fc0022c:	4080e002 	mtc0	zero,c0_taglo1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:240
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:240
         move    a3, a0
 9fc00230:	00803825 	move	a3,a0
 
 9fc00234 <next_dcache_tag>:
 next_dcache_tag():
 9fc00234:	bcc90000 	cache	0x9,0(a2)
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:246
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:246
 
 next_dcache_tag:
         # Index Store Tag Cache Op
@@ -523,49 +528,49 @@ next_dcache_tag:
         cache   0x9, 0 (a2)             # DCIndexStTag
         add     a3, -1                  # Decrement set counter
 9fc00238:	20e7ffff 	addi	a3,a3,-1
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:247
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:247
         bne     a3, zero, next_dcache_tag
 9fc0023c:	14e0fffd 	bnez	a3,9fc00234 <next_dcache_tag>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:248
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:248
         add     a2, v1                  # Get next line address
 9fc00240:	00c33020 	add	a2,a2,v1
 
 9fc00244 <done_dcache>:
 done_dcache():
 9fc00244:	3c1f9fc0 	lui	ra,0x9fc0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:253
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:253
 done_dcache:
 
         # Prepare for eret to main.
 
         la      ra, all_done        # If main returns then go to all_done:.
 9fc00248:	27ff0274 	addiu	ra,ra,628
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:254
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:254
         move    a0, zero            # Indicate that there are no arguments available.
 9fc0024c:	00002025 	move	a0,zero
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:256
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:256
 
         la      v0, main            # load the address of the CRT entry point _start.
-9fc00250:	3c029fc0 	lui	v0,0x9fc0
-9fc00254:	244204f8 	addiu	v0,v0,1272
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:257
+9fc00250:	3c028000 	lui	v0,0x8000
+9fc00254:	24421278 	addiu	v0,v0,4728
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:257
         mtc0    v0, $30             # Write ErrorEPC with the address of main
 9fc00258:	4082f000 	mtc0	v0,c0_errorepc
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:258
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:258
         ehb                         # clear hazards (makes sure write to ErrorPC has completed)
 9fc0025c:	000000c0 	ehb
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:262
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:262
 
         # Set stack and global data
 
         la	sp, __stack
 9fc00260:	3c1d8004 	lui	sp,0x8004
 9fc00264:	27bd0000 	addiu	sp,sp,0
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:263
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:263
         la      gp, _gp
-9fc00268:	3c1c9fc1 	lui	gp,0x9fc1
-9fc0026c:	279c85d8 	addiu	gp,gp,-31272
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:267
+9fc00268:	3c1c8001 	lui	gp,0x8001
+9fc0026c:	279c9358 	addiu	gp,gp,-27816
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:267
 
         # Return from exception will now execute code in main
 
@@ -575,7 +580,7 @@ done_dcache:
 9fc00274 <all_done>:
 all_done():
 9fc00274:	1000ffff 	b	9fc00274 <all_done>
-/home/zsl/work/github/mipsfpga-plus_zsl/common/program/boot.S:274
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/common/program/boot.S:274
 
 /**************************************************************************************/
 all_done:
@@ -588,30 +593,30 @@ all_done:
 Disassembly of section .pdr:
 
 00000000 <.pdr>:
-   0:	9fc00428 	0x9fc00428
+   0:	800011a8 	lb	zero,4520(zero)
 	...
   18:	0000001d 	0x1d
   1c:	0000001f 	0x1f
-  20:	9fc00464 	0x9fc00464
+  20:	800011e4 	lb	zero,4580(zero)
 	...
   38:	0000001d 	0x1d
   3c:	0000001f 	0x1f
-  40:	9fc00484 	0x9fc00484
+  40:	80001204 	lb	zero,4612(zero)
 	...
   58:	0000001d 	0x1d
   5c:	0000001f 	0x1f
-  60:	9fc0049c 	0x9fc0049c
+  60:	8000121c 	lb	zero,4636(zero)
 	...
   78:	0000001d 	0x1d
   7c:	0000001f 	0x1f
-  80:	9fc004bc 	0x9fc004bc
+  80:	8000123c 	lb	zero,4668(zero)
   84:	80010000 	lb	at,0(zero)
   88:	fffffffc 	sdc3	$31,-4(ra)
 	...
   94:	00000018 	mult	zero,zero
   98:	0000001d 	0x1d
   9c:	0000001f 	0x1f
-  a0:	9fc004f8 	0x9fc004f8
+  a0:	80001278 	lb	zero,4728(zero)
   a4:	80010000 	lb	at,0(zero)
   a8:	fffffffc 	sdc3	$31,-4(ra)
 	...
@@ -623,7 +628,7 @@ Disassembly of section .gnu.attributes:
 
 00000000 <.gnu.attributes>:
    0:	00000f41 	0xf41
-   4:	756e6700 	jalx	5b99c00 <_fbss-0x7a467400>
+   4:	756e6700 	jalx	5b99c00 <_ftext_ram-0x7a467400>
    8:	00070100 	sll	zero,a3,0x4
    c:	03040000 	0x3040000
 
@@ -640,8 +645,8 @@ Disassembly of section .comment:
   1c:	312e3731 	andi	t6,t1,0x3731
   20:	35302d30 	ori	s0,t1,0x2d30
   24:	726f6620 	0x726f6620
-  28:	50494d20 	beql	v0,t1,134ac <_fbss-0x7ffedb54>
-  2c:	544d2053 	bnel	v0,t5,817c <_fbss-0x7fff8e84>
+  28:	50494d20 	beql	v0,t1,134ac <_ftext_ram-0x7ffedb54>
+  2c:	544d2053 	bnel	v0,t5,817c <_ftext_ram-0x7fff8e84>
   30:	61422049 	0x61422049
   34:	4d206572 	0x4d206572
   38:	6c617465 	0x6c617465
@@ -650,403 +655,403 @@ Disassembly of section .comment:
 
 Disassembly of section .text_ram:
 
-9fc00280 <deregister_tm_clones>:
+80001000 <deregister_tm_clones>:
 deregister_tm_clones():
-9fc00280:	3c049fc0 	lui	a0,0x9fc0
-9fc00284:	3c029fc0 	lui	v0,0x9fc0
-9fc00288:	248405f4 	addiu	a0,a0,1524
-9fc0028c:	244205f7 	addiu	v0,v0,1527
-9fc00290:	00441023 	subu	v0,v0,a0
-9fc00294:	2c420007 	sltiu	v0,v0,7
-9fc00298:	14400006 	bnez	v0,9fc002b4 <deregister_tm_clones+0x34>
-9fc0029c:	3c190000 	lui	t9,0x0
-9fc002a0:	27390000 	addiu	t9,t9,0
-9fc002a4:	13200003 	beqz	t9,9fc002b4 <deregister_tm_clones+0x34>
-9fc002a8:	00000000 	nop
-9fc002ac:	03200008 	jr	t9
-9fc002b0:	00000000 	nop
-9fc002b4:	03e00008 	jr	ra
-9fc002b8:	00000000 	nop
+80001000:	3c048000 	lui	a0,0x8000
+80001004:	3c028000 	lui	v0,0x8000
+80001008:	24841374 	addiu	a0,a0,4980
+8000100c:	24421377 	addiu	v0,v0,4983
+80001010:	00441023 	subu	v0,v0,a0
+80001014:	2c420007 	sltiu	v0,v0,7
+80001018:	14400006 	bnez	v0,80001034 <deregister_tm_clones+0x34>
+8000101c:	3c190000 	lui	t9,0x0
+80001020:	27390000 	addiu	t9,t9,0
+80001024:	13200003 	beqz	t9,80001034 <deregister_tm_clones+0x34>
+80001028:	00000000 	nop
+8000102c:	03200008 	jr	t9
+80001030:	00000000 	nop
+80001034:	03e00008 	jr	ra
+80001038:	00000000 	nop
 
-9fc002bc <register_tm_clones>:
+8000103c <register_tm_clones>:
 register_tm_clones():
-9fc002bc:	3c049fc0 	lui	a0,0x9fc0
-9fc002c0:	3c059fc0 	lui	a1,0x9fc0
-9fc002c4:	248405f4 	addiu	a0,a0,1524
-9fc002c8:	24a505f4 	addiu	a1,a1,1524
-9fc002cc:	00a42823 	subu	a1,a1,a0
-9fc002d0:	00052883 	sra	a1,a1,0x2
-9fc002d4:	000517c2 	srl	v0,a1,0x1f
-9fc002d8:	00452821 	addu	a1,v0,a1
-9fc002dc:	00052843 	sra	a1,a1,0x1
-9fc002e0:	10a00006 	beqz	a1,9fc002fc <register_tm_clones+0x40>
-9fc002e4:	3c190000 	lui	t9,0x0
-9fc002e8:	27390000 	addiu	t9,t9,0
-9fc002ec:	13200003 	beqz	t9,9fc002fc <register_tm_clones+0x40>
-9fc002f0:	00000000 	nop
-9fc002f4:	03200008 	jr	t9
-9fc002f8:	00000000 	nop
-9fc002fc:	03e00008 	jr	ra
-9fc00300:	00000000 	nop
+8000103c:	3c048000 	lui	a0,0x8000
+80001040:	3c058000 	lui	a1,0x8000
+80001044:	24841374 	addiu	a0,a0,4980
+80001048:	24a51374 	addiu	a1,a1,4980
+8000104c:	00a42823 	subu	a1,a1,a0
+80001050:	00052883 	sra	a1,a1,0x2
+80001054:	000517c2 	srl	v0,a1,0x1f
+80001058:	00452821 	addu	a1,v0,a1
+8000105c:	00052843 	sra	a1,a1,0x1
+80001060:	10a00006 	beqz	a1,8000107c <register_tm_clones+0x40>
+80001064:	3c190000 	lui	t9,0x0
+80001068:	27390000 	addiu	t9,t9,0
+8000106c:	13200003 	beqz	t9,8000107c <register_tm_clones+0x40>
+80001070:	00000000 	nop
+80001074:	03200008 	jr	t9
+80001078:	00000000 	nop
+8000107c:	03e00008 	jr	ra
+80001080:	00000000 	nop
 
-9fc00304 <__do_global_dtors_aux>:
+80001084 <__do_global_dtors_aux>:
 __do_global_dtors_aux():
-9fc00304:	27bdffd8 	addiu	sp,sp,-40
-9fc00308:	afb10018 	sw	s1,24(sp)
-9fc0030c:	3c118000 	lui	s1,0x8000
-9fc00310:	afb00014 	sw	s0,20(sp)
-9fc00314:	afb2001c 	sw	s2,28(sp)
-9fc00318:	afb30020 	sw	s3,32(sp)
-9fc0031c:	afbf0024 	sw	ra,36(sp)
-9fc00320:	92221000 	lbu	v0,4096(s1)
-9fc00324:	14400019 	bnez	v0,9fc0038c <__do_global_dtors_aux+0x88>
-9fc00328:	3c109fc0 	lui	s0,0x9fc0
-9fc0032c:	3c138000 	lui	s3,0x8000
-9fc00330:	260205e8 	addiu	v0,s0,1512
-9fc00334:	3c109fc0 	lui	s0,0x9fc0
-9fc00338:	261005ec 	addiu	s0,s0,1516
-9fc0033c:	02028023 	subu	s0,s0,v0
-9fc00340:	3c029fc0 	lui	v0,0x9fc0
-9fc00344:	00108083 	sra	s0,s0,0x2
-9fc00348:	245205e8 	addiu	s2,v0,1512
-9fc0034c:	2610ffff 	addiu	s0,s0,-1
-9fc00350:	8e621004 	lw	v0,4100(s3)
-9fc00354:	0050182b 	sltu	v1,v0,s0
-9fc00358:	14600013 	bnez	v1,9fc003a8 <__do_global_dtors_aux+0xa4>
-9fc0035c:	24420001 	addiu	v0,v0,1
-9fc00360:	0ff000a0 	jal	9fc00280 <deregister_tm_clones>
-9fc00364:	00000000 	nop
-9fc00368:	3c020000 	lui	v0,0x0
-9fc0036c:	24420000 	addiu	v0,v0,0
-9fc00370:	10400005 	beqz	v0,9fc00388 <__do_global_dtors_aux+0x84>
-9fc00374:	24020001 	li	v0,1
-9fc00378:	3c049fc0 	lui	a0,0x9fc0
-9fc0037c:	0c000000 	jal	90000000 <__stack+0xffc0000>
-9fc00380:	248405d0 	addiu	a0,a0,1488
-9fc00384:	24020001 	li	v0,1
-9fc00388:	a2221000 	sb	v0,4096(s1)
-9fc0038c:	8fb00014 	lw	s0,20(sp)
-9fc00390:	8fb10018 	lw	s1,24(sp)
-9fc00394:	8fb2001c 	lw	s2,28(sp)
-9fc00398:	8fb30020 	lw	s3,32(sp)
-9fc0039c:	8fbf0024 	lw	ra,36(sp)
-9fc003a0:	03e00008 	jr	ra
-9fc003a4:	27bd0028 	addiu	sp,sp,40
-9fc003a8:	ae621004 	sw	v0,4100(s3)
-9fc003ac:	00021080 	sll	v0,v0,0x2
-9fc003b0:	02421021 	addu	v0,s2,v0
-9fc003b4:	8c420000 	lw	v0,0(v0)
-9fc003b8:	0040f809 	jalr	v0
-9fc003bc:	00000000 	nop
-9fc003c0:	1000ffe4 	b	9fc00354 <__do_global_dtors_aux+0x50>
-9fc003c4:	8e621004 	lw	v0,4100(s3)
+80001084:	27bdffd8 	addiu	sp,sp,-40
+80001088:	afb10018 	sw	s1,24(sp)
+8000108c:	3c118000 	lui	s1,0x8000
+80001090:	afb00014 	sw	s0,20(sp)
+80001094:	afb2001c 	sw	s2,28(sp)
+80001098:	afb30020 	sw	s3,32(sp)
+8000109c:	afbf0024 	sw	ra,36(sp)
+800010a0:	92221374 	lbu	v0,4980(s1)
+800010a4:	14400019 	bnez	v0,8000110c <__do_global_dtors_aux+0x88>
+800010a8:	3c108000 	lui	s0,0x8000
+800010ac:	3c138000 	lui	s3,0x8000
+800010b0:	26021368 	addiu	v0,s0,4968
+800010b4:	3c108000 	lui	s0,0x8000
+800010b8:	2610136c 	addiu	s0,s0,4972
+800010bc:	02028023 	subu	s0,s0,v0
+800010c0:	3c028000 	lui	v0,0x8000
+800010c4:	00108083 	sra	s0,s0,0x2
+800010c8:	24521368 	addiu	s2,v0,4968
+800010cc:	2610ffff 	addiu	s0,s0,-1
+800010d0:	8e621378 	lw	v0,4984(s3)
+800010d4:	0050182b 	sltu	v1,v0,s0
+800010d8:	14600013 	bnez	v1,80001128 <__do_global_dtors_aux+0xa4>
+800010dc:	24420001 	addiu	v0,v0,1
+800010e0:	0c000400 	jal	80001000 <deregister_tm_clones>
+800010e4:	00000000 	nop
+800010e8:	3c020000 	lui	v0,0x0
+800010ec:	24420000 	addiu	v0,v0,0
+800010f0:	10400005 	beqz	v0,80001108 <__do_global_dtors_aux+0x84>
+800010f4:	24020001 	li	v0,1
+800010f8:	3c048000 	lui	a0,0x8000
+800010fc:	0c000000 	jal	80000000 <_ftext_ram-0x1000>
+80001100:	24841350 	addiu	a0,a0,4944
+80001104:	24020001 	li	v0,1
+80001108:	a2221374 	sb	v0,4980(s1)
+8000110c:	8fb00014 	lw	s0,20(sp)
+80001110:	8fb10018 	lw	s1,24(sp)
+80001114:	8fb2001c 	lw	s2,28(sp)
+80001118:	8fb30020 	lw	s3,32(sp)
+8000111c:	8fbf0024 	lw	ra,36(sp)
+80001120:	03e00008 	jr	ra
+80001124:	27bd0028 	addiu	sp,sp,40
+80001128:	ae621378 	sw	v0,4984(s3)
+8000112c:	00021080 	sll	v0,v0,0x2
+80001130:	02421021 	addu	v0,s2,v0
+80001134:	8c420000 	lw	v0,0(v0)
+80001138:	0040f809 	jalr	v0
+8000113c:	00000000 	nop
+80001140:	1000ffe4 	b	800010d4 <__do_global_dtors_aux+0x50>
+80001144:	8e621378 	lw	v0,4984(s3)
 
-9fc003c8 <frame_dummy>:
+80001148 <frame_dummy>:
 frame_dummy():
-9fc003c8:	27bdffe8 	addiu	sp,sp,-24
-9fc003cc:	3c020000 	lui	v0,0x0
-9fc003d0:	24420000 	addiu	v0,v0,0
-9fc003d4:	10400006 	beqz	v0,9fc003f0 <frame_dummy+0x28>
-9fc003d8:	afbf0014 	sw	ra,20(sp)
-9fc003dc:	3c058000 	lui	a1,0x8000
-9fc003e0:	3c049fc0 	lui	a0,0x9fc0
-9fc003e4:	24a51008 	addiu	a1,a1,4104
-9fc003e8:	0c000000 	jal	90000000 <__stack+0xffc0000>
-9fc003ec:	248405d0 	addiu	a0,a0,1488
-9fc003f0:	3c029fc0 	lui	v0,0x9fc0
-9fc003f4:	244405f0 	addiu	a0,v0,1520
-9fc003f8:	8c820000 	lw	v0,0(a0)
-9fc003fc:	10400008 	beqz	v0,9fc00420 <frame_dummy+0x58>
-9fc00400:	8fbf0014 	lw	ra,20(sp)
-9fc00404:	3c020000 	lui	v0,0x0
-9fc00408:	24420000 	addiu	v0,v0,0
-9fc0040c:	10400004 	beqz	v0,9fc00420 <frame_dummy+0x58>
-9fc00410:	00000000 	nop
-9fc00414:	0040f809 	jalr	v0
-9fc00418:	00000000 	nop
-9fc0041c:	8fbf0014 	lw	ra,20(sp)
-9fc00420:	0bf000af 	j	9fc002bc <register_tm_clones>
-9fc00424:	27bd0018 	addiu	sp,sp,24
+80001148:	27bdffe8 	addiu	sp,sp,-24
+8000114c:	3c020000 	lui	v0,0x0
+80001150:	24420000 	addiu	v0,v0,0
+80001154:	10400006 	beqz	v0,80001170 <frame_dummy+0x28>
+80001158:	afbf0014 	sw	ra,20(sp)
+8000115c:	3c058000 	lui	a1,0x8000
+80001160:	3c048000 	lui	a0,0x8000
+80001164:	24a5137c 	addiu	a1,a1,4988
+80001168:	0c000000 	jal	80000000 <_ftext_ram-0x1000>
+8000116c:	24841350 	addiu	a0,a0,4944
+80001170:	3c028000 	lui	v0,0x8000
+80001174:	24441370 	addiu	a0,v0,4976
+80001178:	8c820000 	lw	v0,0(a0)
+8000117c:	10400008 	beqz	v0,800011a0 <frame_dummy+0x58>
+80001180:	8fbf0014 	lw	ra,20(sp)
+80001184:	3c020000 	lui	v0,0x0
+80001188:	24420000 	addiu	v0,v0,0
+8000118c:	10400004 	beqz	v0,800011a0 <frame_dummy+0x58>
+80001190:	00000000 	nop
+80001194:	0040f809 	jalr	v0
+80001198:	00000000 	nop
+8000119c:	8fbf0014 	lw	ra,20(sp)
+800011a0:	0800040f 	j	8000103c <register_tm_clones>
+800011a4:	27bd0018 	addiu	sp,sp,24
 
-9fc00428 <uartInit>:
+800011a8 <uartInit>:
 uartInit():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:28
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:28
     #define UART_DIVISOR    DIVISOR_50M
 #endif
 
 void uartInit(uint16_t divisor)
 {
     MFP_UART_LCR = MFP_UART_LCR_8N1;      // 8n1
-9fc00428:	3c02b040 	lui	v0,0xb040
-9fc0042c:	24030003 	li	v1,3
-9fc00430:	ac43100c 	sw	v1,4108(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:29
+800011a8:	3c02b040 	lui	v0,0xb040
+800011ac:	24030003 	li	v1,3
+800011b0:	ac43100c 	sw	v1,4108(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:29
     MFP_UART_LCR |= MFP_UART_LCR_LATCH;   // Divisor Latches access enable
-9fc00434:	8c43100c 	lw	v1,4108(v0)
-9fc00438:	34630080 	ori	v1,v1,0x80
-9fc0043c:	ac43100c 	sw	v1,4108(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:30
+800011b4:	8c43100c 	lw	v1,4108(v0)
+800011b8:	34630080 	ori	v1,v1,0x80
+800011bc:	ac43100c 	sw	v1,4108(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:30
     MFP_UART_DLL = divisor & 0xFF;        // Divisor LSB
-9fc00440:	308300ff 	andi	v1,a0,0xff
-9fc00444:	ac431000 	sw	v1,4096(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:31
+800011c0:	308300ff 	andi	v1,a0,0xff
+800011c4:	ac431000 	sw	v1,4096(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:31
     MFP_UART_DLH = (divisor >> 8) & 0xff; // Divisor MSB
-9fc00448:	00042202 	srl	a0,a0,0x8
-9fc0044c:	ac441004 	sw	a0,4100(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:32
+800011c8:	00042202 	srl	a0,a0,0x8
+800011cc:	ac441004 	sw	a0,4100(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:32
     MFP_UART_LCR &= ~MFP_UART_LCR_LATCH;  // Divisor Latches access disable
-9fc00450:	8c43100c 	lw	v1,4108(v0)
-9fc00454:	7c0339c4 	ins	v1,zero,0x7,0x1
-9fc00458:	ac43100c 	sw	v1,4108(v0)
-9fc0045c:	03e00008 	jr	ra
-9fc00460:	00000000 	nop
+800011d0:	8c43100c 	lw	v1,4108(v0)
+800011d4:	7c0339c4 	ins	v1,zero,0x7,0x1
+800011d8:	ac43100c 	sw	v1,4108(v0)
+800011dc:	03e00008 	jr	ra
+800011e0:	00000000 	nop
 
-9fc00464 <uartTransmit>:
+800011e4 <uartTransmit>:
 uartTransmit():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:38
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:38
 }
 
 void uartTransmit(uint8_t data)
 {
     // waiting for transmitter fifo empty
     while (!(MFP_UART_LSR & MFP_UART_LSR_TFE));
-9fc00464:	3c03b040 	lui	v1,0xb040
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:38 (discriminator 1)
-9fc00468:	8c621014 	lw	v0,4116(v1)
-9fc0046c:	30420020 	andi	v0,v0,0x20
-9fc00470:	1040fffd 	beqz	v0,9fc00468 <uartTransmit+0x4>
-9fc00474:	3c02b040 	lui	v0,0xb040
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:41
+800011e4:	3c03b040 	lui	v1,0xb040
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:38 (discriminator 1)
+800011e8:	8c621014 	lw	v0,4116(v1)
+800011ec:	30420020 	andi	v0,v0,0x20
+800011f0:	1040fffd 	beqz	v0,800011e8 <uartTransmit+0x4>
+800011f4:	3c02b040 	lui	v0,0xb040
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:41
 
     // transmitted data
     MFP_UART_TXR = data;
-9fc00478:	ac441000 	sw	a0,4096(v0)
-9fc0047c:	03e00008 	jr	ra
-9fc00480:	00000000 	nop
+800011f8:	ac441000 	sw	a0,4096(v0)
+800011fc:	03e00008 	jr	ra
+80001200:	00000000 	nop
 
-9fc00484 <receivedDataOutput>:
+80001204 <receivedDataOutput>:
 receivedDataOutput():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:46
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:46
 }
 
 void receivedDataOutput(uint8_t data)
 {
     MFP_RED_LEDS        = data;
-9fc00484:	3c02bf80 	lui	v0,0xbf80
-9fc00488:	ac440000 	sw	a0,0(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:47
+80001204:	3c02bf80 	lui	v0,0xbf80
+80001208:	ac440000 	sw	a0,0(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:47
     MFP_GREEN_LEDS      = data;
-9fc0048c:	ac440004 	sw	a0,4(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:48
+8000120c:	ac440004 	sw	a0,4(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:48
     MFP_7_SEGMENT_HEX   = data;
-9fc00490:	ac440010 	sw	a0,16(v0)
-9fc00494:	03e00008 	jr	ra
-9fc00498:	00000000 	nop
+80001210:	ac440010 	sw	a0,16(v0)
+80001214:	03e00008 	jr	ra
+80001218:	00000000 	nop
 
-9fc0049c <uartReceive>:
+8000121c <uartReceive>:
 uartReceive():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:54
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:54
 }
 
 uint8_t uartReceive(void)
 {
     //waiting for RX data
     while (!(MFP_UART_LSR & MFP_UART_LSR_DR));
-9fc0049c:	3c03b040 	lui	v1,0xb040
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:54 (discriminator 1)
-9fc004a0:	8c621014 	lw	v0,4116(v1)
-9fc004a4:	30420001 	andi	v0,v0,0x1
-9fc004a8:	1040fffd 	beqz	v0,9fc004a0 <uartReceive+0x4>
-9fc004ac:	3c02b040 	lui	v0,0xb040
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:56
+8000121c:	3c03b040 	lui	v1,0xb040
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:54 (discriminator 1)
+80001220:	8c621014 	lw	v0,4116(v1)
+80001224:	30420001 	andi	v0,v0,0x1
+80001228:	1040fffd 	beqz	v0,80001220 <uartReceive+0x4>
+8000122c:	3c02b040 	lui	v0,0xb040
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:56
     //returning received data
     return MFP_UART_RXR;
-9fc004b0:	8c421000 	lw	v0,4096(v0)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:57
+80001230:	8c421000 	lw	v0,4096(v0)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:57
 }
-9fc004b4:	03e00008 	jr	ra
-9fc004b8:	304200ff 	andi	v0,v0,0xff
+80001234:	03e00008 	jr	ra
+80001238:	304200ff 	andi	v0,v0,0xff
 
-9fc004bc <uartWrite>:
+8000123c <uartWrite>:
 uartWrite():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:60
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:60
 
 void uartWrite(const char str[])
 {
-9fc004bc:	27bdffe8 	addiu	sp,sp,-24
-9fc004c0:	afbf0014 	sw	ra,20(sp)
-9fc004c4:	afb00010 	sw	s0,16(sp)
-9fc004c8:	00808025 	move	s0,a0
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:61
+8000123c:	27bdffe8 	addiu	sp,sp,-24
+80001240:	afbf0014 	sw	ra,20(sp)
+80001244:	afb00010 	sw	s0,16(sp)
+80001248:	00808025 	move	s0,a0
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:61
     while(*str)
-9fc004cc:	90840000 	lbu	a0,0(a0)
-9fc004d0:	10800006 	beqz	a0,9fc004ec <uartWrite+0x30>
-9fc004d4:	8fbf0014 	lw	ra,20(sp)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:62
+8000124c:	90840000 	lbu	a0,0(a0)
+80001250:	10800006 	beqz	a0,8000126c <uartWrite+0x30>
+80001254:	8fbf0014 	lw	ra,20(sp)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:62
         uartTransmit(*str++);
-9fc004d8:	0ff00119 	jal	9fc00464 <uartTransmit>
-9fc004dc:	26100001 	addiu	s0,s0,1
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:61
+80001258:	0c000479 	jal	800011e4 <uartTransmit>
+8000125c:	26100001 	addiu	s0,s0,1
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:61
     while(*str)
-9fc004e0:	92040000 	lbu	a0,0(s0)
-9fc004e4:	1480fffc 	bnez	a0,9fc004d8 <uartWrite+0x1c>
-9fc004e8:	8fbf0014 	lw	ra,20(sp)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:63
+80001260:	92040000 	lbu	a0,0(s0)
+80001264:	1480fffc 	bnez	a0,80001258 <uartWrite+0x1c>
+80001268:	8fbf0014 	lw	ra,20(sp)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:63
 }
-9fc004ec:	8fb00010 	lw	s0,16(sp)
-9fc004f0:	03e00008 	jr	ra
-9fc004f4:	27bd0018 	addiu	sp,sp,24
+8000126c:	8fb00010 	lw	s0,16(sp)
+80001270:	03e00008 	jr	ra
+80001274:	27bd0018 	addiu	sp,sp,24
 
-9fc004f8 <main>:
+80001278 <main>:
 main():
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:66
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:66
 
 int main ()
 {
-9fc004f8:	27bdffe8 	addiu	sp,sp,-24
-9fc004fc:	afbf0014 	sw	ra,20(sp)
-9fc00500:	afb00010 	sw	s0,16(sp)
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:69
+80001278:	27bdffe8 	addiu	sp,sp,-24
+8000127c:	afbf0014 	sw	ra,20(sp)
+80001280:	afb00010 	sw	s0,16(sp)
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:69
     // init
     const uint16_t uartDivisor = UART_DIVISOR;
     uartInit(uartDivisor);
-9fc00504:	0ff0010a 	jal	9fc00428 <uartInit>
-9fc00508:	2404001b 	li	a0,27
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:72
+80001284:	0c00046a 	jal	800011a8 <uartInit>
+80001288:	2404001b 	li	a0,27
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:72
 
     // say Hello after reset
     uartWrite("Hello!");
-9fc0050c:	3c049fc0 	lui	a0,0x9fc0
-9fc00510:	0ff0012f 	jal	9fc004bc <uartWrite>
-9fc00514:	24840584 	addiu	a0,a0,1412
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:77 (discriminator 1)
+8000128c:	3c048000 	lui	a0,0x8000
+80001290:	0c00048f 	jal	8000123c <uartWrite>
+80001294:	24841304 	addiu	a0,a0,4868
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:77 (discriminator 1)
 
     // received data output and loopback
     for(;;)
     {
         uint8_t data = uartReceive();
-9fc00518:	0ff00127 	jal	9fc0049c <uartReceive>
-9fc0051c:	00000000 	nop
-9fc00520:	00408025 	move	s0,v0
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:78 (discriminator 1)
+80001298:	0c000487 	jal	8000121c <uartReceive>
+8000129c:	00000000 	nop
+800012a0:	00408025 	move	s0,v0
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:78 (discriminator 1)
         receivedDataOutput(data);
-9fc00524:	0ff00121 	jal	9fc00484 <receivedDataOutput>
-9fc00528:	00402025 	move	a0,v0
-/home/zsl/work/github/mipsfpga-plus_zsl/program/05_uart/main.c:81 (discriminator 1)
+800012a4:	0c000481 	jal	80001204 <receivedDataOutput>
+800012a8:	00402025 	move	a0,v0
+/home/zsl/work/github/mipsfpga-plus_zsl_dev/program/05_uart/main.c:81 (discriminator 1)
 
         #if   RUNTYPE == HARDWARE
         uartTransmit(data);
-9fc0052c:	0ff00119 	jal	9fc00464 <uartTransmit>
-9fc00530:	02002025 	move	a0,s0
-9fc00534:	1000fff8 	b	9fc00518 <main+0x20>
-9fc00538:	00000000 	nop
+800012ac:	0c000479 	jal	800011e4 <uartTransmit>
+800012b0:	02002025 	move	a0,s0
+800012b4:	1000fff8 	b	80001298 <main+0x20>
+800012b8:	00000000 	nop
 
-9fc0053c <__do_global_ctors_aux>:
+800012bc <__do_global_ctors_aux>:
 __do_global_ctors_aux():
-9fc0053c:	27bdffe0 	addiu	sp,sp,-32
-9fc00540:	afb00014 	sw	s0,20(sp)
-9fc00544:	3c109fc0 	lui	s0,0x9fc0
-9fc00548:	afb10018 	sw	s1,24(sp)
-9fc0054c:	2411ffff 	li	s1,-1
-9fc00550:	261005e0 	addiu	s0,s0,1504
-9fc00554:	afbf001c 	sw	ra,28(sp)
-9fc00558:	8e020000 	lw	v0,0(s0)
-9fc0055c:	14510005 	bne	v0,s1,9fc00574 <__do_global_ctors_aux+0x38>
-9fc00560:	8fbf001c 	lw	ra,28(sp)
-9fc00564:	8fb00014 	lw	s0,20(sp)
-9fc00568:	8fb10018 	lw	s1,24(sp)
-9fc0056c:	03e00008 	jr	ra
-9fc00570:	27bd0020 	addiu	sp,sp,32
-9fc00574:	0040f809 	jalr	v0
-9fc00578:	2610fffc 	addiu	s0,s0,-4
-9fc0057c:	1000fff7 	b	9fc0055c <__do_global_ctors_aux+0x20>
-9fc00580:	8e020000 	lw	v0,0(s0)
-9fc00584:	6c6c6548 	0x6c6c6548
-9fc00588:	0000216f 	0x216f
-9fc0058c:	00000000 	nop
+800012bc:	27bdffe0 	addiu	sp,sp,-32
+800012c0:	afb00014 	sw	s0,20(sp)
+800012c4:	3c108000 	lui	s0,0x8000
+800012c8:	afb10018 	sw	s1,24(sp)
+800012cc:	2411ffff 	li	s1,-1
+800012d0:	26101360 	addiu	s0,s0,4960
+800012d4:	afbf001c 	sw	ra,28(sp)
+800012d8:	8e020000 	lw	v0,0(s0)
+800012dc:	14510005 	bne	v0,s1,800012f4 <__do_global_ctors_aux+0x38>
+800012e0:	8fbf001c 	lw	ra,28(sp)
+800012e4:	8fb00014 	lw	s0,20(sp)
+800012e8:	8fb10018 	lw	s1,24(sp)
+800012ec:	03e00008 	jr	ra
+800012f0:	27bd0020 	addiu	sp,sp,32
+800012f4:	0040f809 	jalr	v0
+800012f8:	2610fffc 	addiu	s0,s0,-4
+800012fc:	1000fff7 	b	800012dc <__do_global_ctors_aux+0x20>
+80001300:	8e020000 	lw	v0,0(s0)
+80001304:	6c6c6548 	0x6c6c6548
+80001308:	0000216f 	0x216f
+8000130c:	00000000 	nop
 
 Disassembly of section .init:
 
-9fc00590 <_init>:
+80001310 <_init>:
 _init():
-9fc00590:	27bdffe0 	addiu	sp,sp,-32
-9fc00594:	afbf0014 	sw	ra,20(sp)
-9fc00598:	0ff000f2 	jal	9fc003c8 <frame_dummy>
-9fc0059c:	00000000 	nop
-9fc005a0:	0ff0014f 	jal	9fc0053c <__do_global_ctors_aux>
-9fc005a4:	00000000 	nop
+80001310:	27bdffe0 	addiu	sp,sp,-32
+80001314:	afbf0014 	sw	ra,20(sp)
+80001318:	0c000452 	jal	80001148 <frame_dummy>
+8000131c:	00000000 	nop
+80001320:	0c0004af 	jal	800012bc <__do_global_ctors_aux>
+80001324:	00000000 	nop
 
-9fc005a8 <init>:
+80001328 <init>:
 init():
-9fc005a8:	8fbf0014 	lw	ra,20(sp)
-9fc005ac:	03e00008 	jr	ra
-9fc005b0:	27bd0020 	addiu	sp,sp,32
+80001328:	8fbf0014 	lw	ra,20(sp)
+8000132c:	03e00008 	jr	ra
+80001330:	27bd0020 	addiu	sp,sp,32
 
 Disassembly of section .fini:
 
-9fc005b4 <_fini>:
+80001334 <_fini>:
 _fini():
-9fc005b4:	27bdffe0 	addiu	sp,sp,-32
-9fc005b8:	afbf0014 	sw	ra,20(sp)
-9fc005bc:	0ff000c1 	jal	9fc00304 <__do_global_dtors_aux>
-9fc005c0:	00000000 	nop
+80001334:	27bdffe0 	addiu	sp,sp,-32
+80001338:	afbf0014 	sw	ra,20(sp)
+8000133c:	0c000421 	jal	80001084 <__do_global_dtors_aux>
+80001340:	00000000 	nop
 
-9fc005c4 <fini>:
+80001344 <fini>:
 fini():
-9fc005c4:	8fbf0014 	lw	ra,20(sp)
-9fc005c8:	03e00008 	jr	ra
-9fc005cc:	27bd0020 	addiu	sp,sp,32
+80001344:	8fbf0014 	lw	ra,20(sp)
+80001348:	03e00008 	jr	ra
+8000134c:	27bd0020 	addiu	sp,sp,32
 
 Disassembly of section .eh_frame:
 
-9fc005d0 <__EH_FRAME_BEGIN__>:
-9fc005d0:	00000000 	nop
+80001350 <__EH_FRAME_BEGIN__>:
+80001350:	00000000 	nop
 
 Disassembly of section .data:
 
-9fc005d4 <__dso_handle-0x4>:
-9fc005d4:	00000000 	nop
+80001354 <__dso_handle-0x4>:
+80001354:	00000000 	nop
 
-9fc005d8 <__dso_handle>:
+80001358 <__dso_handle>:
 	...
 
 Disassembly of section .ctors:
 
-9fc005e0 <__CTOR_LIST__>:
-9fc005e0:	ffffffff 	sdc3	$31,-1(ra)
+80001360 <__CTOR_LIST__>:
+80001360:	ffffffff 	sdc3	$31,-1(ra)
 
-9fc005e4 <__CTOR_END__>:
-9fc005e4:	00000000 	nop
+80001364 <__CTOR_END__>:
+80001364:	00000000 	nop
 
 Disassembly of section .dtors:
 
-9fc005e8 <__DTOR_LIST__>:
-9fc005e8:	ffffffff 	sdc3	$31,-1(ra)
+80001368 <__DTOR_LIST__>:
+80001368:	ffffffff 	sdc3	$31,-1(ra)
 
-9fc005ec <__DTOR_END__>:
-9fc005ec:	00000000 	nop
+8000136c <__DTOR_END__>:
+8000136c:	00000000 	nop
 
 Disassembly of section .jcr:
 
-9fc005f0 <__JCR_END__>:
-9fc005f0:	00000000 	nop
+80001370 <__JCR_END__>:
+80001370:	00000000 	nop
 
 Disassembly of section .bss:
 
-80001000 <completed.3599>:
-80001000:	00000000 	nop
+80001374 <completed.3599>:
+80001374:	00000000 	nop
 
-80001004 <dtor_idx.3601>:
-80001004:	00000000 	nop
+80001378 <dtor_idx.3601>:
+80001378:	00000000 	nop
 
-80001008 <object.3611>:
+8000137c <object.3611>:
 	...
 
 Disassembly of section .debug_line:
 
 00000000 <.debug_line>:
-   0:	00000104 	0x104
-   4:	00540002 	0x540002
+   0:	00000108 	0x108
+   4:	00580002 	0x580002
    8:	01010000 	0x1010000
    c:	000d0efb 	0xd0efb
   10:	01010101 	0x1010101
@@ -1061,129 +1066,130 @@ Disassembly of section .debug_line:
   34:	67706673 	0x67706673
   38:	6c702d61 	0x6c702d61
   3c:	7a5f7375 	0x7a5f7375
-  40:	632f6c73 	0x632f6c73
-  44:	6f6d6d6f 	0x6f6d6d6f
-  48:	72702f6e 	0x72702f6e
-  4c:	6172676f 	0x6172676f
-  50:	6200006d 	0x6200006d
-  54:	2e746f6f 	sltiu	s4,s3,28527
-  58:	00010053 	0x10053
-  5c:	05000000 	bltz	t0,60 <_fbss-0x80000fa0>
-  60:	c0000002 	ll	zero,2(zero)
-  64:	0110039f 	0x110039f
-  68:	4d4b8851 	0x4d4b8851
-  6c:	4b4b4c4b 	c2	0x14b4c4b
-  70:	4b4b4b4b 	c2	0x14b4b4b
+  40:	645f6c73 	0x645f6c73
+  44:	632f7665 	0x632f7665
+  48:	6f6d6d6f 	0x6f6d6d6f
+  4c:	72702f6e 	0x72702f6e
+  50:	6172676f 	0x6172676f
+  54:	6200006d 	0x6200006d
+  58:	2e746f6f 	sltiu	s4,s3,28527
+  5c:	00010053 	0x10053
+  60:	05000000 	bltz	t0,64 <_ftext_ram-0x80000f9c>
+  64:	c0000002 	ll	zero,2(zero)
+  68:	0110039f 	0x110039f
+  6c:	4d4b8851 	0x4d4b8851
+  70:	4b4b4c4b 	c2	0x14b4c4b
   74:	4b4b4b4b 	c2	0x14b4b4b
   78:	4b4b4b4b 	c2	0x14b4b4b
   7c:	4b4b4b4b 	c2	0x14b4b4b
   80:	4b4b4b4b 	c2	0x14b4b4b
   84:	4b4b4b4b 	c2	0x14b4b4b
-  88:	4c4b4b4b 	0x4c4b4b4b
-  8c:	514b4b4b 	beql	t2,t3,12dbc <_fbss-0x7ffee244>
-  90:	4b4b4d83 	c2	0x14b4d83
-  94:	4b4b4d4b 	c2	0x14b4d4b
-  98:	4b4b4c4b 	c2	0x14b4c4b
+  88:	4b4b4b4b 	c2	0x14b4b4b
+  8c:	4c4b4b4b 	0x4c4b4b4b
+  90:	514b4b4b 	beql	t2,t3,12dc0 <_ftext_ram-0x7ffee240>
+  94:	4b4b4d83 	c2	0x14b4d83
+  98:	4b4b4d4b 	c2	0x14b4d4b
   9c:	4b4b4c4b 	c2	0x14b4c4b
   a0:	4b4b4c4b 	c2	0x14b4c4b
   a4:	4b4b4c4b 	c2	0x14b4c4b
   a8:	4b4b4c4b 	c2	0x14b4c4b
   ac:	4b4b4c4b 	c2	0x14b4c4b
-  b0:	4e4b4c4b 	c3	0x4b4c4b
-  b4:	4a0a034d 	c2	0xa034d
-  b8:	4d4b4b4b 	0x4d4b4b4b
-  bc:	4b4b4b4b 	c2	0x14b4b4b
-  c0:	4b4d4b4b 	c2	0x14d4b4b
-  c4:	4c4b4b4b 	0x4c4b4b4b
-  c8:	4b4b514b 	c2	0x14b514b
-  cc:	4c4b4c4b 	0x4c4b4c4b
-  d0:	4b4c4b4b 	c2	0x14c4b4b
+  b0:	4b4b4c4b 	c2	0x14b4c4b
+  b4:	4e4b4c4b 	c3	0x4b4c4b
+  b8:	4a0a034d 	c2	0xa034d
+  bc:	4d4b4b4b 	0x4d4b4b4b
+  c0:	4b4b4b4b 	c2	0x14b4b4b
+  c4:	4b4d4b4b 	c2	0x14d4b4b
+  c8:	4c4b4b4b 	0x4c4b4b4b
+  cc:	4b4b514b 	c2	0x14b514b
+  d0:	4c4b4c4b 	0x4c4b4c4b
   d4:	4b4c4b4b 	c2	0x14c4b4b
-  d8:	4b4b4b4f 	c2	0x14b4b4f
-  dc:	4b4a0c03 	c2	0x14a0c03
-  e0:	834c4b4b 	lb	t4,19275(k0)
-  e4:	4b4b504b 	c2	0x14b504b
-  e8:	4c4b4c4b 	0x4c4b4c4b
-  ec:	4b4c4b4b 	c2	0x14c4b4b
+  d8:	4b4c4b4b 	c2	0x14c4b4b
+  dc:	4b4b4b4f 	c2	0x14b4b4f
+  e0:	4b4a0c03 	c2	0x14a0c03
+  e4:	834c4b4b 	lb	t4,19275(k0)
+  e8:	4b4b504b 	c2	0x14b504b
+  ec:	4c4b4c4b 	0x4c4b4c4b
   f0:	4b4c4b4b 	c2	0x14c4b4b
-  f4:	4b4b4f4b 	c2	0x14b4f4b
-  f8:	4c834f4b 	0x4c834f4b
-  fc:	834e4b83 	lb	t6,19331(k0)
- 100:	024b5086 	0x24b5086
- 104:	01010004 	sllv	zero,at,t0
- 108:	0000011d 	0x11d
- 10c:	00d20002 	0xd20002
- 110:	01010000 	0x1010000
- 114:	000d0efb 	0xd0efb
- 118:	01010101 	0x1010101
- 11c:	01000000 	0x1000000
- 120:	2f010000 	sltiu	at,t8,0
- 124:	2f74706f 	sltiu	s4,k1,28783
- 128:	74676d69 	jalx	19db5a4 <_fbss-0x7e625a5c>
- 12c:	542f6365 	bnel	at,t7,18ec4 <_fbss-0x7ffe813c>
- 130:	636c6f6f 	0x636c6f6f
- 134:	6e696168 	0x6e696168
- 138:	696d2f73 	0x696d2f73
- 13c:	6d2d7370 	0x6d2d7370
- 140:	652d6974 	0x652d6974
- 144:	322f666c 	andi	t7,s1,0x666c
- 148:	2e373130 	sltiu	s7,s1,12592
- 14c:	302d3031 	andi	t5,at,0x3031
- 150:	696d2f35 	0x696d2f35
- 154:	6d2d7370 	0x6d2d7370
- 158:	652d6974 	0x652d6974
- 15c:	692f666c 	0x692f666c
- 160:	756c636e 	jalx	5b18db8 <_fbss-0x7a4e8248>
- 164:	6d2f6564 	0x6d2f6564
- 168:	69686361 	0x69686361
- 16c:	2f00656e 	sltiu	zero,t8,25966
- 170:	2f74706f 	sltiu	s4,k1,28783
- 174:	74676d69 	jalx	19db5a4 <_fbss-0x7e625a5c>
- 178:	542f6365 	bnel	at,t7,18f10 <_fbss-0x7ffe80f0>
- 17c:	636c6f6f 	0x636c6f6f
- 180:	6e696168 	0x6e696168
- 184:	696d2f73 	0x696d2f73
- 188:	6d2d7370 	0x6d2d7370
- 18c:	652d6974 	0x652d6974
- 190:	322f666c 	andi	t7,s1,0x666c
- 194:	2e373130 	sltiu	s7,s1,12592
- 198:	302d3031 	andi	t5,at,0x3031
- 19c:	696d2f35 	0x696d2f35
- 1a0:	6d2d7370 	0x6d2d7370
- 1a4:	652d6974 	0x652d6974
- 1a8:	692f666c 	0x692f666c
- 1ac:	756c636e 	jalx	5b18db8 <_fbss-0x7a4e8248>
- 1b0:	732f6564 	0x732f6564
- 1b4:	00007379 	0x7379
- 1b8:	6e69616d 	0x6e69616d
- 1bc:	0000632e 	0x632e
- 1c0:	645f0000 	0x645f0000
- 1c4:	75616665 	jalx	5859994 <_fbss-0x7a7a766c>
- 1c8:	745f746c 	jalx	17dd1b0 <_fbss-0x7e823e50>
- 1cc:	73657079 	0x73657079
- 1d0:	0100682e 	0x100682e
- 1d4:	735f0000 	madd	k0,ra
- 1d8:	6e696474 	0x6e696474
- 1dc:	00682e74 	teq	v1,t0,0xb9
- 1e0:	00000002 	srl	zero,zero,0x0
- 1e4:	28020500 	slti	v0,zero,1280
- 1e8:	039fc004 	sllv	t8,ra,gp
- 1ec:	bb13011a 	swr	s3,282(t8)
- 1f0:	088383bb 	j	20e0eec <_fbss-0x7df20114>
- 1f4:	02001440 	0x2001440
- 1f8:	4a060104 	c2	0x60104
- 1fc:	13bef506 	beq	sp,s8,ffffd618 <hwreset+0x403fd618>
- 200:	14be4b83 	bne	a1,s8,13010 <_fbss-0x7ffedff0>
- 204:	01040200 	0x1040200
- 208:	f4064a06 	sdc1	$f6,18950(zero)
- 20c:	bbf3854b 	swr	s3,-31413(ra)
- 210:	bdbdbc81 	cache	0x1d,-17279(t5)
- 214:	04020085 	bltzl	zero,42c <_fbss-0x80000bd4>
- 218:	0200bf01 	0x200bf01
- 21c:	00bb0104 	0xbb0104
- 220:	85010402 	lh	at,1026(t0)
- 224:	01001002 	0x1001002
- 228:	Address 0x0000000000000228 is out of bounds.
+  f4:	4b4c4b4b 	c2	0x14c4b4b
+  f8:	4b4b4f4b 	c2	0x14b4f4b
+  fc:	4c834f4b 	0x4c834f4b
+ 100:	834e4b83 	lb	t6,19331(k0)
+ 104:	024b5086 	0x24b5086
+ 108:	01010004 	sllv	zero,at,t0
+ 10c:	0000011d 	0x11d
+ 110:	00d20002 	0xd20002
+ 114:	01010000 	0x1010000
+ 118:	000d0efb 	0xd0efb
+ 11c:	01010101 	0x1010101
+ 120:	01000000 	0x1000000
+ 124:	2f010000 	sltiu	at,t8,0
+ 128:	2f74706f 	sltiu	s4,k1,28783
+ 12c:	74676d69 	jalx	19db5a4 <_ftext_ram-0x7e625a5c>
+ 130:	542f6365 	bnel	at,t7,18ec8 <_ftext_ram-0x7ffe8138>
+ 134:	636c6f6f 	0x636c6f6f
+ 138:	6e696168 	0x6e696168
+ 13c:	696d2f73 	0x696d2f73
+ 140:	6d2d7370 	0x6d2d7370
+ 144:	652d6974 	0x652d6974
+ 148:	322f666c 	andi	t7,s1,0x666c
+ 14c:	2e373130 	sltiu	s7,s1,12592
+ 150:	302d3031 	andi	t5,at,0x3031
+ 154:	696d2f35 	0x696d2f35
+ 158:	6d2d7370 	0x6d2d7370
+ 15c:	652d6974 	0x652d6974
+ 160:	692f666c 	0x692f666c
+ 164:	756c636e 	jalx	5b18db8 <_ftext_ram-0x7a4e8248>
+ 168:	6d2f6564 	0x6d2f6564
+ 16c:	69686361 	0x69686361
+ 170:	2f00656e 	sltiu	zero,t8,25966
+ 174:	2f74706f 	sltiu	s4,k1,28783
+ 178:	74676d69 	jalx	19db5a4 <_ftext_ram-0x7e625a5c>
+ 17c:	542f6365 	bnel	at,t7,18f14 <_ftext_ram-0x7ffe80ec>
+ 180:	636c6f6f 	0x636c6f6f
+ 184:	6e696168 	0x6e696168
+ 188:	696d2f73 	0x696d2f73
+ 18c:	6d2d7370 	0x6d2d7370
+ 190:	652d6974 	0x652d6974
+ 194:	322f666c 	andi	t7,s1,0x666c
+ 198:	2e373130 	sltiu	s7,s1,12592
+ 19c:	302d3031 	andi	t5,at,0x3031
+ 1a0:	696d2f35 	0x696d2f35
+ 1a4:	6d2d7370 	0x6d2d7370
+ 1a8:	652d6974 	0x652d6974
+ 1ac:	692f666c 	0x692f666c
+ 1b0:	756c636e 	jalx	5b18db8 <_ftext_ram-0x7a4e8248>
+ 1b4:	732f6564 	0x732f6564
+ 1b8:	00007379 	0x7379
+ 1bc:	6e69616d 	0x6e69616d
+ 1c0:	0000632e 	0x632e
+ 1c4:	645f0000 	0x645f0000
+ 1c8:	75616665 	jalx	5859994 <_ftext_ram-0x7a7a766c>
+ 1cc:	745f746c 	jalx	17dd1b0 <_ftext_ram-0x7e823e50>
+ 1d0:	73657079 	0x73657079
+ 1d4:	0100682e 	0x100682e
+ 1d8:	735f0000 	madd	k0,ra
+ 1dc:	6e696474 	0x6e696474
+ 1e0:	00682e74 	teq	v1,t0,0xb9
+ 1e4:	00000002 	srl	zero,zero,0x0
+ 1e8:	a8020500 	swl	v0,1280(zero)
+ 1ec:	03800011 	mthi	gp
+ 1f0:	bb13011a 	swr	s3,282(t8)
+ 1f4:	088383bb 	j	20e0eec <_ftext_ram-0x7df20114>
+ 1f8:	02001440 	0x2001440
+ 1fc:	4a060104 	c2	0x60104
+ 200:	13bef506 	beq	sp,s8,ffffd61c <hwreset+0x403fd61c>
+ 204:	14be4b83 	bne	a1,s8,13014 <_ftext_ram-0x7ffedfec>
+ 208:	01040200 	0x1040200
+ 20c:	f4064a06 	sdc1	$f6,18950(zero)
+ 210:	bbf3854b 	swr	s3,-31413(ra)
+ 214:	bdbdbc81 	cache	0x1d,-17279(t5)
+ 218:	04020085 	bltzl	zero,430 <_ftext_ram-0x80000bd0>
+ 21c:	0200bf01 	0x200bf01
+ 220:	00bb0104 	0xbb0104
+ 224:	85010402 	lh	at,1026(t0)
+ 228:	01001002 	0x1001002
+ 22c:	Address 0x000000000000022c is out of bounds.
 
 
 Disassembly of section .debug_info:
@@ -1196,135 +1202,135 @@ Disassembly of section .debug_info:
   10:	9fc00000 	0x9fc00000
   14:	9fc0027c 	0x9fc0027c
   18:	00000000 	nop
-  1c:	0000003e 	0x3e
-  20:	00000076 	tne	zero,zero,0x1
+  1c:	00000042 	srl	zero,zero,0x1
+  20:	00000081 	0x81
   24:	02048001 	movf	s0,s0,$fcc1
   28:	00020000 	sll	zero,v0,0x0
   2c:	00000014 	0x14
-  30:	00b30104 	0xb30104
-  34:	d10c0000 	0xd10c0000
-  38:	3e000001 	0x3e000001
-  3c:	28000000 	slti	zero,zero,0
-  40:	3c9fc004 	0x3c9fc004
-  44:	089fc005 	j	27f0014 <_fbss-0x7d810fec>
+  30:	00be0104 	0xbe0104
+  34:	180c0000 	0x180c0000
+  38:	bb000002 	swr	zero,2(t8)
+  3c:	a8000001 	swl	zero,1(zero)
+  40:	bc800011 	cache	0x0,17(a0)
+  44:	0c800012 	jal	2000048 <_ftext_ram-0x7e000fb8>
   48:	02000001 	movf	zero,s0,$fcc0
-  4c:	01510601 	0x1510601
-  50:	85030000 	lh	v1,0(t0)
+  4c:	015c0601 	0x15c0601
+  50:	90030000 	lbu	v1,0(zero)
   54:	02000000 	0x2000000
   58:	0000372b 	0x372b
-  5c:	08010200 	j	40800 <_fbss-0x7ffc0800>
-  60:	0000014f 	sync	0x5
-  64:	d8050202 	ldc2	$5,514(zero)
-  68:	03000001 	movf	zero,t8,$fcc0
-  6c:	0000017d 	0x17d
+  5c:	08010200 	j	40800 <_ftext_ram-0x7ffc0800>
+  60:	0000015a 	0x15a
+  64:	1f050202 	0x1f050202
+  68:	03000002 	0x3000002
+  6c:	00000188 	0x188
   70:	00503902 	0x503902
   74:	02020000 	0x2020000
-  78:	00015d07 	0x15d07
+  78:	00016807 	srav	t5,at,zero
   7c:	05040200 	0x5040200
-  80:	000001c8 	0x1c8
-  84:	92070402 	lbu	a3,1026(s0)
+  80:	0000020f 	sync	0x8
+  84:	9d070402 	0x9d070402
   88:	02000001 	movf	zero,s0,$fcc0
-  8c:	01c30508 	0x1c30508
-  90:	08020000 	j	80000 <_fbss-0x7ff81000>
-  94:	00018d07 	0x18d07
-  98:	00870300 	0x870300
+  8c:	020a0508 	0x20a0508
+  90:	08020000 	j	80000 <_ftext_ram-0x7ff81000>
+  94:	00019807 	srav	s3,at,zero
+  98:	00920300 	0x920300
   9c:	18030000 	0x18030000
   a0:	0000002c 	0x2c
-  a4:	00017f03 	sra	t7,at,0x1c
-  a8:	45240300 	bc1any2f	$fcc1,cac <_fbss-0x80000354>
-  ac:	04000000 	bltz	zero,b0 <_fbss-0x80000f50>
+  a4:	00018a03 	sra	s1,at,0x8
+  a8:	45240300 	bc1any2f	$fcc1,cac <_ftext_ram-0x80000354>
+  ac:	04000000 	bltz	zero,b0 <_ftext_ram-0x80000f50>
   b0:	0000007e 	0x7e
   b4:	69050405 	0x69050405
   b8:	0200746e 	0x200746e
-  bc:	01970704 	0x1970704
+  bc:	01a20704 	0x1a20704
   c0:	01060000 	0x1060000
-  c4:	00000188 	0x188
+  c4:	00000193 	0x193
   c8:	008e4101 	0x8e4101
-  cc:	04f80000 	0x4f80000
-  d0:	053c9fc0 	0x53c9fc0
-  d4:	00009fc0 	sll	s3,zero,0x1f
+  cc:	12780000 	beq	s3,t8,d0 <_ftext_ram-0x80000f30>
+  d0:	12bc8000 	beq	s5,gp,fffe00d4 <hwreset+0x403e00d4>
+  d4:	00008000 	sll	s0,zero,0x0
   d8:	36010000 	ori	at,s0,0x0
-  dc:	07000001 	bltz	t8,e4 <_fbss-0x80000f1c>
-  e0:	000001a4 	0x1a4
+  dc:	07000001 	bltz	t8,e4 <_ftext_ram-0x80000f1c>
+  e0:	000001af 	0x1af
   e4:	00894401 	0x894401
-  e8:	081b0000 	j	6c0000 <_fbss-0x7f941000>
-  ec:	9fc00518 	0x9fc00518
-  f0:	9fc0053c 	0x9fc0053c
+  e8:	081b0000 	j	6c0000 <_ftext_ram-0x7f941000>
+  ec:	80001298 	lb	zero,4760(zero)
+  f0:	800012bc 	lb	zero,4796(zero)
   f4:	0000010f 	sync_wmb
-  f8:	0000ae09 	0xae09
+  f8:	0000b909 	0xb909
   fc:	734d0100 	0x734d0100
  100:	20000000 	addi	zero,zero,0
- 104:	0a000000 	j	8000000 <_fbss-0x78001000>
- 108:	9fc00520 	0x9fc00520
+ 104:	0a000000 	j	8000000 <_ftext_ram-0x78001000>
+ 108:	800012a0 	lb	zero,4768(zero)
  10c:	0000017b 	0x17b
- 110:	c0052c0b 	ll	a1,11275(zero)
- 114:	0001949f 	0x1949f
+ 110:	0012ac0b 	0x12ac0b
+ 114:	00019480 	sll	s2,at,0x12
  118:	0000fe00 	sll	ra,zero,0x18
- 11c:	54010c00 	bnel	zero,at,3120 <_fbss-0x7fffdee0>
+ 11c:	54010c00 	bnel	zero,at,3120 <_ftext_ram-0x7fffdee0>
  120:	00008002 	srl	s0,zero,0x0
- 124:	c005340d 	ll	a1,13325(zero)
- 128:	0001bb9f 	0x1bb9f
- 12c:	54010c00 	bnel	zero,at,3130 <_fbss-0x7fffded0>
+ 124:	0012b40d 	break	0x12,0x2d0
+ 128:	0001bb80 	sll	s7,at,0xe
+ 12c:	54010c00 	bnel	zero,at,3130 <_ftext_ram-0x7fffded0>
  130:	00008002 	srl	s0,zero,0x0
- 134:	050c0b00 	teqi	t0,2816
- 138:	01e29fc0 	0x1e29fc0
+ 134:	128c0b00 	beq	s4,t4,2d38 <_ftext_ram-0x7fffe2c8>
+ 138:	01e28000 	0x1e28000
  13c:	01220000 	0x1220000
  140:	010c0000 	0x10c0000
  144:	004b0154 	0x4b0154
- 148:	c005180d 	ll	a1,6157(zero)
- 14c:	0001369f 	0x1369f
- 150:	54010c00 	bnel	zero,at,3154 <_fbss-0x7fffdeac>
- 154:	05840305 	0x5840305
- 158:	00009fc0 	sll	s3,zero,0x1f
- 15c:	009b010e 	0x9b010e
+ 148:	0012980d 	break	0x12,0x260
+ 14c:	00013680 	sll	a2,at,0x1a
+ 150:	54010c00 	bnel	zero,at,3154 <_ftext_ram-0x7fffdeac>
+ 154:	13040305 	beq	t8,a0,d6c <_ftext_ram-0x80000294>
+ 158:	00008000 	sll	s0,zero,0x0
+ 15c:	00a6010e 	0xa6010e
  160:	3b010000 	xori	at,t8,0x0
- 164:	c004bc01 	ll	a0,-17407(zero)
- 168:	c004f89f 	ll	a0,-1889(zero)
- 16c:	0000339f 	0x339f
+ 164:	00123c01 	0x123c01
+ 168:	00127880 	sll	t7,s2,0x2
+ 16c:	00003380 	sll	a2,zero,0xe
  170:	01690100 	0x1690100
  174:	730f0000 	madd	t8,t7
  178:	01007274 	teq	t0,zero,0x1c9
  17c:	0001693b 	0x1693b
  180:	00005f00 	sll	t3,zero,0x1c
- 184:	04e00a00 	bltz	a3,2988 <_fbss-0x7fffe678>
- 188:	01bb9fc0 	0x1bb9fc0
- 18c:	10000000 	b	190 <_fbss-0x80000e70>
+ 184:	12600a00 	beqz	s3,2988 <_ftext_ram-0x7fffe678>
+ 188:	01bb8000 	0x1bb8000
+ 18c:	10000000 	b	190 <_ftext_ram-0x80000e70>
  190:	00017604 	0x17604
- 194:	08010200 	j	40800 <_fbss-0x7ffc0800>
- 198:	00000158 	0x158
+ 194:	08010200 	j	40800 <_ftext_ram-0x7ffc0800>
+ 198:	00000163 	0x163
  19c:	00016f04 	0x16f04
- 1a0:	8f011100 	lw	at,4352(t8)
+ 1a0:	9a011100 	lwr	at,4352(s0)
  1a4:	01000000 	0x1000000
  1a8:	00730133 	tltu	v1,s3,0x4
- 1ac:	049c0000 	0x49c0000
- 1b0:	04bc9fc0 	0x4bc9fc0
- 1b4:	8d029fc0 	lw	v0,-24640(t0)
+ 1ac:	121c0000 	beq	s0,gp,1b0 <_ftext_ram-0x80000e50>
+ 1b0:	123c8000 	beq	s1,gp,fffe01b4 <hwreset+0x403e01b4>
+ 1b4:	8d028000 	lw	v0,-32768(t0)
  1b8:	01120100 	0x1120100
- 1bc:	000001b0 	tge	zero,zero,0x6
- 1c0:	84012c01 	lh	at,11265(zero)
- 1c4:	9c9fc004 	0x9c9fc004
- 1c8:	029fc004 	sllv	t8,ra,s4
+ 1bc:	000001f7 	0x1f7
+ 1c0:	04012c01 	b	b1c8 <_ftext_ram-0x7fff5e38>
+ 1c4:	1c800012 	bgtz	a0,210 <_ftext_ram-0x80000df0>
+ 1c8:	02800012 	0x2800012
  1cc:	bb01008d 	swr	at,141(t8)
- 1d0:	13000001 	beqz	t8,1d8 <_fbss-0x80000e28>
- 1d4:	000000ae 	0xae
+ 1d0:	13000001 	beqz	t8,1d8 <_ftext_ram-0x80000e28>
+ 1d4:	000000b9 	0xb9
  1d8:	00732c01 	0x732c01
- 1dc:	54010000 	bnel	zero,at,1e0 <_fbss-0x80000e20>
- 1e0:	70011200 	0x70011200
+ 1dc:	54010000 	bnel	zero,at,1e0 <_ftext_ram-0x80000e20>
+ 1e0:	7b011200 	xori.b	$w8,$w2,0x1
  1e4:	01000001 	movf	zero,t0,$fcc0
- 1e8:	04640123 	0x4640123
- 1ec:	04849fc0 	0x4849fc0
- 1f0:	8d029fc0 	lw	v0,-24640(t0)
+ 1e8:	11e40123 	beq	t7,a0,678 <_ftext_ram-0x80000988>
+ 1ec:	12048000 	beq	s0,a0,fffe01f0 <hwreset+0x403e01f0>
+ 1f0:	8d028000 	lw	v0,-32768(t0)
  1f4:	01e20100 	0x1e20100
- 1f8:	ae130000 	sw	s3,0(s0)
+ 1f8:	b9130000 	swr	s3,0(t0)
  1fc:	01000000 	0x1000000
  200:	00007323 	0x7323
  204:	00540100 	0x540100
- 208:	00a50114 	0xa50114
+ 208:	00b00114 	0xb00114
  20c:	1a010000 	0x1a010000
- 210:	c0042801 	ll	a0,10241(zero)
- 214:	c004649f 	ll	a0,25759(zero)
- 218:	008d029f 	0x8d029f
- 21c:	01e21501 	0x1e21501
+ 210:	0011a801 	movt	s5,zero,$fcc4
+ 214:	0011e480 	sll	gp,s1,0x12
+ 218:	008d0280 	0x8d0280
+ 21c:	02291501 	0x2291501
  220:	1a010000 	0x1a010000
  224:	0000007e 	0x7e
  228:	0000007d 	0x7d
@@ -1333,88 +1339,88 @@ Disassembly of section .debug_info:
 Disassembly of section .debug_abbrev:
 
 00000000 <.debug_abbrev>:
-   0:	10001101 	b	4408 <_fbss-0x7fffcbf8>
-   4:	12011106 	beq	s0,at,4420 <_fbss-0x7fffcbe0>
+   0:	10001101 	b	4408 <_ftext_ram-0x7fffcbf8>
+   4:	12011106 	beq	s0,at,4420 <_ftext_ram-0x7fffcbe0>
    8:	1b0e0301 	0x1b0e0301
-   c:	130e250e 	beq	t8,t6,9448 <_fbss-0x7fff7bb8>
+   c:	130e250e 	beq	t8,t6,9448 <_ftext_ram-0x7fff7bb8>
   10:	00000005 	lsa	zero,zero,zero,0x1
   14:	25011101 	addiu	at,t0,4353
   18:	030b130e 	0x30b130e
-  1c:	110e1b0e 	beq	t0,t6,6c58 <_fbss-0x7fffa3a8>
-  20:	10011201 	beq	zero,at,4828 <_fbss-0x7fffc7d8>
+  1c:	110e1b0e 	beq	t0,t6,6c58 <_ftext_ram-0x7fffa3a8>
+  20:	10011201 	beq	zero,at,4828 <_ftext_ram-0x7fffc7d8>
   24:	02000006 	srlv	zero,zero,s0
-  28:	0b0b0024 	j	c2c0090 <_fbss-0x73d40f70>
-  2c:	0e030b3e 	jal	80c2cf8 <_fbss-0x77f3e308>
-  30:	16030000 	bne	s0,v1,34 <_fbss-0x80000fcc>
+  28:	0b0b0024 	j	c2c0090 <_ftext_ram-0x73d40f70>
+  2c:	0e030b3e 	jal	80c2cf8 <_ftext_ram-0x77f3e308>
+  30:	16030000 	bne	s0,v1,34 <_ftext_ram-0x80000fcc>
   34:	3a0e0300 	xori	t6,s0,0x300
-  38:	490b3b0b 	bc2tl	$cc2,ec68 <_fbss-0x7fff2398>
-  3c:	04000013 	bltz	zero,8c <_fbss-0x80000f74>
-  40:	13490026 	beq	k0,t1,dc <_fbss-0x80000f24>
+  38:	490b3b0b 	bc2tl	$cc2,ec68 <_ftext_ram-0x7fff2398>
+  3c:	04000013 	bltz	zero,8c <_ftext_ram-0x80000f74>
+  40:	13490026 	beq	k0,t1,dc <_ftext_ram-0x80000f24>
   44:	24050000 	li	a1,0
   48:	3e0b0b00 	0x3e0b0b00
   4c:	0008030b 	0x8030b
   50:	012e0600 	0x12e0600
-  54:	0e030c3f 	jal	80c30fc <_fbss-0x77f3df04>
-  58:	0b3b0b3a 	j	cec2ce8 <_fbss-0x7313e318>
+  54:	0e030c3f 	jal	80c30fc <_ftext_ram-0x77f3df04>
+  58:	0b3b0b3a 	j	cec2ce8 <_ftext_ram-0x7313e318>
   5c:	01111349 	0x1111349
-  60:	06400112 	bltz	s2,4ac <_fbss-0x80000b54>
+  60:	06400112 	bltz	s2,4ac <_ftext_ram-0x80000b54>
   64:	010c4297 	0x10c4297
-  68:	07000013 	bltz	t8,b8 <_fbss-0x80000f48>
-  6c:	0e030034 	jal	80c00d0 <_fbss-0x77f40f30>
-  70:	0b3b0b3a 	j	cec2ce8 <_fbss-0x7313e318>
-  74:	0b1c1349 	j	c704d24 <_fbss-0x738fc2dc>
-  78:	0b080000 	j	c200000 <_fbss-0x73e01000>
-  7c:	12011101 	beq	s0,at,4484 <_fbss-0x7fffcb7c>
+  68:	07000013 	bltz	t8,b8 <_ftext_ram-0x80000f48>
+  6c:	0e030034 	jal	80c00d0 <_ftext_ram-0x77f40f30>
+  70:	0b3b0b3a 	j	cec2ce8 <_ftext_ram-0x7313e318>
+  74:	0b1c1349 	j	c704d24 <_ftext_ram-0x738fc2dc>
+  78:	0b080000 	j	c200000 <_ftext_ram-0x73e01000>
+  7c:	12011101 	beq	s0,at,4484 <_ftext_ram-0x7fffcb7c>
   80:	00130101 	0x130101
   84:	00340900 	0x340900
-  88:	0b3a0e03 	j	ce8380c <_fbss-0x7317d7f4>
-  8c:	13490b3b 	beq	k0,t1,2d7c <_fbss-0x7fffe284>
+  88:	0b3a0e03 	j	ce8380c <_ftext_ram-0x7317d7f4>
+  8c:	13490b3b 	beq	k0,t1,2d7c <_ftext_ram-0x7fffe284>
   90:	00000602 	srl	zero,zero,0x18
   94:	0182890a 	0x182890a
   98:	31011100 	andi	at,t0,0x1100
-  9c:	0b000013 	j	c00004c <_fbss-0x74000fb4>
+  9c:	0b000013 	j	c00004c <_ftext_ram-0x74000fb4>
   a0:	01018289 	0x1018289
-  a4:	13310111 	beq	t9,s1,4ec <_fbss-0x80000b14>
+  a4:	13310111 	beq	t9,s1,4ec <_ftext_ram-0x80000b14>
   a8:	00001301 	0x1301
   ac:	01828a0c 	syscall	0x60a28
   b0:	910a0200 	lbu	t2,512(t0)
   b4:	00000a42 	srl	at,zero,0x9
   b8:	0182890d 	break	0x182,0x224
   bc:	31011101 	andi	at,t0,0x1101
-  c0:	0e000013 	jal	800004c <_fbss-0x78000fb4>
-  c4:	0c3f012e 	jal	fc04b8 <_fbss-0x7f040b48>
-  c8:	0b3a0e03 	j	ce8380c <_fbss-0x7317d7f4>
-  cc:	0c270b3b 	jal	9c2cec <_fbss-0x7f63e314>
+  c0:	0e000013 	jal	800004c <_ftext_ram-0x78000fb4>
+  c4:	0c3f012e 	jal	fc04b8 <_ftext_ram-0x7f040b48>
+  c8:	0b3a0e03 	j	ce8380c <_ftext_ram-0x7317d7f4>
+  cc:	0c270b3b 	jal	9c2cec <_ftext_ram-0x7f63e314>
   d0:	01120111 	0x1120111
   d4:	42970640 	c0	0x970640
   d8:	0013010c 	syscall	0x4c04
   dc:	00050f00 	sll	at,a1,0x1c
-  e0:	0b3a0803 	j	ce8200c <_fbss-0x7317eff4>
-  e4:	13490b3b 	beq	k0,t1,2dd4 <_fbss-0x7fffe22c>
+  e0:	0b3a0803 	j	ce8200c <_ftext_ram-0x7317eff4>
+  e4:	13490b3b 	beq	k0,t1,2dd4 <_ftext_ram-0x7fffe22c>
   e8:	00000602 	srl	zero,zero,0x18
-  ec:	0b000f10 	j	c003c40 <_fbss-0x73ffd3c0>
+  ec:	0b000f10 	j	c003c40 <_ftext_ram-0x73ffd3c0>
   f0:	0013490b 	0x13490b
   f4:	002e1100 	0x2e1100
-  f8:	0e030c3f 	jal	80c30fc <_fbss-0x77f3df04>
-  fc:	0b3b0b3a 	j	cec2ce8 <_fbss-0x7313e318>
- 100:	13490c27 	beq	k0,t1,31a0 <_fbss-0x7fffde60>
+  f8:	0e030c3f 	jal	80c30fc <_ftext_ram-0x77f3df04>
+  fc:	0b3b0b3a 	j	cec2ce8 <_ftext_ram-0x7313e318>
+ 100:	13490c27 	beq	k0,t1,31a0 <_ftext_ram-0x7fffde60>
  104:	01120111 	0x1120111
  108:	42970a40 	c0	0x970a40
- 10c:	1200000c 	beqz	s0,140 <_fbss-0x80000ec0>
- 110:	0c3f012e 	jal	fc04b8 <_fbss-0x7f040b48>
- 114:	0b3a0e03 	j	ce8380c <_fbss-0x7317d7f4>
- 118:	0c270b3b 	jal	9c2cec <_fbss-0x7f63e314>
+ 10c:	1200000c 	beqz	s0,140 <_ftext_ram-0x80000ec0>
+ 110:	0c3f012e 	jal	fc04b8 <_ftext_ram-0x7f040b48>
+ 114:	0b3a0e03 	j	ce8380c <_ftext_ram-0x7317d7f4>
+ 118:	0c270b3b 	jal	9c2cec <_ftext_ram-0x7f63e314>
  11c:	01120111 	0x1120111
  120:	42970a40 	c0	0x970a40
  124:	0013010c 	syscall	0x4c04
  128:	00051300 	sll	v0,a1,0xc
- 12c:	0b3a0e03 	j	ce8380c <_fbss-0x7317d7f4>
- 130:	13490b3b 	beq	k0,t1,2e20 <_fbss-0x7fffe1e0>
+ 12c:	0b3a0e03 	j	ce8380c <_ftext_ram-0x7317d7f4>
+ 130:	13490b3b 	beq	k0,t1,2e20 <_ftext_ram-0x7fffe1e0>
  134:	00000a02 	srl	at,zero,0x8
  138:	3f012e14 	0x3f012e14
  13c:	3a0e030c 	xori	t6,s0,0x30c
  140:	270b3b0b 	addiu	t3,t8,15115
- 144:	1201110c 	beq	s0,at,4578 <_fbss-0x7fffca88>
+ 144:	1201110c 	beq	s0,at,4578 <_ftext_ram-0x7fffca88>
  148:	970a4001 	lhu	t2,16385(t8)
  14c:	00000c42 	srl	at,zero,0x11
  150:	03000515 	0x3000515
@@ -1436,7 +1442,7 @@ Disassembly of section .debug_aranges:
   24:	00260002 	ror	zero,a2,0x0
   28:	00040000 	sll	zero,a0,0x0
   2c:	00000000 	nop
-  30:	9fc00428 	0x9fc00428
+  30:	800011a8 	lb	zero,4520(zero)
   34:	00000114 	0x114
 	...
 
@@ -1447,126 +1453,143 @@ Disassembly of section .debug_str:
    4:	737a2f65 	0x737a2f65
    8:	6f772f6c 	0x6f772f6c
    c:	672f6b72 	0x672f6b72
-  10:	75687469 	jalx	5a1d1a4 <_fbss-0x7a5e3e5c>
+  10:	75687469 	jalx	5a1d1a4 <_ftext_ram-0x7a5e3e5c>
   14:	696d2f62 	0x696d2f62
   18:	70667370 	0x70667370
   1c:	702d6167 	0x702d6167
   20:	5f73756c 	0x5f73756c
-  24:	2f6c737a 	sltiu	t4,k1,29562
-  28:	6d6d6f63 	0x6d6d6f63
-  2c:	702f6e6f 	0x702f6e6f
-  30:	72676f72 	0x72676f72
-  34:	622f6d61 	0x622f6d61
-  38:	2e746f6f 	sltiu	s4,s3,28527
-  3c:	682f0053 	0x682f0053
-  40:	2f656d6f 	sltiu	a1,k1,28015
-  44:	2f6c737a 	sltiu	t4,k1,29562
-  48:	6b726f77 	0x6b726f77
-  4c:	7469672f 	jalx	1a59cbc <_fbss-0x7e5a7344>
-  50:	2f627568 	sltiu	v0,k1,30056
-  54:	7370696d 	0x7370696d
-  58:	61677066 	0x61677066
-  5c:	756c702d 	jalx	5b1c0b4 <_fbss-0x7a4e4f4c>
-  60:	737a5f73 	0x737a5f73
-  64:	72702f6c 	0x72702f6c
-  68:	6172676f 	0x6172676f
-  6c:	35302f6d 	ori	s0,t1,0x2f6d
-  70:	7261755f 	udi15	s3,at,t6,0x15
-  74:	4e470074 	c3	0x470074
-  78:	53412055 	beql	k0,at,81d0 <_fbss-0x7fff8e30>
-  7c:	322e3220 	andi	t6,s1,0x3220
-  80:	31352e38 	andi	s5,t1,0x2e38
-  84:	755f5f00 	jalx	57d7c00 <_fbss-0x7a829400>
-  88:	38746e69 	xori	s4,v1,0x6e69
-  8c:	7500745f 	jalx	401d17c <_fbss-0x7bfe3e84>
-  90:	52747261 	beql	s3,s4,1ca18 <_fbss-0x7ffe45e8>
-  94:	69656365 	0x69656365
-  98:	75006576 	jalx	40195d8 <_fbss-0x7bfe7a28>
-  9c:	57747261 	bnel	k1,s4,1ca24 <_fbss-0x7ffe45dc>
-  a0:	65746972 	0x65746972
-  a4:	72617500 	0x72617500
-  a8:	696e4974 	0x696e4974
-  ac:	61640074 	0x61640074
-  b0:	47006174 	bz.b	$w0,18684 <_fbss-0x7ffe897c>
-  b4:	4320554e 	c0	0x120554e
-  b8:	36203939 	ori	zero,s1,0x3939
-  bc:	302e332e 	andi	t6,at,0x332e
-  c0:	656d2d20 	0x656d2d20
-  c4:	6d2d206c 	0x6d2d206c
-  c8:	68637261 	0x68637261
-  cc:	34316d3d 	ori	s1,at,0x6d3d
-  d0:	2d20636b 	sltiu	zero,t1,25451
-  d4:	666f736d 	0x666f736d
-  d8:	6c662d74 	0x6c662d74
-  dc:	2074616f 	addi	s4,v1,24943
-  e0:	72616d2d 	0x72616d2d
-  e4:	6d3d6863 	0x6d3d6863
-  e8:	636b3431 	0x636b3431
-  ec:	736d2d20 	0x736d2d20
-  f0:	2d74666f 	sltiu	s4,t3,26223
-  f4:	616f6c66 	0x616f6c66
-  f8:	6d2d2074 	0x6d2d2074
-  fc:	20746c70 	addi	s4,v1,27760
- 100:	70696d2d 	0x70696d2d
- 104:	72323373 	0x72323373
- 108:	6d2d2032 	0x6d2d2032
- 10c:	636e7973 	0x636e7973
- 110:	6d2d2069 	0x6d2d2069
- 114:	3d696261 	0x3d696261
- 118:	2d203233 	sltiu	zero,t1,12851
- 11c:	672d2067 	0x672d2067
- 120:	72617764 	0x72617764
- 124:	20322d66 	addi	s2,at,11622
- 128:	2d20672d 	sltiu	zero,t1,26413
- 12c:	61776467 	0x61776467
- 130:	322d6672 	andi	t5,s1,0x6672
- 134:	314f2d20 	andi	t7,t2,0x2d20
- 138:	314f2d20 	andi	t7,t2,0x2d20
- 13c:	74732d20 	jalx	1ccb480 <_fbss-0x7e335b80>
- 140:	39633d64 	xori	v1,t3,0x3d64
- 144:	732d2039 	0x732d2039
- 148:	633d6474 	0x633d6474
- 14c:	75003939 	jalx	400e4e4 <_fbss-0x7bff2b1c>
- 150:	6769736e 	0x6769736e
- 154:	2064656e 	addi	a0,v1,25966
- 158:	72616863 	0x72616863
- 15c:	6f687300 	0x6f687300
- 160:	75207472 	jalx	481d1c8 <_fbss-0x7b7e3e38>
- 164:	6769736e 	0x6769736e
- 168:	2064656e 	addi	a0,v1,25966
- 16c:	00746e69 	0x746e69
- 170:	74726175 	jalx	1c985d4 <_fbss-0x7e368a2c>
- 174:	6e617254 	0x6e617254
- 178:	74696d73 	jalx	1a5b5cc <_fbss-0x7e5a5a34>
- 17c:	755f5f00 	jalx	57d7c00 <_fbss-0x7a829400>
- 180:	31746e69 	andi	s4,t3,0x6e69
- 184:	00745f36 	tne	v1,s4,0x17c
- 188:	6e69616d 	0x6e69616d
- 18c:	6e6f6c00 	0x6e6f6c00
- 190:	6f6c2067 	0x6f6c2067
- 194:	7520676e 	jalx	4819db8 <_fbss-0x7b7e7248>
- 198:	6769736e 	0x6769736e
- 19c:	2064656e 	addi	a0,v1,25966
- 1a0:	00746e69 	0x746e69
- 1a4:	74726175 	jalx	1c985d4 <_fbss-0x7e368a2c>
- 1a8:	69766944 	0x69766944
- 1ac:	00726f73 	tltu	v1,s2,0x1bd
- 1b0:	65636572 	0x65636572
- 1b4:	64657669 	0x64657669
- 1b8:	61746144 	0x61746144
- 1bc:	7074754f 	0x7074754f
- 1c0:	6c007475 	0x6c007475
- 1c4:	20676e6f 	addi	a3,v1,28271
- 1c8:	676e6f6c 	0x676e6f6c
- 1cc:	746e6920 	jalx	1b9a480 <_fbss-0x7e466b80>
- 1d0:	69616d00 	0x69616d00
- 1d4:	00632e6e 	0x632e6e
- 1d8:	726f6873 	0x726f6873
- 1dc:	6e692074 	0x6e692074
- 1e0:	69640074 	0x69640074
- 1e4:	6f736976 	0x6f736976
- 1e8:	Address 0x00000000000001e8 is out of bounds.
-
+  24:	5f6c737a 	0x5f6c737a
+  28:	2f766564 	sltiu	s6,k1,25956
+  2c:	6d6d6f63 	0x6d6d6f63
+  30:	702f6e6f 	0x702f6e6f
+  34:	72676f72 	0x72676f72
+  38:	622f6d61 	0x622f6d61
+  3c:	2e746f6f 	sltiu	s4,s3,28527
+  40:	682f0053 	0x682f0053
+  44:	2f656d6f 	sltiu	a1,k1,28015
+  48:	2f6c737a 	sltiu	t4,k1,29562
+  4c:	6b726f77 	0x6b726f77
+  50:	7469672f 	jalx	1a59cbc <_ftext_ram-0x7e5a7344>
+  54:	2f627568 	sltiu	v0,k1,30056
+  58:	7370696d 	0x7370696d
+  5c:	61677066 	0x61677066
+  60:	756c702d 	jalx	5b1c0b4 <_ftext_ram-0x7a4e4f4c>
+  64:	737a5f73 	0x737a5f73
+  68:	65645f6c 	0x65645f6c
+  6c:	72702f76 	0x72702f76
+  70:	6172676f 	0x6172676f
+  74:	30302f6d 	andi	s0,at,0x2f6d
+  78:	756f635f 	jalx	5bd8d7c <_ftext_ram-0x7a428284>
+  7c:	7265746e 	0x7265746e
+  80:	554e4700 	bnel	t2,t6,11c84 <_ftext_ram-0x7ffef37c>
+  84:	20534120 	addi	s3,v0,16672
+  88:	38322e32 	xori	s2,at,0x2e32
+  8c:	0031352e 	0x31352e
+  90:	69755f5f 	0x69755f5f
+  94:	5f38746e 	0x5f38746e
+  98:	61750074 	0x61750074
+  9c:	65527472 	0x65527472
+  a0:	76696563 	jalx	9a5958c <_ftext_ram-0x765a7a74>
+  a4:	61750065 	0x61750065
+  a8:	72577472 	0x72577472
+  ac:	00657469 	0x657469
+  b0:	74726175 	jalx	1c985d4 <_ftext_ram-0x7e368a2c>
+  b4:	74696e49 	jalx	1a5b924 <_ftext_ram-0x7e5a56dc>
+  b8:	74616400 	jalx	1859000 <_ftext_ram-0x7e7a8000>
+  bc:	4e470061 	madd.d	$f1,$f18,$f0,$f7
+  c0:	39432055 	xori	v1,t2,0x2055
+  c4:	2e362039 	sltiu	s6,s1,8249
+  c8:	20302e33 	addi	s0,at,11827
+  cc:	6c656d2d 	0x6c656d2d
+  d0:	616d2d20 	0x616d2d20
+  d4:	3d686372 	0x3d686372
+  d8:	6b34316d 	0x6b34316d
+  dc:	6d2d2063 	0x6d2d2063
+  e0:	74666f73 	jalx	199bdcc <_ftext_ram-0x7e665234>
+  e4:	6f6c662d 	0x6f6c662d
+  e8:	2d207461 	sltiu	zero,t1,29793
+  ec:	6372616d 	0x6372616d
+  f0:	316d3d68 	andi	t5,t3,0x3d68
+  f4:	20636b34 	addi	v1,v1,27444
+  f8:	6f736d2d 	0x6f736d2d
+  fc:	662d7466 	0x662d7466
+ 100:	74616f6c 	jalx	185bdb0 <_ftext_ram-0x7e7a5250>
+ 104:	706d2d20 	0x706d2d20
+ 108:	2d20746c 	sltiu	zero,t1,29804
+ 10c:	7370696d 	0x7370696d
+ 110:	32723233 	andi	s2,s3,0x3233
+ 114:	736d2d20 	0x736d2d20
+ 118:	69636e79 	0x69636e79
+ 11c:	616d2d20 	0x616d2d20
+ 120:	333d6962 	andi	sp,t9,0x6962
+ 124:	672d2032 	0x672d2032
+ 128:	64672d20 	0x64672d20
+ 12c:	66726177 	0x66726177
+ 130:	2d20322d 	sltiu	zero,t1,12845
+ 134:	672d2067 	0x672d2067
+ 138:	72617764 	0x72617764
+ 13c:	20322d66 	addi	s2,at,11622
+ 140:	20314f2d 	addi	s1,at,20269
+ 144:	20314f2d 	addi	s1,at,20269
+ 148:	6474732d 	0x6474732d
+ 14c:	3939633d 	xori	t9,t1,0x633d
+ 150:	74732d20 	jalx	1ccb480 <_ftext_ram-0x7e335b80>
+ 154:	39633d64 	xori	v1,t3,0x3d64
+ 158:	6e750039 	0x6e750039
+ 15c:	6e676973 	0x6e676973
+ 160:	63206465 	0x63206465
+ 164:	00726168 	0x726168
+ 168:	726f6873 	0x726f6873
+ 16c:	6e752074 	0x6e752074
+ 170:	6e676973 	0x6e676973
+ 174:	69206465 	0x69206465
+ 178:	7500746e 	jalx	401d1b8 <_ftext_ram-0x7bfe3e48>
+ 17c:	54747261 	bnel	v1,s4,1cb04 <_ftext_ram-0x7ffe44fc>
+ 180:	736e6172 	0x736e6172
+ 184:	0074696d 	0x74696d
+ 188:	69755f5f 	0x69755f5f
+ 18c:	3631746e 	ori	s1,s1,0x746e
+ 190:	6d00745f 	0x6d00745f
+ 194:	006e6961 	0x6e6961
+ 198:	676e6f6c 	0x676e6f6c
+ 19c:	6e6f6c20 	0x6e6f6c20
+ 1a0:	6e752067 	0x6e752067
+ 1a4:	6e676973 	0x6e676973
+ 1a8:	69206465 	0x69206465
+ 1ac:	7500746e 	jalx	401d1b8 <_ftext_ram-0x7bfe3e48>
+ 1b0:	44747261 	0x44747261
+ 1b4:	73697669 	0x73697669
+ 1b8:	2f00726f 	sltiu	zero,t8,29295
+ 1bc:	656d6f68 	0x656d6f68
+ 1c0:	6c737a2f 	0x6c737a2f
+ 1c4:	726f772f 	0x726f772f
+ 1c8:	69672f6b 	0x69672f6b
+ 1cc:	62756874 	0x62756874
+ 1d0:	70696d2f 	0x70696d2f
+ 1d4:	67706673 	0x67706673
+ 1d8:	6c702d61 	0x6c702d61
+ 1dc:	7a5f7375 	0x7a5f7375
+ 1e0:	645f6c73 	0x645f6c73
+ 1e4:	702f7665 	0x702f7665
+ 1e8:	72676f72 	0x72676f72
+ 1ec:	302f6d61 	andi	t7,at,0x6d61
+ 1f0:	61755f35 	0x61755f35
+ 1f4:	72007472 	0x72007472
+ 1f8:	69656365 	0x69656365
+ 1fc:	44646576 	0x44646576
+ 200:	4f617461 	madd.d	$f17,$f27,$f14,$f1
+ 204:	75707475 	jalx	5c1d1d4 <_ftext_ram-0x7a3e3e2c>
+ 208:	6f6c0074 	0x6f6c0074
+ 20c:	6c20676e 	0x6c20676e
+ 210:	20676e6f 	addi	a3,v1,28271
+ 214:	00746e69 	0x746e69
+ 218:	6e69616d 	0x6e69616d
+ 21c:	7300632e 	0x7300632e
+ 220:	74726f68 	jalx	1c9bda0 <_ftext_ram-0x7e365260>
+ 224:	746e6920 	jalx	1b9a480 <_ftext_ram-0x7e466b80>
+ 228:	76696400 	jalx	9a59000 <_ftext_ram-0x765a8000>
+ 22c:	726f7369 	0x726f7369
+	...
 
 Disassembly of section .debug_loc:
 
@@ -1602,7 +1625,7 @@ Disassembly of section .debug_loc:
   74:	00000060 	0x60
 	...
   80:	00002400 	sll	a0,zero,0x10
-  84:	54000100 	bnezl	zero,488 <_fbss-0x80000b78>
+  84:	54000100 	bnezl	zero,488 <_ftext_ram-0x80000b78>
   88:	00000024 	and	zero,zero,zero
   8c:	0000003c 	0x3c
   90:	01f30004 	sllv	zero,s3,t7
@@ -1619,23 +1642,23 @@ Disassembly of section .debug_frame:
    c:	001d0d1f 	0x1d0d1f
   10:	0000000c 	syscall
   14:	00000000 	nop
-  18:	9fc00428 	0x9fc00428
+  18:	800011a8 	lb	zero,4520(zero)
   1c:	0000003c 	0x3c
   20:	0000000c 	syscall
   24:	00000000 	nop
-  28:	9fc00464 	0x9fc00464
+  28:	800011e4 	lb	zero,4580(zero)
   2c:	00000020 	add	zero,zero,zero
   30:	0000000c 	syscall
   34:	00000000 	nop
-  38:	9fc00484 	0x9fc00484
+  38:	80001204 	lb	zero,4612(zero)
   3c:	00000018 	mult	zero,zero
   40:	0000000c 	syscall
   44:	00000000 	nop
-  48:	9fc0049c 	0x9fc0049c
+  48:	8000121c 	lb	zero,4636(zero)
   4c:	00000020 	add	zero,zero,zero
   50:	0000001c 	0x1c
   54:	00000000 	nop
-  58:	9fc004bc 	0x9fc004bc
+  58:	8000123c 	lb	zero,4668(zero)
   5c:	0000003c 	0x3c
   60:	48180e44 	0x48180e44
   64:	0290019f 	0x290019f
@@ -1643,7 +1666,7 @@ Disassembly of section .debug_frame:
   6c:	000000df 	0xdf
   70:	00000014 	0x14
   74:	00000000 	nop
-  78:	9fc004f8 	0x9fc004f8
+  78:	80001278 	lb	zero,4728(zero)
   7c:	00000044 	0x44
   80:	48180e44 	0x48180e44
   84:	0290019f 	0x290019f

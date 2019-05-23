@@ -19,7 +19,6 @@
 //
 // `define MFP_USE_UART_PROGRAM_LOADER
 `define MFP_USE_DUPLEX_UART
-`define MFP_USE_MPSSE_DEBUGGER
 //`define MFP_USE_ADC_MAX10
 // `define MFP_USE_SLOW_CLOCK_AND_CLOCK_MUX
 `define MFP_DEMO_LIGHT_SENSOR
@@ -31,7 +30,7 @@
 //
 //`define MFP_USE_BUSY_MEMORY
 // `define MFP_USE_SDRAM_MEMORY
-// `define MFP_USE_AVALON_MEMORY
+`define MFP_USE_AVALON_MEMORY
 
 //
 // Enable external interrupt controller
@@ -92,12 +91,6 @@
 `ifdef MFP_USE_UART_PROGRAM_LOADER
     `define MFP_USE_UART_PROGRAM_LOADER_WORD_ALIGN
 `endif
-
-// mpsse debug cant be enabled on Simulation
-`ifdef SIMULATION
-    `undef MFP_USE_MPSSE_DEBUGGER
-`endif
-
 //
 //  Memory-mapped I/O addresses
 //

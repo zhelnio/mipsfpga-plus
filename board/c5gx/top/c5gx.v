@@ -174,6 +174,7 @@ module c5gx (
     wire pin_rst_cold = 1'b0;
     wire pin_rst_soft = ~CPU_RESET_n;
     wire SI_ColdReset;
+    wire SI_Reset;
 
     // TODO: remap connections
     // `ifdef MFP_DEMO_LIGHT_SENSOR
@@ -207,39 +208,39 @@ module c5gx (
     wire [ 31:0 ] avm_readdata;
     wire          avm_write;
     wire          avm_read;
-    wire [ 31:0 ] avm_address;
+    wire [ 26:0 ] avm_address;
     wire [  3:0 ] avm_byteenable;
     wire [  2:0 ] avm_burstcount;
     wire          avm_beginbursttransfer;
     wire          avm_begintransfer;
     wire [ 31:0 ] avm_writedata;
 
-    lpddr2_wrapper lpddr2_wrapper
-    (
-        .clk_global      ( clk                    ),
-        .rst_global_n    ( ~SI_ColdReset          ),
-        .mem_ca          ( DDR2LP_CA              ),
-        .mem_ck          ( DDR2LP_CK_p            ),
-        .mem_ck_n        ( DDR2LP_CK_n            ),
-        .mem_cke         ( DDR2LP_CKE             ),
-        .mem_cs_n        ( DDR2LP_CS_n            ),
-        .mem_dm          ( DDR2LP_DM              ),
-        .mem_dq          ( DDR2LP_DQ              ),
-        .mem_dqs         ( DDR2LP_DQS_p           ),
-        .mem_dqs_n       ( DDR2LP_DQS_n           ),
-        .mem_rzqin       ( DDR2LP_OCT_RZQ         ),
-        .avm_clk         ( avm_clk                ),
-        .avm_rst_n       ( avm_rst_n              ),
-        .avm_waitrequest ( avm_waitrequest        ),
-        .avm_burstbegin  ( avm_beginbursttransfer ),
-        .avm_addr        ( avm_address     [26:0] ),
-        .avm_rdata_valid ( avm_readdatavalid      ),
-        .avm_rdata       ( avm_readdata           ),
-        .avm_wdata       ( avm_writedata          ),
-        .avm_be          ( avm_byteenable         ),
-        .avm_read_req    ( avm_read               ),
-        .avm_write_req   ( avm_write              ),
-        .avm_size        ( avm_burstcount [0]     ) 
+    lpddr2_mm lpddr2_mm (
+        .avm_waitrequest   ( avm_waitrequest    ),
+        .avm_readdata      ( avm_readdata       ),
+        .avm_readdatavalid ( avm_readdatavalid  ),
+        .avm_burstcount    ( avm_burstcount     ),
+        .avm_writedata     ( avm_writedata      ),
+        .avm_address       ( avm_address        ),
+        .avm_write         ( avm_write          ),
+        .avm_read          ( avm_read           ),
+        .avm_byteenable    ( avm_byteenable     ),
+        .avm_debugaccess   (                    ),
+        .gclk_clk          ( clk                ),
+        .grst_reset_n      ( ~SI_ColdReset      ),
+        .srst_reset_n      ( ~SI_Reset          ),
+        .mclk_clk          ( avm_clk            ),
+        .mrst_reset        ( ~avm_rst_n         ),
+        .oct_rzqin         ( DDR2LP_OCT_RZQ     ),
+        .lpddr2_mem_ca     ( DDR2LP_CA          ),
+        .lpddr2_mem_ck     ( DDR2LP_CK_p        ),
+        .lpddr2_mem_ck_n   ( DDR2LP_CK_n        ),
+        .lpddr2_mem_cke    ( DDR2LP_CKE         ),
+        .lpddr2_mem_cs_n   ( DDR2LP_CS_n        ),
+        .lpddr2_mem_dm     ( DDR2LP_DM          ),
+        .lpddr2_mem_dq     ( DDR2LP_DQ          ),
+        .lpddr2_mem_dqs    ( DDR2LP_DQS_p       ),
+        .lpddr2_mem_dqs_n  ( DDR2LP_DQS_n       ) 
     );
     `endif
 
@@ -250,7 +251,7 @@ module c5gx (
         .pin_rst_cold     (  pin_rst_cold     ),
         .pin_rst_soft     (  pin_rst_soft     ),
         .SI_ColdReset     (  SI_ColdReset     ),
-        .SI_Reset         (                   ),
+        .SI_Reset         (  SI_Reset         ),
                           
         .HADDR            (   HADDR           ),
         .HRDATA           (   HRDATA          ),

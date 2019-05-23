@@ -8,6 +8,8 @@ module ahb_lite_avm
 #(
    parameter HADDR_WIDTH = 17,  // AHB addr width
              HDATA_WIDTH = 32,  // AHB data width
+             AADDR_OFFST = 2,   // Avalon-MM is word addressed in this implementation
+             AADDR_WIDTH = 27,  //TODO:fix it
    parameter AV_BE_WIDTH = HDATA_WIDTH / 8,
              AV_BC_WIDTH = 3
 )(
@@ -37,7 +39,7 @@ module ahb_lite_avm
     input  [HDATA_WIDTH-1:0] avm_readdata,
     output                   avm_write,
     output                   avm_read,
-    output [HADDR_WIDTH-1:0] avm_address,
+    output [AADDR_WIDTH-1:0] avm_address,
     output [AV_BE_WIDTH-1:0] avm_byteenable,
     output [AV_BC_WIDTH-1:0] avm_burstcount,
     output                   avm_beginbursttransfer,
@@ -87,7 +89,7 @@ module ahb_lite_avm
     // Avalon side request
     assign avm_write     = State == S_WRITE;
     assign avm_read      = State == S_READ0;
-    assign avm_address   = ahb_addr;
+    assign avm_address   = ahb_addr [AADDR_OFFST +: AADDR_WIDTH];
     assign avm_writedata = HWDATA;
 
     // byteenable 

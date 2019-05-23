@@ -16,10 +16,6 @@ This short document contains some information about running Linux on MIPSfpga-pl
     `define MFP_USE_SDRAM_MEMORY
     `define MFP_USE_DUPLEX_UART
     ```
-  - if you are using MPSSE debugger board (not BusBlaster) then 
-    ```
-    `define MFP_USE_MPSSE_DEBUGGER
-    ```
   - you have to build the MIPSfpga-plus SoC and program the FPGA device.
 
 ## Kernel and RAM-disk build
