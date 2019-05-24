@@ -2,7 +2,7 @@
 `include "mfp_ahb_lite_matrix_config.vh"
 `include "mfp_eic_core.vh"
 
-module mfp_cpu_mipsfpga
+module cpu_mipsfpga
 #(
     parameter MFP_EJTAG_MANUFID = 11'b0, //11'h02;
               MFP_EJTAG_PARTNUM = 16'b0  //16'hF1;
