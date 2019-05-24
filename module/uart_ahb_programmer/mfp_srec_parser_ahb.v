@@ -1,6 +1,6 @@
 `include "mfp_ahb_lite.vh"
 
-module mfp_srec_parser_to_ahb_lite_bridge
+module mfp_srec_parser_ahb
 (
     input             clock,
     input             reset_n,

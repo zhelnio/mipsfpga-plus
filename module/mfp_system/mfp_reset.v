@@ -9,6 +9,7 @@ module mfp_reset
     input  pin_rst_soft,
     input  pin_ej_rst_n,
     input  pin_ej_trst_n,
+    input  memory_load,
 
     output reg SI_Reset,
     output reg SI_ColdReset,
@@ -45,7 +46,7 @@ module mfp_reset
 
     // soft reset
     always @(posedge clk)
-        SI_Reset <= rst_soft | ~ej_rst_n | SI_ColdReset;
+        SI_Reset <= rst_soft | ~ej_rst_n | SI_ColdReset | memory_load;
 
     // ejtag cold reset
     always @(posedge clk)

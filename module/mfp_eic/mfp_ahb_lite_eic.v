@@ -23,7 +23,6 @@ module mfp_ahb_lite_eic
     output reg [ 31 : 0 ]              HRDATA,
     output                             HREADYOUT,
     output                             HRESP,
-    input                              SI_Endian,  // ignored
 
     //Interrupt signal side
     input      [ `EIC_CHANNELS-1 : 0 ] EIC_input,

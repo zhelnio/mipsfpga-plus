@@ -29,7 +29,6 @@ module ahb_lite_avm
     output [HDATA_WIDTH-1:0] HRDATA,
     output                   HREADYOUT,
     output                   HRESP,
-    input                    SI_Endian, // ignored
 
     // Avalon-MM side
     output                   avm_clk,

@@ -49,21 +49,21 @@ module mfp_adc_max10_core
     assign ADC_wr[`ADC_CELL_8] = ADC_R_Valid && ADC_R_Channel == `ADC_CH_8;
     assign ADC_wr[`ADC_CELL_T] = ADC_R_Valid && ADC_R_Channel == `ADC_CH_T;
 
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC0 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_0], ADC[`ADC_CELL_0] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC1 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_1], ADC[`ADC_CELL_1] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC2 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_2], ADC[`ADC_CELL_2] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC3 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_3], ADC[`ADC_CELL_3] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC4 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_4], ADC[`ADC_CELL_4] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC5 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_5], ADC[`ADC_CELL_5] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC6 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_6], ADC[`ADC_CELL_6] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC7 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_7], ADC[`ADC_CELL_7] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADC8 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_8], ADC[`ADC_CELL_8] );
-    mfp_register_r #(.WIDTH(`ADC_DATA_WIDTH)) r_ADCT (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_T], ADC[`ADC_CELL_T] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC0 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_0], ADC[`ADC_CELL_0] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC1 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_1], ADC[`ADC_CELL_1] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC2 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_2], ADC[`ADC_CELL_2] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC3 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_3], ADC[`ADC_CELL_3] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC4 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_4], ADC[`ADC_CELL_4] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC5 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_5], ADC[`ADC_CELL_5] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC6 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_6], ADC[`ADC_CELL_6] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC7 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_7], ADC[`ADC_CELL_7] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADC8 (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_8], ADC[`ADC_CELL_8] );
+    mfp_register_r #(`ADC_DATA_WIDTH) r_ADCT (CLK, RESETn, ADC_R_Data, ADC_wr[`ADC_CELL_T], ADC[`ADC_CELL_T] );
 
     // ADC mask
     wire [`ADC_CH_COUNT - 1 : 0] ADMSK;
     wire                         ADMSK_wr = write_enable && write_addr == `ADC_REG_ADMSK;
-    mfp_register_r #(.WIDTH(`ADC_CH_COUNT))  r_ADMSK (CLK, RESETn, write_data[`ADC_CH_COUNT - 1 : 0], ADMSK_wr, ADMSK );
+    mfp_register_r #(`ADC_CH_COUNT) r_ADMSK (CLK, RESETn, write_data[`ADC_CH_COUNT - 1 : 0], ADMSK_wr, ADMSK );
 
     // ADCS flags
     wire    ADCS_EN;    // ADC enable
@@ -72,15 +72,15 @@ module mfp_adc_max10_core
     wire    ADCS_IE;    // ADC interrupt enable
     wire    ADCS_wr     = write_enable && write_addr == `ADC_REG_ADCS;
 
-    mfp_register_r #(.WIDTH(1)) r_ADCS_EN (CLK, RESETn, write_data[`ADC_FIELD_ADCS_EN], ADCS_wr, ADCS_EN );
-    mfp_register_r #(.WIDTH(1)) r_ADCS_TE (CLK, RESETn, write_data[`ADC_FIELD_ADCS_TE], ADCS_wr, ADCS_TE );
-    mfp_register_r #(.WIDTH(1)) r_ADCS_FR (CLK, RESETn, write_data[`ADC_FIELD_ADCS_FR], ADCS_wr, ADCS_FR );
-    mfp_register_r #(.WIDTH(1)) r_ADCS_IE (CLK, RESETn, write_data[`ADC_FIELD_ADCS_IE], ADCS_wr, ADCS_IE );
+    mfp_register_r r_ADCS_EN (CLK, RESETn, write_data[`ADC_FIELD_ADCS_EN], ADCS_wr, ADCS_EN );
+    mfp_register_r r_ADCS_TE (CLK, RESETn, write_data[`ADC_FIELD_ADCS_TE], ADCS_wr, ADCS_TE );
+    mfp_register_r r_ADCS_FR (CLK, RESETn, write_data[`ADC_FIELD_ADCS_FR], ADCS_wr, ADCS_FR );
+    mfp_register_r r_ADCS_IE (CLK, RESETn, write_data[`ADC_FIELD_ADCS_IE], ADCS_wr, ADCS_IE );
 
     wire    ADCS_SC;    // ADC start conversion
     wire    ADCS_SC_wr  = ADCS_wr | (ADC_R_EOP & ~ADCS_FR);
     wire    ADCS_SC_new = ADCS_wr ? write_data[`ADC_FIELD_ADCS_SC] : 1'b0;
-    mfp_register_r #(.WIDTH(1)) r_ADCS_SC (CLK, RESETn, ADCS_SC_new, ADCS_SC_wr, ADCS_SC );
+    mfp_register_r r_ADCS_SC (CLK, RESETn, ADCS_SC_new, ADCS_SC_wr, ADCS_SC );
 
     wire    ADCS_IF;    // ADC interrupt flag
     // set ADCS.IF when conversion ends and ADCS.IE anabled
@@ -91,7 +91,7 @@ module mfp_adc_max10_core
                           | (ADCS_wr & write_data[`ADC_FIELD_ADCS_IF])
                           | ~ADCS_EN;
     wire    ADCS_IF_new   = (ConversionEnd & ADCS_IE & ADCS_EN);
-    mfp_register_r #(.WIDTH(1)) r_ADCS_IF (CLK, RESETn, ADCS_IF_new, ADCS_IF_wr, ADCS_IF );
+    mfp_register_r r_ADCS_IF (CLK, RESETn, ADCS_IF_new, ADCS_IF_wr, ADCS_IF );
     assign  ADC_Interrupt = ADCS_IF;
 
 
@@ -128,13 +128,13 @@ module mfp_adc_max10_core
 
     wire [ 2 : 0 ] State;
     reg  [ 2 : 0 ] Next;
-    mfp_register_r #(.WIDTH(3), .RESET(S_IDLE)) r_FSM_State (CLK, RESETn, Next, 1'b1, State );
+    mfp_register_r #(3) r_FSM_State (CLK, RESETn, Next, 1'b1, State );
 
     // current requested (unmasked) ADC channel
     wire [ 3 : 0 ] ActiveCell;
     wire [ 3 : 0 ] NextCell;
     reg  ActiveCell_wr;
-    mfp_register_r #(.WIDTH(4)) r_ActiveCell (CLK, RESETn, NextCell, ActiveCell_wr, ActiveCell );
+    mfp_register_r #(4) r_ActiveCell (CLK, RESETn, NextCell, ActiveCell_wr, ActiveCell );
 
     always @ (*) begin
         case(State)

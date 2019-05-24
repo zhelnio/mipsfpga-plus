@@ -240,42 +240,9 @@ module de10_lite
         .SPI_SDO          (   ALS_SDO         ),
         `endif
 
-        `ifdef MFP_USE_ADC_MAX10
-        .ADC_C_Valid      (  ADC_C_Valid      ),
-        .ADC_C_Channel    (  ADC_C_Channel    ),
-        .ADC_C_SOP        (  ADC_C_SOP        ),
-        .ADC_C_EOP        (  ADC_C_EOP        ),
-        .ADC_C_Ready      (  ADC_C_Ready      ),
-        .ADC_R_Valid      (  ADC_R_Valid      ),
-        .ADC_R_Channel    (  ADC_R_Channel    ),
-        .ADC_R_Data       (  ADC_R_Data       ),
-        .ADC_R_SOP        (  ADC_R_SOP        ),
-        .ADC_R_EOP        (  ADC_R_EOP        ),
-        `endif
-
         .UART_RX          (   GPIO [31]       ),
         .UART_TX          (   GPIO [32]       )
     );
-
-    `ifdef MFP_USE_ADC_MAX10
-        adc adc
-        (
-            .adc_pll_clock_clk      ( ADC_CLK       ),
-            .adc_pll_locked_export  ( CLK_Lock      ),
-            .clock_clk              ( clk           ),
-            .command_valid          ( ADC_C_Valid   ),
-            .command_channel        ( ADC_C_Channel ),
-            .command_startofpacket  ( ADC_C_SOP     ),
-            .command_endofpacket    ( ADC_C_EOP     ),
-            .command_ready          ( ADC_C_Ready   ),
-            .reset_sink_reset_n     ( SI_ColdReset  ),
-            .response_valid         ( ADC_R_Valid   ),
-            .response_channel       ( ADC_R_Channel ),
-            .response_data          ( ADC_R_Data    ),
-            .response_startofpacket ( ADC_R_SOP     ),
-            .response_endofpacket   ( ADC_R_EOP     ) 
-        );
-    `endif
 
     `ifdef MFP_USE_SDRAM_MEMORY
         //SDRAM controller delay params

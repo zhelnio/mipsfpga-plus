@@ -26,7 +26,6 @@ module mfp_ahb_lite_uart16550
     output  reg [ 31 : 0 ]              HRDATA,
     output                              HREADYOUT,
     output                              HRESP,
-    input                               SI_Endian,  // ignored
 
     //UART side
     input                               UART_SRX,   // UART serial input signal

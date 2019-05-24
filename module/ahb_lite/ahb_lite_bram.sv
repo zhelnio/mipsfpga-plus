@@ -20,8 +20,7 @@ module ahb_lite_bram
     input                    HREADY,
     output [HDATA_WIDTH-1:0] HRDATA,
     output                   HREADYOUT,
-    output                   HRESP,
-    input                    SI_Endian  // ignored
+    output                   HRESP
 );
     // bram wires
     wire [MADDR_WIDTH-1:0] wa;

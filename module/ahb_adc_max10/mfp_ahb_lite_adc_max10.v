@@ -7,6 +7,14 @@
 
 module mfp_ahb_lite_adc_max10
 (
+    // global
+    input                   clk_adc,
+    input                   clk_locked,
+
+    // trigger and interrupt
+    input                   ADC_Trigger,
+    output                  ADC_Interrupt,
+
     //ABB-Lite side
     input                   HCLK,
     input                   HRESETn,
@@ -22,35 +30,30 @@ module mfp_ahb_lite_adc_max10
     input                   HREADY,
     output     [ 31 : 0 ]   HRDATA,
     output                  HREADYOUT,
-    output                  HRESP,
-    input                   SI_Endian,  // ignored
-
-    //ADC side (Avalon-ST)
-    output                  ADC_C_Valid,    //  command.valid
-    output     [  4 : 0 ]   ADC_C_Channel,  //         .channel
-    output                  ADC_C_SOP,      //         .startofpacket
-    output                  ADC_C_EOP,      //         .endofpacket
-    input                   ADC_C_Ready,    //         .ready
-    input                   ADC_R_Valid,    // response.valid
-    input      [  4 :0 ]    ADC_R_Channel,  //         .channel
-    input      [ 11 :0 ]    ADC_R_Data,     //         .data
-    input                   ADC_R_SOP,      //         .startofpacket
-    input                   ADC_R_EOP,      //         .endofpacket
-
-    // trigger and interrupt side
-    input                   ADC_Trigger,
-    output                  ADC_Interrupt
+    output                  HRESP 
 );
+    // from bus slave to ADC control
+    wire [`ADC_ADDR_WIDTH-1:0] read_addr;
+    wire                       read_enable;
+    wire [`ADC_ADDR_WIDTH-1:0] write_addr;
+    wire [                3:0] write_mask;
+    wire                       write_enable;
 
-    wire [ `ADC_ADDR_WIDTH - 1 : 0 ] read_addr;
-    wire                             read_enable;
-    wire [ `ADC_ADDR_WIDTH - 1 : 0 ] write_addr;
-    wire [                   3 : 0 ] write_mask;
-    wire                             write_enable;
+    // from ADC control to ADC core (Avalon-ST)
+    wire                       ADC_C_Valid,    //  command.valid
+    wire [                4:0] ADC_C_Channel,  //         .channel
+    wire                       ADC_C_SOP,      //         .startofpacket
+    wire                       ADC_C_EOP,      //         .endofpacket
+    wire                       ADC_C_Ready,    //         .ready
+    wire                       ADC_R_Valid,    // response.valid
+    wire [                4:0] ADC_R_Channel,  //         .channel
+    wire [               11:0] ADC_R_Data,     //         .data
+    wire                       ADC_R_SOP,      //         .startofpacket
+    wire                       ADC_R_EOP,      //         .endofpacket
 
     assign HRESP  = 1'b0;
 
-    mfp_ahb_lite_slave 
+    mfp_ahb_lite_slave
     #(
         .ADDR_WIDTH ( `ADC_ADDR_WIDTH ),
         .ADDR_START (               2 )
@@ -94,6 +97,24 @@ module mfp_ahb_lite_adc_max10
         .ADC_R_EOP      ( ADC_R_EOP     ),
         .ADC_Trigger    ( ADC_Trigger   ),
         .ADC_Interrupt  ( ADC_Interrupt )
+    );
+
+    adc adc
+    (
+        .adc_pll_clock_clk      ( clk_adc       ),
+        .adc_pll_locked_export  ( clk_locked    ),
+        .clock_clk              ( HCLK          ),
+        .command_valid          ( ADC_C_Valid   ),
+        .command_channel        ( ADC_C_Channel ),
+        .command_startofpacket  ( ADC_C_SOP     ),
+        .command_endofpacket    ( ADC_C_EOP     ),
+        .command_ready          ( ADC_C_Ready   ),
+        .reset_sink_reset_n     ( HRESETn       ),
+        .response_valid         ( ADC_R_Valid   ),
+        .response_channel       ( ADC_R_Channel ),
+        .response_data          ( ADC_R_Data    ),
+        .response_startofpacket ( ADC_R_SOP     ),
+        .response_endofpacket   ( ADC_R_EOP     ) 
     );
 
 endmodule
