@@ -3,9 +3,9 @@
  * Copyright(c) 2017 Stanislav Zhelnio
  */
  
-`include "mfp_adc_max10_core.vh"
+`include "adc_max10_core.vh"
 
-module mfp_adc_max10_core
+module adc_max10_core
 (
     input                                    CLK,
     input                                    RESETn,

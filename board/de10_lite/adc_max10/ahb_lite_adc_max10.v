@@ -3,9 +3,9 @@
  * Copyright(c) 2017 Stanislav Zhelnio
  */
 
-`include "mfp_adc_max10_core.vh"
+`include "adc_max10_core.vh"
 
-module mfp_ahb_lite_adc_max10
+module ahb_lite_adc_max10
 (
     // global
     input                   clk_adc,
