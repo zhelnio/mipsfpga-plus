@@ -20,7 +20,6 @@
 // `define MFP_USE_UART_PROGRAM_LOADER
 `define MFP_USE_DUPLEX_UART
 //`define MFP_USE_ADC_MAX10
-// `define MFP_USE_SLOW_CLOCK_AND_CLOCK_MUX
 `define MFP_DEMO_LIGHT_SENSOR
 // `define MFP_DEMO_CACHE_MISSES
 // `define MFP_DEMO_PIPE_BYPASS
@@ -43,7 +42,6 @@
 //
 
 `ifdef MFP_USE_SDRAM_MEMORY
-    `undef MFP_USE_SLOW_CLOCK_AND_CLOCK_MUX
     `ifdef SIMULATION
         //only x16 supported
         `define x16
@@ -79,11 +77,6 @@
     `else
         `include "board_config.vh"
     `endif
-`endif
-
-// ADC module can't work wout the PLL core
-`ifdef MFP_USE_ADC_MAX10
-    `undef MFP_USE_SLOW_CLOCK_AND_CLOCK_MUX
 `endif
 
 //not all types of memory can work with HSIZE_1

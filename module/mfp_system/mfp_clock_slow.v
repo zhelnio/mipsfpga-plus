@@ -20,7 +20,7 @@ module mfp_clock_slow
 
     // mode pins debouncer
     wire[1:0] mode_d;
-    mfp_debouncer #( .DEPTH ( 2 ) mode_debouncer (gclk, mode, mode_d);
+    mfp_debouncer #(.WIDHT(2)) mode_debouncer (gclk, mode, mode_d);
 
     // clock divider
     wire      clk_o

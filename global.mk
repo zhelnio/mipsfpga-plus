@@ -37,30 +37,54 @@ DIR_TB          := $(TOP_DIR)/tb
 DIR_BUILD       := $(TOP_DIR)/build
 DIR_BUILD_SIM   := $(TOP_DIR)/build/sim
 
-include $(TOP_DIR)/config.mk
-include $(DIR_MODULE)/files.mk
-include $(DIR_TB)/top/files.mk
+define current-dir
+    $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
+endef
 
-ifeq ($(MFP_CONFIG_C5GX_LPDDR2),y)
-include $(DIR_BOARD)/c5gx/lpddr2_mm/files.mk
-include $(DIR_TB)/micron_ddr2/files.mk
-endif
+define generic-rtl-files
+    $(filter %.v %.sv %.vh, %.svh, \
+        $(if $(1), $(wildcard $(call current-dir)/$(strip $(1))/*), \
+            $(wildcard $(call current-dir)/*) \
+    ) \
+)
+endef
 
-ifeq ($(MFP_CONFIG_BOARD_C5GX),y)
-include $(DIR_BOARD)/c5gx/top/files.mk
-endif
+SYNTHESIS_RTL   :=
+SYNTHESIS_MACRO :=
+SYNTHESIS_IP    :=
+SYNTHESIS_TOP   :=
+SYNTHESIS_FILE  :=
+SIMULATION_RTL  :=
+SIMULATION_MACRO:=
+SIMULATION_FILE :=
+SIMULATION_TOP  :=
 
-ifeq ($(MFP_CONFIG_BOARD_DE10LITE),y)
-include $(DIR_BOARD)/de10_lite/top/files.mk
-endif
+include $(TOP_DIR)/module/common/module.mk
+include $(TOP_DIR)/module/ahb_ram/module.mk
+include $(TOP_DIR)/module/ahb_avalon/module.mk
+include $(TOP_DIR)/module/ahb_sdram/module.mk
+include $(TOP_DIR)/module/ahb_lite/module.mk
+include $(TOP_DIR)/module/ahb_pmod_als/module.mk
+include $(TOP_DIR)/module/mfp_eic/module.mk
+include $(TOP_DIR)/module/uart_ahb_programmer/module.mk
+include $(TOP_DIR)/module/mipsfpga/module.mk
+include $(TOP_DIR)/module/ahb_uart16550/module.mk
+include $(TOP_DIR)/module/ahb_gpio/module.mk
+include $(TOP_DIR)/module/mfp_system/module.mk
 
-ifeq ($(MFP_CONFIG_BOARD_DE10LITE_ADC),y)
-include $(DIR_BOARD)/de10_lite/adc/files.mk
-endif
+include $(TOP_DIR)/board/c5gx/lpddr2_mm/module.mk
+include $(TOP_DIR)/board/c5gx/top/module.mk
+include $(TOP_DIR)/board/de10_lite/adc_max10/module.mk
+include $(TOP_DIR)/board/de10_lite/pll/module.mk
+include $(TOP_DIR)/board/de10_lite/top/module.mk
 
-ifeq ($(MFP_CONFIG_BOARD_DE10LITE_PLL),y)
-include $(DIR_BOARD)/de10_lite/pll/files.mk
-endif
+include $(TOP_DIR)/tb/micron_ddr2/module.mk
+include $(TOP_DIR)/tb/micron_sdram/module.mk
+include $(TOP_DIR)/tb/top/module.mk
+
+test2:
+	@echo $(SYNTHESIS_RTL)
+
 
 
 ifeq ($(abspath $(PWD)/..),$(DIR_PROGRAM))
@@ -78,8 +102,8 @@ endif
 # folder/file  => $(TOP_DIR)/folder/file
 # /folder/file => /folder/file
 conf2path = $(strip $(if $(filter     /%, $(1)), $(1), \
-					$(if $(findstring /,  $(1)), $(TOP_DIR)/$(1), \
-					$(1))))
+                    $(if $(findstring /,  $(1)), $(TOP_DIR)/$(1), \
+                    $(1))))
 
 ##############################################
 # global targets
@@ -90,8 +114,8 @@ mrproper:
 ##############################################
 # Quartus MegaWizard & QSYS rtl generation    
 
-QUARTUS_BUILD_QIP  = $(filter %.qip,  $(patsubst $(DIR_BOARD)%.v,    $(DIR_BUILD)%.qip,  $(QUARTUS_IP)))
-QUARTUS_BUILD_QSYS = $(filter %.qsys, $(patsubst $(DIR_BOARD)%.qsys, $(DIR_BUILD)%.qsys, $(QUARTUS_IP)))
+QUARTUS_BUILD_QIP  = $(filter %.qip,  $(patsubst $(DIR_BOARD)%.v,    $(DIR_BUILD)%.qip,  $(SYNTHESIS_IP)))
+QUARTUS_BUILD_QSYS = $(filter %.qsys, $(patsubst $(DIR_BOARD)%.qsys, $(DIR_BUILD)%.qsys, $(SYNTHESIS_IP)))
 QUARTUS_BUILD_IP   = $(QUARTUS_BUILD_QIP)
 QUARTUS_BUILD_IP  += $(QUARTUS_BUILD_QSYS)
 
@@ -113,7 +137,7 @@ $(DIR_BUILD)/%.qsys: $(DIR_BOARD)/%.qsys
 # BOARD_NAME    ?= de10_lite
 BOARD_NAME    ?= c5gx
 
-QUARTUS_FILES += $(RTL_SYN_FILES)
+QUARTUS_FILES += $(SYNTHESIS_RTL)
 QUARTUS_FILES += $(QUARTUS_BUILD_IP)
 QUARTUS_FILES += $(RESET_RAM_INIT)
 export QUARTUS_FILES
@@ -162,9 +186,9 @@ $(RESET_RAM_INIT):
 ##############################################
 # Simulation common
 
-SIMULATION_FILES  = $(RTL_SYN_FILES) $(RTL_SIM_FILES)
-SIMULATION_V_SV   = $(filter %.v %.sv, $(SIMULATION_FILES))
-SIMULATION_INCDIR = $(sort $(realpath $(dir $(filter %.vh %.svh, $(SIMULATION_FILES)))))
+SIMULATION_ALL    = $(SYNTHESIS_RTL) $(SIMULATION_RTL)
+SIMULATION_V_SV   = $(filter %.v %.sv, $(SIMULATION_ALL))
+SIMULATION_INCDIR = $(sort $(realpath $(dir $(filter %.vh %.svh, $(SIMULATION_ALL)))))
 
 sim_clean:
 	rm -rf $(DIR_BUILD_SIM)
@@ -330,7 +354,7 @@ clean:
 # 	cp *.hex sim
 # 	cd sim && iverilog $(IVARG)
 # 	cd sim && vvp -la.lst a.out -n
-	
+
 # gtkwave:
 # 	cd sim && gtkwave dump.vcd
 

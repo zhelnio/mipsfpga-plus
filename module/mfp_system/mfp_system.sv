@@ -1,5 +1,5 @@
 `include "m14k_const.vh"
-`include "mfp_ahb_lite_matrix_config.vh"
+`include "mfp_config.vh"
 `include "mfp_eic_core.vh"
 
 module mfp_system
@@ -14,10 +14,6 @@ module mfp_system
               SDRAM_DQ_BITS      = 16,
               SDRAM_DM_BITS      = 2,
               SDRAM_BA_BITS      = 2,
-    parameter GPIOR_COUNT        = 32,
-              GPIOW_COUNT        = 32,
-    parameter HADDR_WIDTH        = 32,
-              HDATA_WIDTH        = 32,
     parameter EJTAG_MANUFID      = 11'b0, //11'h02;
               EJTAG_PARTNUM      = 16'b0  //16'hF1;
     parameter BOARD_WIDTH_BTN    = 32,
@@ -239,7 +235,9 @@ module mfp_system
 
     // uart programmer
     mfp_uart_programmer #(
-        .ENABLED     ( `MFP_MACRO_ENABLE_UART_PROGRAMMER )
+        .ENABLED     ( `MFP_MACRO_UART_PROGRAMMER_ENABLE ),
+        .CLK_FREQ    (      ),
+        .BOUD_RATE   (      )
     ) mfp_uart_programmer (
         .clk         ( cpu_HCLK      ),
         .rst_n       ( SI_ColdReset  ),

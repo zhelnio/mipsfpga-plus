@@ -1,4 +1,4 @@
-`include "mfp_ahb_lite_matrix_config.vh"
+`include "mfp_config.vh"
 
 module mfp_uart_receiver
 (
@@ -8,13 +8,7 @@ module mfp_uart_receiver
     output reg [7:0] byte_data,
     output           byte_ready
 );
-
-    `ifdef MFP_USE_SLOW_CLOCK_AND_CLOCK_MUX
-        parameter  clock_frequency        = 50000000 / 2;
-    `else
-        parameter  clock_frequency        = 50000000;
-    `endif
-
+    parameter  clock_frequency        = 50000000;
     parameter  baud_rate              = 115200;
     parameter  clock_cycles_in_symbol = clock_frequency / baud_rate;
 

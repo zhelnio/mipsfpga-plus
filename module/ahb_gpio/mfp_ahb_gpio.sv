@@ -30,12 +30,12 @@ module mfp_ahb_gpio
                HADDR_WIDTH = MADDR_WIDTH + 2;
 
     // bram wires
-    wire     [MADDR_WIDTH-1:0] wa;
-    wire                       we;
-    wire     [HDATA_WIDTH-1:0] wd;
-    wire     [MADDR_WIDTH-1:0] ra;
-    wire                       re;
-    wire reg [HDATA_WIDTH-1:0] rd;
+    wire [MADDR_WIDTH-1:0] wa;
+    wire                   we;
+    wire [HDATA_WIDTH-1:0] wd;
+    wire [MADDR_WIDTH-1:0] ra;
+    wire                   re;
+    reg  [HDATA_WIDTH-1:0] rd;
 
     ahb_lite_sdp    #(
         .HADDR_WIDTH ( HADDR_WIDTH ),

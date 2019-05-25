@@ -70,7 +70,7 @@ module cpu_mipsfpga
 //  wire         EJ_TCK;
 //  wire         EJ_TDI;
 //  wire         EJ_TDO;
-    wire         EJ_TDOzstate;
+//  wire         EJ_TDOzstate;
 //  wire         EJ_TMS;
 //  wire         EJ_TRST_N;
     wire [  3:0] EJ_Version;
@@ -126,12 +126,12 @@ module cpu_mipsfpga
 //  wire         SI_IAck;
     wire [  7:0] SI_Ibs;
 //  wire [  7:0] SI_Int;
-    wire [ 17:1] SI_ION;
+//  wire [ 17:1] SI_ION;
     wire [  2:0] SI_IPFDCI;
-    wire [  7:0] SI_IPL;
+//  wire [  7:0] SI_IPL;
     wire [  2:0] SI_IPPCI;
 //  wire [  2:0] SI_IPTI;
-    wire [  5:0] SI_IVN;
+//  wire [  5:0] SI_IVN;
     wire [  1:0] SI_MergeMode;
     wire         SI_NESTERL;
     wire         SI_NESTEXL;

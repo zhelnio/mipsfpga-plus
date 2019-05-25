@@ -6,8 +6,7 @@ module mfp_ahb_lite_slave
     parameter   ADDR_WIDTH = 32,
                 ADDR_START = 0,
                 ADDR_END   = (ADDR_START + ADDR_WIDTH - 1)
-)
-(
+)(
     input                                HCLK,
     input                                HRESETn,
     input      [                31 : 0 ] HADDR,

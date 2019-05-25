@@ -1,5 +1,5 @@
 `include "mfp_ahb_lite.vh"
-`include "mfp_ahb_lite_matrix_config.vh"
+`include "mfp_config.vh"
 `include "mfp_eic_core.vh"
 
 module mfp_ahb_lite_matrix
@@ -7,7 +7,7 @@ module mfp_ahb_lite_matrix
     parameter AHB_ROM_ADDR_WIDTH = 10,
               AHB_ROM_INIT_RMEMH = "",
               AHB_RAM_ADDR_WIDTH = 10,
-              AHB_RAM_INIT_RMEMH = ""
+              AHB_RAM_INIT_RMEMH = "",
     parameter SDRAM_ADDR_BITS    = 13,
               SDRAM_ROW_BITS     = 13,
               SDRAM_COL_BITS     = 10,
@@ -114,8 +114,8 @@ module mfp_ahb_lite_matrix
     wire [HPORT_COUNT-1:0]                  HRESP;
 
     // AHB addr decoder
-    wire                  [HADDR_WIDTH-1:0] d_HADDR,
-    wire [HPORT_COUNT-1:0]                  d_HSEL
+    wire                  [HADDR_WIDTH-1:0] d_HADDR;
+    wire [HPORT_COUNT-1:0]                  d_HSEL;
 
     // AHB-Lite interconnect
     ahb_lite_1xN    #(
@@ -178,10 +178,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS             ),
         .HWDATA           ( HWDATA             ),
         .HWRITE           ( HWRITE             ),
-        .HRDATA           ( RDATA       [0]    ),
+        .HRDATA           ( HRDATA      [0]    ),
         .HREADYOUT        ( HREADYOUT   [0]    ),
         .HREADY           ( HREADY             ),
-        .HRESP            ( RESP        [0]    ) 
+        .HRESP            ( HRESP       [0]    ) 
     );
 
     //RAM
@@ -229,10 +229,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS          ),
         .HWDATA           ( HWDATA          ),
         .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [1] ),
+        .HRDATA           ( HRDATA      [1] ),
         .HREADYOUT        ( HREADYOUT   [1] ),
         .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [1] ) 
+        .HRESP            ( HRESP       [1] ) 
 
         `ifdef MFP_USE_SDRAM_MEMORY
         ,
@@ -281,10 +281,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS          ),
         .HWDATA           ( HWDATA          ),
         .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [2] ),
+        .HRDATA           ( HRDATA      [2] ),
         .HREADYOUT        ( HREADYOUT   [2] ),
         .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [2] ),
+        .HRESP            ( HRESP       [2] ),
         .gpio_rd          ( gpio_rd         ),
         .gpio_wd          ( gpio_wd         ),
         .gpio_we          ( gpio_we         ) 
@@ -304,10 +304,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS          ),
         .HWDATA           ( HWDATA          ),
         .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [3] ),
+        .HRDATA           ( HRDATA      [3] ),
         .HREADYOUT        ( HREADYOUT   [3] ),
         .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [3] ),
+        .HRESP            ( HRESP       [3] ),
         .UART_SRX         ( uart_rx         ),
         .UART_STX         ( uart_tx         ),
         .UART_RTS         (                 ),
@@ -335,10 +335,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS          ),
         .HWDATA           ( HWDATA          ),
         .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [4] ),
+        .HRDATA           ( HRDATA      [4] ),
         .HREADYOUT        ( HREADYOUT   [4] ),
         .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [4] ),
+        .HRESP            ( HRESP       [4] ),
 
         .EIC_input        ( EIC_input       ),
 
@@ -373,10 +373,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS          ),
         .HWDATA           ( HWDATA          ),
         .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [5] ),
+        .HRDATA           ( HRDATA      [5] ),
         .HREADYOUT        ( HREADYOUT   [5] ),
         .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [5] ),
+        .HRESP            ( HRESP       [5] ),
     );
     `endif
 
@@ -394,10 +394,10 @@ module mfp_ahb_lite_matrix
         .HTRANS           ( HTRANS          ),
         .HWDATA           ( HWDATA          ),
         .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [6] ),
+        .HRDATA           ( HRDATA      [6] ),
         .HREADYOUT        ( HREADYOUT   [6] ),
         .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [6] ),
+        .HRESP            ( HRESP       [6] ),
         .SPI_CS           ( als_spi_cs      ),
         .SPI_SCK          ( als_spi_sck     ),
         .SPI_SDO          ( als_spi_sdo     )

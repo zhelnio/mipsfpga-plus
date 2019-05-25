@@ -33,7 +33,7 @@ module mfp_debouncer
 
     genvar ii;
     generate
-        for(ii-0; ii<WIDHT; ii+=1)
+        for(ii=0; ii<WIDHT; ii+=1)
             mfp_debouncer_pin #(DEPTH) debouncer (clk, in[ii], out[ii]);
     endgenerate
 

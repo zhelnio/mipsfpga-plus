@@ -13,7 +13,7 @@ module mfp_eic_stub
     input      [  7 : 0 ]             EIC_IPL,       // connect to SI_IPL
     input      [  5 : 0 ]             EIC_IVN,       // connect to SI_IVN
     input      [ 17 : 1 ]             EIC_ION        // connect to SI_ION
-)
+);
     assign EIC_Offset    = 17'b0;
     assign EIC_ShadowSet =  4'b0;
     assign EIC_Vector    =  6'b0;

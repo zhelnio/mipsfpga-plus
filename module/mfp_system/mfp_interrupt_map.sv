@@ -42,9 +42,10 @@ module mfp_interrupt_map
 
     // internal controller connections
     always @(*) begin
-        if(SI_EICPresent)
+        if(SI_EICPresent) begin
             SI_Int    = EIC_Interrupt;
             SI_IPTI   = 3'b0;
+            end
         else begin
             SI_Int    = '0;
             SI_Int[4] = adc_interrupt;

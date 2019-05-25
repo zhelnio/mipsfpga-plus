@@ -1,6 +1,4 @@
 
-`include "mfp_ahb_lite_matrix_config.vh"
-
 module c5gx (
 
     `ifdef UNUSED
@@ -85,94 +83,6 @@ module c5gx (
       input              UART_RX,
       output             UART_TX
 );
-
-    // global clock signals
-    wire clk;
-
-    `ifdef MFP_USE_SLOW_CLOCK_AND_CLOCK_MUX
-
-        wire       CLK_Lock = 1'b1;
-        wire       muxed_clk;
-        wire [1:0] sw_db;
-
-        mfp_multi_switch_or_button_sync_and_debouncer
-        # (.WIDTH (2))
-        mfp_multi_switch_or_button_sync_and_debouncer
-        (   
-            .clk    ( MAX10_CLK1_50 ),
-            .sw_in  ( SW [1:0] ),
-            .sw_out ( sw_db    )
-        );
-
-        mfp_clock_divider_50_MHz_to_25_MHz_12_Hz_0_75_Hz 
-        mfp_clock_divider_50_MHz_to_25_MHz_12_Hz_0_75_Hz
-        (
-            .clki    ( MAX10_CLK1_50  ),
-            .sel_lo  ( sw_db [0] ),
-            .sel_mid ( sw_db [1] ),
-            .clko    ( muxed_clk )
-        );
-
-        global gclk
-        (
-            .in     ( muxed_clk  ), 
-            .out    ( clk        )
-        );
-
-    `else
-        wire   CLK_Lock = 1'b1;
-        assign clk = CLOCK_50_B5B;
-    `endif
-
-    wire [`MFP_N_SWITCHES          - 1:0] IO_Switches;
-    wire [`MFP_N_BUTTONS           - 1:0] IO_Buttons;
-    wire [`MFP_N_RED_LEDS          - 1:0] IO_RedLEDs;
-    wire [`MFP_N_GREEN_LEDS        - 1:0] IO_GreenLEDs;
-    wire [`MFP_7_SEGMENT_HEX_WIDTH - 1:0] IO_7_SegmentHEX;
-
-    assign IO_Switches = { { `MFP_N_SWITCHES - 10 { 1'b0 } } ,   SW  [9:0] };
-    assign IO_Buttons  = { { `MFP_N_BUTTONS  -  2 { 1'b0 } } , ~ KEY [3:0] };
-
-    wire [31:0] HADDR, HRDATA, HWDATA;
-    wire        HWRITE;
-
-    assign LEDR = IO_RedLEDs   [9:0];
-    assign LEDG = IO_GreenLEDs [7:0];
-
-    `define MFP_EJTAG_DEBUGGER
-    `ifdef MFP_EJTAG_DEBUGGER
-        // MIPSfpga EJTAG BusBluster 3 connector pinout
-        // EJTAG     DIRECTION   PIN      CONN      PIN    DIRECTION EJTAG 
-        // =====     ========= ======== ========= ======== ========= ======
-        //  VCC       output   GPIO[10]  13 | 14  GPIO[11]  output    VCC  
-        //  GND       output   GPIO[12]  15 | 16  GPIO[13]  output    GND  
-        //  NC        output   GPIO[14]  17 | 18  GPIO[15]  input    EJ_TCK
-        //  NC        output   GPIO[16]  19 | 20  GPIO[17]  output   EJ_TDO
-        //  EJ_RST_N  input    GPIO[18]  21 | 22  GPIO[19]  input    EJ_TDI
-        //  EJ_TRST_N input    GPIO[20]  23 | 24  GPIO[21]  input    EJ_TMS
-
-        wire EJ_VCC    = 1'b1;
-        wire EJ_GND    = 1'b0;
-        wire EJ_NC     = 1'bz;
-        wire EJ_TCK    = GPIO[15];
-        wire EJ_RST_N  = GPIO[18];
-        wire EJ_TDI    = GPIO[19];
-        wire EJ_TRST_N = GPIO[20];
-        wire EJ_TMS    = GPIO[21];
-        wire EJ_DINT   = 1'b0;
-        wire EJ_TDO;
-
-        assign GPIO[10] = EJ_VCC;
-        assign GPIO[11] = EJ_VCC;
-        assign GPIO[12] = EJ_GND;
-        assign GPIO[13] = EJ_GND;
-        assign GPIO[14] = EJ_NC;
-        assign GPIO[16] = EJ_NC;
-        assign GPIO[17] = EJ_TDO;
-    `endif
-
-    wire pin_rst_cold = 1'b0;
-    wire pin_rst_soft = ~CPU_RESET_n;
     wire SI_ColdReset;
     wire SI_Reset;
 
@@ -244,19 +154,51 @@ module c5gx (
     );
     `endif
 
-    mfp_system mfp_system
-    (
-        .clk              (  clk              ),
-        .clk_locked       (  CLK_Lock         ),
-        .pin_rst_cold     (  pin_rst_cold     ),
-        .pin_rst_soft     (  pin_rst_soft     ),
-        .SI_ColdReset     (  SI_ColdReset     ),
-        .SI_Reset         (  SI_Reset         ),
-                          
-        .HADDR            (   HADDR           ),
-        .HRDATA           (   HRDATA          ),
-        .HWDATA           (   HWDATA          ),
-        .HWRITE           (   HWRITE          ),
+    localparam WIDTH_7SEG = 16;
+    wire [WIDTH_7SEG-1:0] gpio_7seg;
+
+    // MIPSfpga EJTAG BusBluster 3 connector pinout
+    // EJTAG     DIRECTION   PIN      CONN      PIN    DIRECTION EJTAG 
+    // =====     ========= ======== ========= ======== ========= ======
+    //  VCC       output   GPIO[10]  13 | 14  GPIO[11]  output    VCC  
+    //  GND       output   GPIO[12]  15 | 16  GPIO[13]  output    GND  
+    //  NC        output   GPIO[14]  17 | 18  GPIO[15]  input    EJ_TCK
+    //  NC        output   GPIO[16]  19 | 20  GPIO[17]  output   EJ_TDO
+    //  EJ_RST_N  input    GPIO[18]  21 | 22  GPIO[19]  input    EJ_TDI
+    //  EJ_TRST_N input    GPIO[20]  23 | 24  GPIO[21]  input    EJ_TMS
+
+    wire EJ_VCC = 1'b1;
+    wire EJ_GND = 1'b0;
+    wire EJ_NC  = 1'bz;
+
+    assign GPIO[10] = EJ_VCC;
+    assign GPIO[11] = EJ_VCC;
+    assign GPIO[12] = EJ_GND;
+    assign GPIO[13] = EJ_GND;
+    assign GPIO[14] = EJ_NC;
+    assign GPIO[16] = EJ_NC;
+
+    mfp_system #(
+        .BOARD_WIDTH_BTN        ( 4             ),
+        .BOARD_WIDTH_SW         ( 10            ),
+        .BOARD_WIDTH_LEDR       ( 10            ),
+        .BOARD_WIDTH_LEDG       ( 8             ),
+        .BOARD_WIDTH_7SEG       ( WIDTH_7SEG    ) 
+    ) system (
+        .gclk                   ( CLOCK_50_B5B  ),
+        .pin_clk_mode           ( SW [1:0]      ),
+        .pin_rst_cold           ( 1'b0          ),
+        .pin_rst_soft           ( ~CPU_RESET_n  ),
+        .uart_prg_rx            ( GPIO [1]      ),
+        .SI_ColdReset           ( SI_ColdReset  ),
+        .SI_Reset               ( SI_Reset      ),
+        .EJ_RST_N               ( GPIO[18]      ),
+        .EJ_TRST_N              ( GPIO[20]      ),
+        .EJ_TDI                 ( GPIO[19]      ),
+        .EJ_TDO                 ( GPIO[17]      ),
+        .EJ_TMS                 ( GPIO[21]      ),
+        .EJ_TCK                 ( GPIO[15]      ),
+        .EJ_DINT                ( 1'b0          ),
 
         `ifdef MFP_USE_AVALON_MEMORY
         .avm_clk                ( avm_clk                ),
@@ -274,40 +216,24 @@ module c5gx (
         .avm_writedata          ( avm_writedata          ),
         `endif
 
-        `ifdef MFP_EJTAG_DEBUGGER
-        .EJ_TRST_N        (   EJ_TRST_N       ),
-        .EJ_TDI           (   EJ_TDI          ),
-        .EJ_TDO           (   EJ_TDO          ),
-        .EJ_TMS           (   EJ_TMS          ),
-        .EJ_TCK           (   EJ_TCK          ),
-        .EJ_RST_N         (   EJ_RST_N        ),
-        .EJ_DINT          (   EJ_DINT         ),
-        `endif
-
-        .IO_Switches      (   IO_Switches     ),
-        .IO_Buttons       (   IO_Buttons      ),
-        .IO_RedLEDs       (   IO_RedLEDs      ),
-        .IO_GreenLEDs     (   IO_GreenLEDs    ), 
-        .IO_7_SegmentHEX  (   IO_7_SegmentHEX ),
-
-        `ifdef MFP_USE_DUPLEX_UART
-        .UART_SRX         (   UART_RX         ), 
-        .UART_STX         (   UART_TX         ),
-        `endif
-
         `ifdef MFP_DEMO_LIGHT_SENSOR
-        .SPI_CS           (   ALS_CS          ),
-        .SPI_SCK          (   ALS_SCK         ),
-        .SPI_SDO          (   ALS_SDO         ),
+        .als_spi_cs             (                        ),   //TODO
+        .als_spi_sck            (                        ),   //TODO
+        .als_spi_sdo            ( 1'b0                   ),   //TODO
         `endif
 
-        .UART_RX          (   GPIO [1]        ),
-        .UART_TX          (   GPIO [3]        )
+        .uart_rx                ( UART_RX                ),
+        .uart_tx                ( UART_TX                ),
+        .pin_gpio_sw            ( SW                     ),
+        .pin_gpio_btn           ( ~KEY                   ),
+        .pin_gpio_ledr          ( LEDR                   ),
+        .pin_gpio_ledg          ( LEDG                   ),
+        .pin_gpio_7seg          ( gpio_7seg              ) 
     );
 
-    mfp_single_digit_seven_segment_display digit_3 ( IO_7_SegmentHEX [15:12] , HEX3 [6:0] );
-    mfp_single_digit_seven_segment_display digit_2 ( IO_7_SegmentHEX [11: 8] , HEX2 [6:0] );
-    mfp_single_digit_seven_segment_display digit_1 ( IO_7_SegmentHEX [ 7: 4] , HEX1 [6:0] );
-    mfp_single_digit_seven_segment_display digit_0 ( IO_7_SegmentHEX [ 3: 0] , HEX0 [6:0] );
+    mfp_single_digit_seven_segment_display digit_3 ( gpio_7seg [15:12] , HEX3 [6:0] );
+    mfp_single_digit_seven_segment_display digit_2 ( gpio_7seg [11: 8] , HEX2 [6:0] );
+    mfp_single_digit_seven_segment_display digit_1 ( gpio_7seg [ 7: 4] , HEX1 [6:0] );
+    mfp_single_digit_seven_segment_display digit_0 ( gpio_7seg [ 3: 0] , HEX0 [6:0] );
 
 endmodule

@@ -1,6 +1,6 @@
 
 module mfp_clock_divider
-(
+#(
     parameter   CLOCK_DIV_MODE0 = 0,
                 CLOCK_DIV_MODE1 = CLOCK_DIV_MODE0,
                 CLOCK_DIV_MODE2 = CLOCK_DIV_MODE0,
@@ -13,10 +13,10 @@ module mfp_clock_divider
 );
     reg [CLOCK_DIV_WIDTH:0] cntr;
 
-    always @ (posedge clki)
+    always @ (posedge gclk)
         cntr <= cntr + 1'b1;
 
-    always @ (posedge clki)
+    always @ (posedge gclk)
         case (mode)
             2'b00 : clk <= cntr[CLOCK_DIV_MODE0];
             2'b01 : clk <= cntr[CLOCK_DIV_MODE1];

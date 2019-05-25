@@ -1,7 +1,4 @@
 
-`include "mfp_ahb_lite.vh"
-`include "mfp_ahb_lite_matrix_config.vh"
-
 module mfp_ahb_lite_pmod_als
 (
     input             HCLK,

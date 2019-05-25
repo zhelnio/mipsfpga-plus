@@ -1,4 +1,4 @@
-`include "mfp_ahb_lite_matrix_config.vh"
+`include "mfp_config.vh"
 
 //TODO: check with ddr2
 //`timescale 1 ns / 100 ps
