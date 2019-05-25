@@ -4,8 +4,20 @@
 
 module mfp_ahb_lite_matrix
 #(
-    parameter HADDR_WIDTH = 32,
-              HDATA_WIDTH = 32
+    parameter AHB_ROM_ADDR_WIDTH = 10,
+              AHB_ROM_INIT_RMEMH = "",
+              AHB_RAM_ADDR_WIDTH = 10,
+              AHB_RAM_INIT_RMEMH = ""
+    parameter SDRAM_ADDR_BITS    = 13,
+              SDRAM_ROW_BITS     = 13,
+              SDRAM_COL_BITS     = 10,
+              SDRAM_DQ_BITS      = 16,
+              SDRAM_DM_BITS      = 2,
+              SDRAM_BA_BITS      = 2,
+    parameter GPIOR_COUNT        = 32,
+              GPIOW_COUNT        = 32,
+    parameter HADDR_WIDTH        = 32,
+              HDATA_WIDTH        = 32 
 )(
     input                         HCLK,
     input                         HRESETn,
@@ -27,10 +39,10 @@ module mfp_ahb_lite_matrix
     output                        SDRAM_RASn,
     output                        SDRAM_CASn,
     output                        SDRAM_WEn,
-    output [`SDRAM_ADDR_BITS-1:0] SDRAM_ADDR,
-    output [`SDRAM_BA_BITS  -1:0] SDRAM_BA,
-    inout  [`SDRAM_DQ_BITS  -1:0] SDRAM_DQ,
-    output [`SDRAM_DM_BITS  -1:0] SDRAM_DQM,
+    output [ SDRAM_ADDR_BITS-1:0] SDRAM_ADDR,
+    output [ SDRAM_BA_BITS  -1:0] SDRAM_BA,
+    inout  [ SDRAM_DQ_BITS  -1:0] SDRAM_DQ,
+    output [ SDRAM_DM_BITS  -1:0] SDRAM_DQM,
     `endif
 
     `ifdef MFP_USE_AVALON_MEMORY
@@ -79,9 +91,9 @@ module mfp_ahb_lite_matrix
     output                        adc_int,
     `endif
 
-    input  [    GPIO_R-1:0][31:0] gpio_rd,
-    output                 [31:0] gpio_wd,
-    output [    GPIO_W-1:0]       gpio_we 
+    input  [GPIOR_COUNT-1:0][31:0] gpio_rd,
+    output                  [31:0] gpio_wd,
+    output [GPIOW_COUNT-1:0]       gpio_we 
 );
     localparam HPORT_COUNT = 7;
 
@@ -151,42 +163,42 @@ module mfp_ahb_lite_matrix
 
     //RESET
     ahb_lite_bram #(
-        .HADDR_WIDTH      ( `MFP_RESET_RAM_ADDR_WIDTH ),
-        .HDATA_WIDTH      (  HDATA_WIDTH              ),
-        .INIT_RMEMH       ( `MFP_RESET_RAM_HEX        )
+        .HADDR_WIDTH      ( AHB_ROM_ADDR_WIDTH ),
+        .HDATA_WIDTH      ( HDATA_WIDTH        ),
+        .INIT_RMEMH       ( AHB_ROM_INIT_RMEMH )
     ) reset_ram (
-        .HCLK             ( HCLK            ),
-        .HRESETn          ( HRESETn         ),
-        .HADDR            ( HADDR           ),
-        .HBURST           ( HBURST          ),
-        .HMASTLOCK        ( HMASTLOCK       ),
-        .HPROT            ( HPROT           ),
-        .HSEL             ( HSEL        [0] ),
-        .HSIZE            ( HSIZE           ),
-        .HTRANS           ( HTRANS          ),
-        .HWDATA           ( HWDATA          ),
-        .HWRITE           ( HWRITE          ),
-        .HRDATA           ( RDATA       [0] ),
-        .HREADYOUT        ( HREADYOUT   [0] ),
-        .HREADY           ( HREADY          ),
-        .HRESP            ( RESP        [0] ) 
+        .HCLK             ( HCLK               ),
+        .HRESETn          ( HRESETn            ),
+        .HADDR            ( HADDR              ),
+        .HBURST           ( HBURST             ),
+        .HMASTLOCK        ( HMASTLOCK          ),
+        .HPROT            ( HPROT              ),
+        .HSEL             ( HSEL        [0]    ),
+        .HSIZE            ( HSIZE              ),
+        .HTRANS           ( HTRANS             ),
+        .HWDATA           ( HWDATA             ),
+        .HWRITE           ( HWRITE             ),
+        .HRDATA           ( RDATA       [0]    ),
+        .HREADYOUT        ( HREADYOUT   [0]    ),
+        .HREADY           ( HREADY             ),
+        .HRESP            ( RESP        [0]    ) 
     );
 
     //RAM
     `ifdef MFP_USE_SDRAM_MEMORY
         mfp_ahb_ram_sdram
         #(
-            .ADDR_BITS    ( `SDRAM_ADDR_BITS ),
-            .ROW_BITS     ( `SDRAM_ROW_BITS  ),
-            .COL_BITS     ( `SDRAM_COL_BITS  ),
-            .DQ_BITS      ( `SDRAM_DQ_BITS   ),
-            .DM_BITS      ( `SDRAM_DM_BITS   ),
-            .BA_BITS      ( `SDRAM_BA_BITS   )
+            .SDRAM_ADDR_BITS ( SDRAM_ADDR_BITS ),
+            .SDRAM_ROW_BITS  ( SDRAM_ROW_BITS  ),
+            .SDRAM_COL_BITS  ( SDRAM_COL_BITS  ),
+            .SDRAM_DQ_BITS   ( SDRAM_DQ_BITS   ),
+            .SDRAM_DM_BITS   ( SDRAM_DM_BITS   ),
+            .SDRAM_BA_BITS   ( SDRAM_BA_BITS   ) 
         )
     `elsif MFP_USE_BUSY_MEMORY
         mfp_ahb_ram_busy
         #(
-            .ADDR_WIDTH ( `MFP_RAM_ADDR_WIDTH )
+            .ADDR_WIDTH ( AHB_RAM_ADDR_WIDTH )
         )
     `elsif MFP_USE_AVALON_MEMORY
         ahb_lite_avm 
@@ -199,7 +211,9 @@ module mfp_ahb_lite_matrix
     `else
         ahb_lite_bram
         #(
-            .HADDR_WIDTH ( `MFP_RAM_ADDR_WIDTH )
+            .HADDR_WIDTH ( AHB_RAM_ADDR_WIDTH ),
+            .HDATA_WIDTH ( HDATA_WIDTH        ),
+            .INIT_RMEMH  ( AHB_RAM_INIT_RMEMH )
         )
     `endif
     ram
@@ -252,8 +266,10 @@ module mfp_ahb_lite_matrix
     );
 
     //GPIO
-    mfp_ahb_gpio gpio
-    (
+    mfp_ahb_gpio #(
+        .GPIOW_COUNT      ( GPIOR_COUNT     ),
+        .GPIOR_COUNT      ( GPIOW_COUNT     ) 
+    ) gpio (
         .HCLK             ( HCLK            ),
         .HRESETn          ( HRESETn         ),
         .HADDR            ( HADDR           ),

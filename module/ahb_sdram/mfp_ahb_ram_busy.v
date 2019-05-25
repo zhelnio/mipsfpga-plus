@@ -73,8 +73,9 @@ module mfp_ahb_ram_busy
     wire [ ADDR_WIDTH - 1 : 0 ] write_addr = HADDR_old [ ADDR_WIDTH - 1 + 2 : 2];
 
     sdp_bram #(
-        .ADDR_WIDTH ( ADDR_WIDTH   ),
-        .DATA_WIDTH ( 32           )
+        .ADDR_WIDTH ( MADDR_WIDTH ),
+        .DATA_WIDTH ( HDATA_WIDTH ),
+        .INIT_RMEMH ( INIT_RMEMH  ) 
     ) ram (
         .clk        ( HCLK         ),
         .wa         ( write_addr   ),

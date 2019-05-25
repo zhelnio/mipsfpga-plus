@@ -1,11 +1,9 @@
 `include "m14k_const.vh"
-`include "mfp_ahb_lite_matrix_config.vh"
-`include "mfp_eic_core.vh"
 
 module cpu_mipsfpga
 #(
-    parameter MFP_EJTAG_MANUFID = 11'b0, //11'h02;
-              MFP_EJTAG_PARTNUM = 16'b0  //16'hF1;
+    parameter EJTAG_MANUFID = 11'b0, //11'h02;
+              EJTAG_PARTNUM = 16'b0  //16'hF1;
 )(
     input         SI_ClkIn,
     input         SI_ColdReset,
@@ -26,8 +24,7 @@ module cpu_mipsfpga
     input         HRESP,            // AHB: 0 is OKAY, 1 is ERROR
 
     input  [ 7:0] SI_Int,           // Ext. Interrupt pins
-
-    `ifdef MFP_USE_IRQ_EIC
+    input  [ 2:0] SI_IPTI,          // TimerInt connection
     input  [17:1] SI_Offset,        // Vector offset (when entire vector offset is sent)
     input  [ 3:0] SI_EISS,          // Shadow set, comes with the requested interrupt
     input  [ 5:0] SI_EICVector,     // Vector number for EIC interrupt
@@ -38,7 +35,6 @@ module cpu_mipsfpga
     output [ 7:0] SI_IPL,           // Current IPL, contains information of which int SI_IACK ack.
     output [ 5:0] SI_IVN,           // Cuurent IVN, contains information of which int SI_IAck ack.
     output [17:1] SI_ION,           // Cuurent ION, contains information of which int SI_IAck ack.
-    `endif
 
     `ifdef MFP_DEMO_PIPE_BYPASS
     output        mpc_aselres_e,
@@ -212,19 +208,8 @@ module cpu_mipsfpga
     assign SI_AHBStb             =   1'b1;     // AHB: Signal indicating phase and frequency relationship between clk and hclk.
 
     //other settings
-    assign EJ_ManufID            = MFP_EJTAG_MANUFID;
-    assign EJ_PartNumber         = MFP_EJTAG_PARTNUM;
-
-  `ifdef MFP_USE_IRQ_EIC
-    assign SI_IPTI               =  3'h0;   //unused in EIC mode
-  `else
-    assign SI_IPTI               =  3'h0;
-    assign SI_Offset             = 17'b0;
-    assign SI_EISS               =  4'b0;
-    assign SI_EICVector          =  6'b0;
-    assign SI_EICPresent         =  1'b0;
-    assign SI_IPTI               =  3'h7;   //enable MIPS timer interrupt on HW5
-  `endif
+    assign EJ_ManufID            =   EJTAG_MANUFID;
+    assign EJ_PartNumber         =   EJTAG_PARTNUM;
 
     m14k_top m14k_top
     (

@@ -2,32 +2,31 @@
 
 module mfp_ahb_gpio
 #(
-    parameter HDATA_WIDTH = 32,
-              GPIO_W      = 1,
-              GPIO_R      = GPIO_W
+    parameter GPIOW_COUNT = 1,
+              GPIOR_COUNT = GPIOW_COUNT,
+    parameter HDATA_WIDTH = 32
 )(
-    input                     HCLK,
-    input                     HRESETn,
-    input  [ HDATA_WIDTH-1:0] HADDR,
-    input  [             2:0] HBURST,
-    input                     HMASTLOCK,
-    input  [             3:0] HPROT,
-    input  [             2:0] HSIZE,
-    input                     HSEL,
-    input  [             1:0] HTRANS,
-    input  [ HDATA_WIDTH-1:0] HWDATA,
-    input                     HWRITE,
-    input                     HREADY,
-    output [ HDATA_WIDTH-1:0] HRDATA,
-    output                    HREADYOUT,
-    output                    HRESP,
-
-    input  [GPIO_R-1:0][31:0] gpio_rd,
-    output             [31:0] gpio_wd,
-    output [GPIO_W-1:0]       gpio_we 
+    input                          HCLK,
+    input                          HRESETn,
+    input  [HDATA_WIDTH-1:0]       HADDR,
+    input  [            2:0]       HBURST,
+    input                          HMASTLOCK,
+    input  [            3:0]       HPROT,
+    input  [            2:0]       HSIZE,
+    input                          HSEL,
+    input  [            1:0]       HTRANS,
+    input  [HDATA_WIDTH-1:0]       HWDATA,
+    input                          HWRITE,
+    input                          HREADY,
+    output [HDATA_WIDTH-1:0]       HRDATA,
+    output                         HREADYOUT,
+    output                         HRESP,
+    input  [GPIOR_COUNT-1:0][31:0] gpio_rd,
+    output                  [31:0] gpio_wd,
+    output [GPIOW_COUNT-1:0]       gpio_we 
 );
 
-    localparam MADDR_WIDTH = $clog2( GPIO_W>GPIO_R ? GPIO_W : GPIO_R ),
+    localparam MADDR_WIDTH = $clog2( GPIOW_COUNT>GPIOR_COUNT ? GPIOW_COUNT : GPIOR_COUNT ),
                HADDR_WIDTH = MADDR_WIDTH + 2;
 
     // bram wires
