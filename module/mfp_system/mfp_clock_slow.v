@@ -23,7 +23,7 @@ module mfp_clock_slow
     mfp_debouncer #(.WIDHT(2)) mode_debouncer (gclk, mode, mode_d);
 
     // clock divider
-    wire      clk_o
+    wire      clk_o;
     mfp_clock_divider #  (
         .CLOCK_DIV_MODE0 ( CLOCK_DIV_MODE0 ),
         .CLOCK_DIV_MODE1 ( CLOCK_DIV_MODE1 ),

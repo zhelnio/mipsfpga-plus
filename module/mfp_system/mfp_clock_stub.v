@@ -13,7 +13,7 @@ module mfp_clock_stub
     output       locked 
 );
     assign clk_cpu   = gclk;
-    assign clk_adc   = 1'b0;
+    assign clk_adc   = 1'b0; //TODO: add ADC clock generation for simulator
     assign clk_dram  = 1'b0;
     assign clk_debug = gclk;
     assign locked    = 1'b1;

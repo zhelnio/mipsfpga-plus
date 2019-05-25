@@ -4,23 +4,28 @@
 
 module mfp_system
 #(
-    parameter AHB_ROM_ADDR_WIDTH = `MFP_RESET_RAM_ADDR_WIDTH,
-              AHB_ROM_INIT_RMEMH = `MFP_RESET_RAM_HEX,
-              AHB_RAM_ADDR_WIDTH = `MFP_RAM_ADDR_WIDTH,
-              AHB_RAM_INIT_RMEMH = ""
-    parameter SDRAM_ADDR_BITS    = 13,
-              SDRAM_ROW_BITS     = 13,
-              SDRAM_COL_BITS     = 10,
-              SDRAM_DQ_BITS      = 16,
-              SDRAM_DM_BITS      = 2,
-              SDRAM_BA_BITS      = 2,
-    parameter EJTAG_MANUFID      = 11'b0, //11'h02;
-              EJTAG_PARTNUM      = 16'b0  //16'hF1;
-    parameter BOARD_WIDTH_BTN    = 32,
-              BOARD_WIDTH_SW     = 32,
-              BOARD_WIDTH_LEDR   = 32,
-              BOARD_WIDTH_LEDG   = 32,
-              BOARD_WIDTH_7SEG   = 32 
+    parameter AHB_ROM_ADDR_WIDTH = `MFP_MACRO_AHB_ROM_ADDR_WIDTH,
+              AHB_ROM_INIT_RMEMH = `MFP_MACRO_AHB_ROM_INIT_RMEMH,
+              AHB_RAM_ADDR_WIDTH = `MFP_MACRO_AHB_RAM_ADDR_WIDTH,
+              AHB_RAM_INIT_RMEMH = `MFP_MACRO_AHB_RAM_INIT_RMEMH,
+              UART_PROGAM_ENABLE = `MFP_MACRO_UART_PROGAM_ENABLE,
+              UART_PROGAM_CLKFRQ = `MFP_MACRO_UART_PROGAM_CLKFRQ,
+              UART_PROGAM_BOUDRT = `MFP_MACRO_UART_PROGAM_BOUDRT,
+              CLOCK_SOURCE_MODE  = `MFP_MACRO_CLOCK_SOURCE_MODE,
+              CURRENT_RTL_TOOL   = `MFP_MACRO_CURRENT_RTL_TOOL,
+    parameter SDRAM_ADDR_BITS    = `DEFAULT_SDRAM_ADDR_BITS,
+              SDRAM_ROW_BITS     = `DEFAULT_SDRAM_ROW_BITS,
+              SDRAM_COL_BITS     = `DEFAULT_SDRAM_COL_BITS,
+              SDRAM_DQ_BITS      = `DEFAULT_SDRAM_DQ_BITS,
+              SDRAM_DM_BITS      = `DEFAULT_SDRAM_DM_BITS,
+              SDRAM_BA_BITS      = `DEFAULT_SDRAM_BA_BITS,
+    parameter EJTAG_MANUFID      = `DEFAULT_EJTAG_MANUFID,
+              EJTAG_PARTNUM      = `DEFAULT_EJTAG_PARTNUM,
+    parameter BOARD_WIDTH_BTN    = `DEFAULT_WIDTH_BTN,
+              BOARD_WIDTH_SW     = `DEFAULT_WIDTH_SW,
+              BOARD_WIDTH_LEDR   = `DEFAULT_WIDTH_LEDR,
+              BOARD_WIDTH_LEDG   = `DEFAULT_WIDTH_LEDG,
+              BOARD_WIDTH_7SEG   = `DEFAULT_WIDTH_7SEG 
 )(
     input                         gclk,
     input  [                 1:0] pin_clk_mode,
@@ -38,7 +43,7 @@ module mfp_system
     input                         EJ_TCK,
     input                         EJ_DINT,
 
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `ifdef MFP_MACRO_USE_SDRAM_MEMORY
     output                        SDRAM_CLK,
     output                        SDRAM_CKE,
     output                        SDRAM_CSn,
@@ -51,7 +56,7 @@ module mfp_system
     output [SDRAM_DM_BITS  -1:0]  SDRAM_DQM,
     `endif
 
-    `ifdef MFP_USE_AVALON_MEMORY
+    `ifdef MFP_MACRO_USE_AVALON_MEMORY
     output                        avm_clk,
     output                        avm_rst_n,
     input                         avm_waitrequest,
@@ -67,7 +72,7 @@ module mfp_system
     output [                31:0] avm_writedata,
     `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
+    `ifdef MFP_MACRO_USE_PMOD_ALS
     output                        als_spi_cs,
     output                        als_spi_sck,
     input                         als_spi_sdo,
@@ -111,7 +116,7 @@ module mfp_system
     wire [ 5:0] SI_IVN;
     wire [17:1] SI_ION;
   
-  `ifdef MFP_DEMO_PIPE_BYPASS
+  `ifdef MFP_MACRO_DEMO_PIPE_BYPASS
     wire        mpc_aselres_e;
     wire        mpc_aselwr_e;
     wire        mpc_bselall_e;
@@ -155,8 +160,8 @@ module mfp_system
 
     // system clock source
     `MFP_MACRO_CLOCK_SOURCE #(
-        .MODE      ( `MFP_MACRO_CLOCK_MODE ),
-        .TOOL      ( `MFP_MACRO_BUILD_TOOL )
+        .MODE      ( CLOCK_SOURCE_MODE ),
+        .TOOL      ( CURRENT_RTL_TOOL  )
     ) clock_source (
         .gclk      ( gclk         ),
         .mode      ( pin_clk_mode ),
@@ -217,7 +222,7 @@ module mfp_system
         .SI_IVN        ( SI_IVN        ),
         .SI_ION        ( SI_ION        ),
 
-        `ifdef MFP_DEMO_PIPE_BYPASS
+        `ifdef MFP_MACRO_DEMO_PIPE_BYPASS
         .mpc_aselres_e ( mpc_aselres_e ),
         .mpc_aselwr_e  ( mpc_aselwr_e  ),
         .mpc_bselall_e ( mpc_bselall_e ),
@@ -235,9 +240,9 @@ module mfp_system
 
     // uart programmer
     mfp_uart_programmer #(
-        .ENABLED     ( `MFP_MACRO_UART_PROGRAMMER_ENABLE ),
-        .CLK_FREQ    (      ),
-        .BOUD_RATE   (      )
+        .ENABLED     ( UART_PROGAM_ENABLE ),
+        .CLK_FREQ    ( UART_PROGAM_CLKFRQ ),
+        .BOUD_RATE   ( UART_PROGAM_BOUDRT )
     ) mfp_uart_programmer (
         .clk         ( cpu_HCLK      ),
         .rst_n       ( SI_ColdReset  ),
@@ -292,7 +297,7 @@ module mfp_system
         .cpu_HREADY             ( cpu_HREADY             ),
         .cpu_HRESP              ( cpu_HRESP              ),
 
-        `ifdef MFP_USE_SDRAM_MEMORY
+        `ifdef MFP_MACRO_USE_SDRAM_MEMORY
         .SDRAM_CKE              ( SDRAM_CKE              ),
         .SDRAM_CSn              ( SDRAM_CSn              ),
         .SDRAM_RASn             ( SDRAM_RASn             ),
@@ -304,7 +309,7 @@ module mfp_system
         .SDRAM_DQM              ( SDRAM_DQM              ),
         `endif
 
-        `ifdef MFP_USE_AVALON_MEMORY
+        `ifdef MFP_MACRO_USE_AVALON_MEMORY
         .avm_clk                ( avm_clk                ),
         .avm_rst_n              ( avm_rst_n              ),
         .avm_waitrequest        ( avm_waitrequest        ),
@@ -320,7 +325,7 @@ module mfp_system
         .avm_writedata          ( avm_writedata          ),
         `endif
 
-        `ifdef MFP_DEMO_LIGHT_SENSOR
+        `ifdef MFP_MACRO_USE_PMOD_ALS
         .als_spi_cs             ( als_spi_cs             ),
         .als_spi_sck            ( als_spi_sck            ),
         .als_spi_sdo            ( als_spi_sdo            ),
@@ -330,7 +335,7 @@ module mfp_system
         .uart_tx                ( uart_tx                ),
         .uart_int               ( uart_interrupt         ),
 
-        `ifdef MFP_USE_IRQ_EIC
+        `ifdef MFP_MACRO_USE_IRQ_EIC
         .EIC_input              ( EIC_input              ),
         .EIC_Offset             ( SI_Offset              ),
         .EIC_ShadowSet          ( SI_EISS                ),
@@ -343,7 +348,7 @@ module mfp_system
         .EIC_ION                ( SI_ION                 ),
         `endif
 
-        `ifdef MFP_USE_ADC_MAX10 
+        `ifdef MFP_MACRO_USE_ADC_MAX10 
         .clk_adc                ( clk_adc                ),
         .clk_locked             ( pll_locked             ),
         .adc_trigger            ( adc_trigger            ),
@@ -370,7 +375,7 @@ module mfp_system
         .SI_IPTI          ( SI_IPTI          ) 
     );
 
-    `ifndef MFP_USE_IRQ_EIC
+    `ifndef MFP_MACRO_USE_IRQ_EIC
     mfp_eic_stub  #(
         .EIC_CHANNELS     ( `EIC_CHANNELS    )
     ) mfp_eic_stub (
@@ -411,20 +416,20 @@ module mfp_system
 
     assign EJ_TDO = EJ_TDOz_cpu ? 1'bz : EJ_TDO_cpu;
 
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `ifdef MFP_MACRO_USE_SDRAM_MEMORY
         assign SDRAM_CLK = clk_dram;
     `endif
 
     assign adc_trigger = 1'b0;
-    `ifndef MFP_USE_ADC_MAX10
+    `ifndef MFP_MACRO_USE_ADC_MAX10
         assign adc_interrupt = 1'b0;
     `endif
 
-    `ifdef MFP_DEMO_CACHE_MISSES
+    `ifdef MFP_MACRO_DEMO_CACHE_MISSES
         wire burst = HTRANS == `HTRANS_NONSEQ && HBURST == `HBURST_WRAP4;
         assign pin_gpio_ledg = { '0, HCLK, burst, HADDR [7:2] };
 
-    `elsif MFP_DEMO_PIPE_BYPASS
+    `elsif MFP_MACRO_DEMO_PIPE_BYPASS
         assign pin_gpio_ledg = { '0,
                                   HCLK,
                                   mpc_aselwr_e,   // Bypass res_w as src A

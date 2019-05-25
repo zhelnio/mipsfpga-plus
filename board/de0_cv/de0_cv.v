@@ -135,7 +135,7 @@ module de0_cv
         assign GPIO_1[19] = EJ_TDO;
     `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
+    `ifdef MFP_MACRO_USE_PMOD_ALS
         //  ALS   CONN    PIN          DIRECTION
         // ===== ======  =====       =============
         //  VCC  JP2 29  3.3V
@@ -196,7 +196,7 @@ module de0_cv
         .IO_GreenLEDs     (   IO_GreenLEDs    ), 
         .IO_7_SegmentHEX  (   IO_7_SegmentHEX ),
 
-        `ifdef MFP_DEMO_LIGHT_SENSOR
+        `ifdef MFP_MACRO_USE_PMOD_ALS
         .SPI_CS           (   ALS_CS          ),
         .SPI_SCK          (   ALS_SCK         ),
         .SPI_SDO          (   ALS_SDO         ),

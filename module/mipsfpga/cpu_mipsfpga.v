@@ -36,7 +36,7 @@ module cpu_mipsfpga
     output [ 5:0] SI_IVN,           // Cuurent IVN, contains information of which int SI_IAck ack.
     output [17:1] SI_ION,           // Cuurent ION, contains information of which int SI_IAck ack.
 
-    `ifdef MFP_DEMO_PIPE_BYPASS
+    `ifdef MFP_MACRO_DEMO_PIPE_BYPASS
     output        mpc_aselres_e,
     output        mpc_aselwr_e,
     output        mpc_bselall_e,
@@ -316,7 +316,7 @@ module cpu_mipsfpga
         .UDI_fromudi           ( UDI_fromudi           ),
         .UDI_toudi             ( UDI_toudi             )
 
-    `ifdef MFP_DEMO_PIPE_BYPASS
+    `ifdef MFP_MACRO_DEMO_PIPE_BYPASS
         ,
         .mpc_aselres_e         ( mpc_aselres_e         ),
         .mpc_aselwr_e          ( mpc_aselwr_e          ),

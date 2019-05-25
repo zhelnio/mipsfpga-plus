@@ -23,7 +23,7 @@ module mfp_srec_parser_ahb
     assign HMASTLOCK = 1'b0;
     assign HPROT     = 4'b0;
     
-    `ifdef MFP_USE_UART_PROGRAM_LOADER_WORD_ALIGN
+    `ifndef MFP_MACRO_USE_1BYTE_AHB_LOADER
         
         // AHB-lite transfer using `HSIZE_4
         reg  [31:0] addr;

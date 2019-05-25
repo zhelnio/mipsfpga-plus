@@ -59,6 +59,8 @@ SIMULATION_MACRO:=
 SIMULATION_FILE :=
 SIMULATION_TOP  :=
 
+include $(TOP_DIR)/config.mk
+
 include $(TOP_DIR)/module/common/module.mk
 include $(TOP_DIR)/module/ahb_ram/module.mk
 include $(TOP_DIR)/module/ahb_avalon/module.mk
@@ -82,20 +84,26 @@ include $(TOP_DIR)/tb/micron_ddr2/module.mk
 include $(TOP_DIR)/tb/micron_sdram/module.mk
 include $(TOP_DIR)/tb/top/module.mk
 
+MACRO_LIST=$(filter MFP_MACRO_%, $(.VARIABLES))
+
+QUARTUS_MACRO += $(foreach v, $(MACRO_LIST), "$(v)=$($(v))")
+MSIM_MACRO += $(foreach v, $(MACRO_LIST), $(v)=$($(v)))
+
+
 test2:
-	@echo $(SYNTHESIS_RTL)
+	@echo "$(MSIM_MACRO)"
+	@echo "$(QUARTUS_MACRO)"
 
 
-
-ifeq ($(abspath $(PWD)/..),$(DIR_PROGRAM))
-    RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_DEFAULT))
-else
-    RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_INIT))
-endif
-ifneq ($(RESET_RAM_INIT),)
-    QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
-    MSIM_MACRO      += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
-endif
+# ifeq ($(abspath $(PWD)/..),$(DIR_PROGRAM))
+#     RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_DEFAULT))
+# else
+#     RESET_RAM_INIT = $(abspath $(MFP_CONFIG_RESET_RAM_INIT))
+# endif
+# ifneq ($(RESET_RAM_INIT),)
+#     QUARTUS_MACRO   += "MFP_RESET_RAM_HEX=\"$(RESET_RAM_INIT)\""
+#     MSIM_MACRO      += MFP_RESET_RAM_HEX="$(RESET_RAM_INIT)"
+# endif
 
 # convert config path to abs path
 # program      => program

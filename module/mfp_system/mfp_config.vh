@@ -1,133 +1,74 @@
-//
-//  Simulation and synthesis
-//
 
-`ifdef SYNTHESIS
-    `undef SIMULATION
+`ifndef MFP_MACRO_AHB_ROM_ADDR_WIDTH
+    `define MFP_MACRO_AHB_ROM_ADDR_WIDTH 11
 `endif
 
-`ifndef SIMULATION
-    `ifdef MODEL_TECH
-        `define SIMULATION
-    `elsif XILINX_ISIM
-        `define SIMULATION
-    `endif
+`ifndef MFP_MACRO_AHB_ROM_INIT_RMEMH
+    `define MFP_MACRO_AHB_ROM_INIT_RMEMH ""
 `endif
 
-//
-//  Common configuration parameters
-//
-// `define MFP_USE_UART_PROGRAM_LOADER
-`define MFP_USE_DUPLEX_UART
-//`define MFP_USE_ADC_MAX10
-`define MFP_DEMO_LIGHT_SENSOR
-// `define MFP_DEMO_CACHE_MISSES
-// `define MFP_DEMO_PIPE_BYPASS
-
-//
-//  Memory type (choose one)
-//
-//`define MFP_USE_BUSY_MEMORY
-// `define MFP_USE_SDRAM_MEMORY
-`define MFP_USE_AVALON_MEMORY
-
-//
-// Enable external interrupt controller
-// see additional settings in mfp_eic_core.vh
-//
-//`define MFP_USE_IRQ_EIC
-
-//
-// global SDRAM bus params
-//
-
-`ifdef MFP_USE_SDRAM_MEMORY
-    `ifdef SIMULATION
-        //only x16 supported
-        `define x16
-        `define den64Mb
-        `define sg75
-        
-        //these values should be relevant to sdr_parameters.vh
-        `ifdef den64Mb
-            `define SDRAM_ADDR_BITS         12
-            `define SDRAM_ROW_BITS          12
-            `define SDRAM_COL_BITS          8
-        `elsif den128Mb
-            `define SDRAM_ADDR_BITS         12
-            `define SDRAM_ROW_BITS          12
-            `define SDRAM_COL_BITS          9
-        `elsif den256Mb
-            `define SDRAM_ADDR_BITS         13
-            `define SDRAM_ROW_BITS          13
-            `define SDRAM_COL_BITS          9
-        `else 
-            `define den512Mb
-            `define SDRAM_ADDR_BITS         13
-            `define SDRAM_ROW_BITS          13
-            `define SDRAM_COL_BITS          10
-        `endif
-
-        `define SDRAM_DQ_BITS               16
-        `define SDRAM_DM_BITS               2
-        `define SDRAM_BA_BITS               2
-        `define SDRAM_DELAY_nCKE            20
-        `define SDRAM_MEM_CLK_PHASE_SHIFT   12
-        `define MFP_RAM_ADDR_WIDTH          (`SDRAM_ROW_BITS + `SDRAM_COL_BITS + `SDRAM_BA_BITS)
-    `else
-        `include "board_config.vh"
-    `endif
+// SIMULATION: 16
+// DE1: 10, DE0-Nano: 13, DE0-CV or Basys3: 14, Nexys 4 or DE2-115: 16, DE10-Lite: 15
+`ifndef MFP_MACRO_AHB_RAM_ADDR_WIDTH
+    `define MFP_MACRO_AHB_RAM_ADDR_WIDTH 10
 `endif
 
-//not all types of memory can work with HSIZE_1
-//TODO: bram is fixed, have to check and optimize loader
-`ifdef MFP_USE_UART_PROGRAM_LOADER
-    `define MFP_USE_UART_PROGRAM_LOADER_WORD_ALIGN
-`endif
-//
-//  Memory-mapped I/O addresses
-//
-
-`define MFP_N_RED_LEDS              18
-`define MFP_N_GREEN_LEDS            16
-`define MFP_N_SWITCHES              18
-`define MFP_N_BUTTONS               5
-`define MFP_7_SEGMENT_HEX_WIDTH     32
-
-//TODO: check and delete
-`define MFP_RED_LEDS_ADDR           32'h1f800000
-`define MFP_GREEN_LEDS_ADDR         32'h1f800004
-`define MFP_SWITCHES_ADDR           32'h1f800008
-`define MFP_BUTTONS_ADDR            32'h1f80000C
-`define MFP_7_SEGMENT_HEX_ADDR      32'h1f800010
-
-`ifdef MFP_DEMO_LIGHT_SENSOR
-`define MFP_LIGHT_SENSOR_ADDR       32'h1f800014
+`ifndef MFP_MACRO_AHB_RAM_INIT_RMEMH
+    `define MFP_MACRO_AHB_RAM_INIT_RMEMH ""
 `endif
 
-`define MFP_RED_LEDS_IONUM          4'h0
-`define MFP_GREEN_LEDS_IONUM        4'h1
-`define MFP_SWITCHES_IONUM          4'h2
-`define MFP_BUTTONS_IONUM           4'h3
-`define MFP_7_SEGMENT_HEX_IONUM     4'h4
-
-//
-// RAM addresses
-//
-
-`define MFP_RESET_RAM_ADDR          32'h1fc?????
-`define MFP_RAM_ADDR                32'h0???????
-
-`define MFP_RESET_RAM_ADDR_WIDTH    11  // The boot sequence is the same for everything
-
-`ifndef MFP_RAM_ADDR_WIDTH
-    `ifdef SIMULATION
-    `define MFP_RAM_ADDR_WIDTH          16
-    `else
-    `define MFP_RAM_ADDR_WIDTH          15  // DE1: 10, DE0-Nano: 13, DE0-CV or Basys3: 14, Nexys 4 or DE2-115: 16, DE10-Lite: 15
-    `endif
+`ifndef MFP_MACRO_CLOCK_SOURCE
+    `define MFP_MACRO_CLOCK_SOURCE mfp_clock_stub
 `endif
 
+`ifndef MFP_MACRO_CLOCK_SOURCE_MODE
+    `define MFP_MACRO_CLOCK_SOURCE_MODE 50
+`endif
+
+`ifndef MFP_MACRO_CURRENT_RTL_TOOL
+    `define MFP_MACRO_CURRENT_RTL_TOOL ""
+`endif
+
+`ifndef MFP_MACRO_UART_PROGAM_ENABLE
+    `define MFP_MACRO_UART_PROGAM_ENABLE 0
+`endif
+
+`ifndef MFP_MACRO_UART_PROGAM_CLKFRQ
+    `define MFP_MACRO_UART_PROGAM_CLKFRQ 50000000
+`endif
+
+`ifndef MFP_MACRO_UART_PROGAM_BOUDRT
+    `define MFP_MACRO_UART_PROGAM_BOUDRT 115200
+`endif
+
+//`define MFP_MACRO_USE_SDRAM_MEMORY
+//`define MFP_MACRO_USE_AVALON_MEMORY
+//`define MFP_MACRO_USE_PMOD_ALS
+//`define MFP_MACRO_USE_IRQ_EIC
+//`define MFP_MACRO_USE_ADC_MAX10
+//`define MFP_MACRO_USE_BUSY_MEMORY
+//`define MFP_MACRO_USE_1BYTE_AHB_LOADER
+//`define MFP_MACRO_DEMO_CACHE_MISSES
+//`define MFP_MACRO_DEMO_PIPE_BYPASS
+
+
+`define DEFAULT_WIDTH_BTN       32
+`define DEFAULT_WIDTH_SW        32
+`define DEFAULT_WIDTH_LEDR      32
+`define DEFAULT_WIDTH_LEDG      32
+`define DEFAULT_WIDTH_7SEG      32
+`define DEFAULT_SDRAM_ADDR_BITS 13
+`define DEFAULT_SDRAM_ROW_BITS  13
+`define DEFAULT_SDRAM_COL_BITS  10
+`define DEFAULT_SDRAM_DQ_BITS   16
+`define DEFAULT_SDRAM_DM_BITS   2
+`define DEFAULT_SDRAM_BA_BITS   2
+`define DEFAULT_EJTAG_MANUFID   11'b0  //11'h02;
+`define DEFAULT_EJTAG_PARTNUM   16'b0  //16'hF1;
+
+//
+// bus address decoder
+//
 `define MFP_RESET_RAM_ADDR_MATCH    7'h7f
 `define MFP_RAM_ADDR_MATCH          3'b0
 `define MFP_GPIO_ADDR_MATCH         7'h7e

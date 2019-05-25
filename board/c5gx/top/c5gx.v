@@ -87,7 +87,7 @@ module c5gx (
     wire SI_Reset;
 
     // TODO: remap connections
-    // `ifdef MFP_DEMO_LIGHT_SENSOR
+    // `ifdef MFP_MACRO_USE_PMOD_ALS
     //     //  ALS   CONN   PIN         DIRECTION
     //     // ===== ====== =====      =============
     //     //  VCC    29   3.3V
@@ -110,7 +110,7 @@ module c5gx (
     //     assign GPIO[34] = ALS_CS;
     // `endif
 
-    `ifdef MFP_USE_AVALON_MEMORY
+    `ifdef MFP_MACRO_USE_AVALON_MEMORY
     wire          avm_clk;
     wire          avm_rst_n;
     wire          avm_waitrequest;
@@ -200,7 +200,7 @@ module c5gx (
         .EJ_TCK                 ( GPIO[15]      ),
         .EJ_DINT                ( 1'b0          ),
 
-        `ifdef MFP_USE_AVALON_MEMORY
+        `ifdef MFP_MACRO_USE_AVALON_MEMORY
         .avm_clk                ( avm_clk                ),
         .avm_rst_n              ( avm_rst_n              ),
         .avm_waitrequest        ( avm_waitrequest        ),
@@ -216,7 +216,7 @@ module c5gx (
         .avm_writedata          ( avm_writedata          ),
         `endif
 
-        `ifdef MFP_DEMO_LIGHT_SENSOR
+        `ifdef MFP_MACRO_USE_PMOD_ALS
         .als_spi_cs             (                        ),   //TODO
         .als_spi_sck            (                        ),   //TODO
         .als_spi_sdo            ( 1'b0                   ),   //TODO

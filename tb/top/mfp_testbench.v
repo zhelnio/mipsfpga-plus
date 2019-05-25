@@ -30,7 +30,7 @@ module mfp_testbench;
     wire [`MFP_N_GREEN_LEDS        - 1:0] IO_GreenLEDs;
     wire [`MFP_7_SEGMENT_HEX_WIDTH - 1:0] IO_7_SegmentHEX;
 
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `ifdef MFP_MACRO_USE_SDRAM_MEMORY
     reg                                 SDRAM_CLK;
     wire                                SDRAM_CKE;
     wire                                SDRAM_CSn;
@@ -43,7 +43,7 @@ module mfp_testbench;
     wire  [`SDRAM_DM_BITS     - 1 : 0]  SDRAM_DQM;
     `endif
 
-    `ifdef MFP_USE_AVALON_MEMORY
+    `ifdef MFP_MACRO_USE_AVALON_MEMORY
     wire          avm_clk;
     wire          avm_rst_n;
     wire          avm_waitrequest;
@@ -73,25 +73,11 @@ module mfp_testbench;
     reg         UART_RX;
     wire        UART_TX;
 
-    `ifdef MFP_USE_DUPLEX_UART
     wire        UART_STX;
     wire        UART_SRX = UART_STX;
-    `endif
 
-    `ifdef MFP_USE_ADC_MAX10
-    wire          ADC_C_Valid;
-    wire [  4:0 ] ADC_C_Channel;
-    wire          ADC_C_SOP;
-    wire          ADC_C_EOP;
-    wire          ADC_C_Ready;
-    wire          ADC_R_Valid;
-    wire [  4:0 ] ADC_R_Channel;
-    wire [ 11:0 ] ADC_R_Data;
-    wire          ADC_R_SOP;
-    wire          ADC_R_EOP;
-    `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
+    `ifdef MFP_MACRO_USE_PMOD_ALS
     wire        SPI_CS;
     wire        SPI_SCK;
     wire        SPI_SDO;
@@ -128,7 +114,7 @@ module mfp_testbench;
         .EJ_TCK           ( EJ_TCK           ),
         .EJ_DINT          ( EJ_DINT          ),
 
-        `ifdef MFP_USE_SDRAM_MEMORY
+        `ifdef MFP_MACRO_USE_SDRAM_MEMORY
         .SDRAM_CKE        ( SDRAM_CKE        ),
         .SDRAM_CSn        ( SDRAM_CSn        ),
         .SDRAM_RASn       ( SDRAM_RASn       ),
@@ -140,7 +126,7 @@ module mfp_testbench;
         .SDRAM_DQM        ( SDRAM_DQM        ),
         `endif
 
-        `ifdef MFP_USE_AVALON_MEMORY
+        `ifdef MFP_MACRO_USE_AVALON_MEMORY
         .avm_clk                ( avm_clk                ),
         .avm_rst_n              ( avm_rst_n              ),
         .avm_waitrequest        ( avm_waitrequest        ),
@@ -167,7 +153,7 @@ module mfp_testbench;
         .UART_STX         ( UART_STX         ),
         `endif
 
-        `ifdef MFP_USE_ADC_MAX10
+        `ifdef MFP_MACRO_USE_ADC_MAX10
         .ADC_C_Valid      (  ADC_C_Valid      ),
         .ADC_C_Channel    (  ADC_C_Channel    ),
         .ADC_C_SOP        (  ADC_C_SOP        ),
@@ -180,7 +166,7 @@ module mfp_testbench;
         .ADC_R_EOP        (  ADC_R_EOP        ),
         `endif
 
-        `ifdef MFP_DEMO_LIGHT_SENSOR
+        `ifdef MFP_MACRO_USE_PMOD_ALS
         .SPI_CS           ( SPI_CS           ),
         .SPI_SCK          ( SPI_SCK          ),
         .SPI_SDO          ( SPI_SDO          ),
@@ -197,7 +183,7 @@ module mfp_testbench;
         .sdo              ( SPI_SDO          )
     );
 
-    `ifdef MFP_USE_ADC_MAX10
+    `ifdef MFP_MACRO_USE_ADC_MAX10
         reg         ADC_CLK;
 
         adc_core adc
@@ -228,7 +214,7 @@ module mfp_testbench;
 
     //----------------------------------------------------------------
 
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `ifdef MFP_MACRO_USE_SDRAM_MEMORY
 
         parameter tT = 20; //TODО: (50?)
 
@@ -256,11 +242,11 @@ module mfp_testbench;
             # 10000
             SI_ClkIn = ~ SI_ClkIn;
         end
-    `endif //MFP_USE_SDRAM_MEMORY
+    `endif //MFP_MACRO_USE_SDRAM_MEMORY
 
     //----------------------------------------------------------------
 
-    `ifdef MFP_USE_AVALON_MEMORY
+    `ifdef MFP_MACRO_USE_AVALON_MEMORY
     // lpddr2_wrapper lpddr2_wrapper
     // (
     //     .clk_global      ( SI_ClkIn               ),
@@ -408,7 +394,7 @@ module mfp_testbench;
     //     $display ("%5d HCLK %b HADDR %h HRDATA %h HWDATA %h HWRITE %b HREADY %b HTRANS %b LEDR %b LEDG %b 7SEG %h",
     //         cycle, system.HCLK, HADDR, HRDATA, HWDATA,      HWRITE, HREADY, HTRANS, IO_RedLEDs, IO_GreenLEDs, IO_7_SegmentHEX);
 
-    //     `ifdef MFP_DEMO_PIPE_BYPASS
+    //     `ifdef MFP_MACRO_DEMO_PIPE_BYPASS
 
     //     if ( system.mpc_aselwr_e  ) $display ( "%5d PIPE_BYPASS mpc_aselwr_e"  , cycle );
     //     if ( system.mpc_bselall_e ) $display ( "%5d PIPE_BYPASS mpc_bselall_e" , cycle );

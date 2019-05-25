@@ -33,7 +33,7 @@ module mfp_ahb_lite_matrix
     output                        cpu_HREADY,
     output                        cpu_HRESP,
 
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `ifdef MFP_MACRO_USE_SDRAM_MEMORY
     output                        SDRAM_CKE,
     output                        SDRAM_CSn,
     output                        SDRAM_RASn,
@@ -45,7 +45,7 @@ module mfp_ahb_lite_matrix
     output [ SDRAM_DM_BITS  -1:0] SDRAM_DQM,
     `endif
 
-    `ifdef MFP_USE_AVALON_MEMORY
+    `ifdef MFP_MACRO_USE_AVALON_MEMORY
     output                        avm_clk,
     output                        avm_rst_n,
     input                         avm_waitrequest,
@@ -61,7 +61,7 @@ module mfp_ahb_lite_matrix
     output [     HDATA_WIDTH-1:0] avm_writedata,
     `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
+    `ifdef MFP_MACRO_USE_PMOD_ALS
     output                        als_spi_cs,
     output                        als_spi_sck,
     input                         als_spi_sdo,
@@ -71,7 +71,7 @@ module mfp_ahb_lite_matrix
     output                        uart_tx,
     output                        uart_int,
 
-    `ifdef MFP_USE_IRQ_EIC
+    `ifdef MFP_MACRO_USE_IRQ_EIC
     input  [ `EIC_CHANNELS - 1:0] EIC_input,
     output [                17:1] EIC_Offset,
     output [                 3:0] EIC_ShadowSet,
@@ -82,9 +82,9 @@ module mfp_ahb_lite_matrix
     input  [                 7:0] EIC_IPL,
     input  [                 5:0] EIC_IVN,
     input  [                17:1] EIC_ION,
-    `endif //MFP_USE_IRQ_EIC
+    `endif //MFP_MACRO_USE_IRQ_EIC
 
-    `ifdef MFP_USE_ADC_MAX10
+    `ifdef MFP_MACRO_USE_ADC_MAX10
     input                         clk_adc,
     input                         clk_locked,
     input                         adc_trigger,
@@ -185,7 +185,7 @@ module mfp_ahb_lite_matrix
     );
 
     //RAM
-    `ifdef MFP_USE_SDRAM_MEMORY
+    `ifdef MFP_MACRO_USE_SDRAM_MEMORY
         mfp_ahb_ram_sdram
         #(
             .SDRAM_ADDR_BITS ( SDRAM_ADDR_BITS ),
@@ -195,12 +195,12 @@ module mfp_ahb_lite_matrix
             .SDRAM_DM_BITS   ( SDRAM_DM_BITS   ),
             .SDRAM_BA_BITS   ( SDRAM_BA_BITS   ) 
         )
-    `elsif MFP_USE_BUSY_MEMORY
+    `elsif MFP_MACRO_USE_BUSY_MEMORY
         mfp_ahb_ram_busy
         #(
             .ADDR_WIDTH ( AHB_RAM_ADDR_WIDTH )
         )
-    `elsif MFP_USE_AVALON_MEMORY
+    `elsif MFP_MACRO_USE_AVALON_MEMORY
         ahb_lite_avm 
         #(
             .HADDR_WIDTH ( HADDR_WIDTH ),
@@ -234,7 +234,7 @@ module mfp_ahb_lite_matrix
         .HREADY           ( HREADY          ),
         .HRESP            ( HRESP       [1] ) 
 
-        `ifdef MFP_USE_SDRAM_MEMORY
+        `ifdef MFP_MACRO_USE_SDRAM_MEMORY
         ,
         .CKE              ( SDRAM_CKE       ),
         .CSn              ( SDRAM_CSn       ),
@@ -247,7 +247,7 @@ module mfp_ahb_lite_matrix
         .DQM              ( SDRAM_DQM       )
         `endif
 
-        `ifdef MFP_USE_AVALON_MEMORY
+        `ifdef MFP_MACRO_USE_AVALON_MEMORY
         ,
         .avm_clk                ( avm_clk                ),
         .avm_rst_n              ( avm_rst_n              ),
@@ -321,7 +321,7 @@ module mfp_ahb_lite_matrix
     );
 
     // EIC
-    `ifdef MFP_USE_IRQ_EIC
+    `ifdef MFP_MACRO_USE_IRQ_EIC
     mfp_ahb_lite_eic eic
     (
         .HCLK             ( HCLK            ),
@@ -355,7 +355,7 @@ module mfp_ahb_lite_matrix
     `endif
 
     // ADC MAX10
-    `ifdef MFP_USE_ADC_MAX10
+    `ifdef MFP_MACRO_USE_ADC_MAX10
     mfp_ahb_lite_adc_max10 adc
     (
         .clk_adc          ( clk_adc         ),
@@ -380,7 +380,7 @@ module mfp_ahb_lite_matrix
     );
     `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
+    `ifdef MFP_MACRO_USE_PMOD_ALS
     mfp_ahb_lite_pmod_als als
     (
         .HCLK             ( HCLK            ),

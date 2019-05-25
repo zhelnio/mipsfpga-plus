@@ -57,7 +57,7 @@ module de10_lite
         wire CLK_Lock;
         pll pll(MAX10_CLK1_50, ADC_CLK, clk, DRAM_CLK, clk200, CLK_Lock);
 
-    `elsif MFP_USE_ADC_MAX10
+    `elsif MFP_MACRO_USE_ADC_MAX10
         wire CLK_Lock;
         pll pll(MAX10_CLK1_50, ADC_CLK, clk, DRAM_CLK, clk200, CLK_Lock);
 
@@ -115,7 +115,7 @@ module de10_lite
         assign LEDR = IO_RedLEDs [9:0];
     `endif
 
-    `ifdef MFP_USE_ADC_MAX10
+    `ifdef MFP_MACRO_USE_ADC_MAX10
         wire          ADC_C_Valid;
         wire [  4:0 ] ADC_C_Channel;
         wire          ADC_C_SOP;
@@ -160,7 +160,7 @@ module de10_lite
         assign GPIO[19] = EJ_TDO;
     `endif
 
-    `ifdef MFP_DEMO_LIGHT_SENSOR
+    `ifdef MFP_MACRO_USE_PMOD_ALS
         //  ALS   CONN   PIN         DIRECTION
         // ===== ====== =====      =============
         //  VCC    29   3.3V
@@ -234,7 +234,7 @@ module de10_lite
         .UART_STX         (   GPIO [35]       ),
         `endif
 
-        `ifdef MFP_DEMO_LIGHT_SENSOR
+        `ifdef MFP_MACRO_USE_PMOD_ALS
         .SPI_CS           (   ALS_CS          ),
         .SPI_SCK          (   ALS_SCK         ),
         .SPI_SDO          (   ALS_SDO         ),
