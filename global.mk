@@ -204,6 +204,9 @@ sim_clean:
 $(DIR_BUILD_SIM):
 	mkdir -p $(DIR_BUILD_SIM)
 
+test3:
+	@echo "$(VLOG_OPT)"
+
 ##############################################
 # Modelsim
 
@@ -233,6 +236,7 @@ VSIM_OPT += work.$(RTL_SIM_TOPNAME)
 VSIM_OPT += $(MODELSIM_LIB)
 export VSIM_OPT
 
+#TODO: fix modelsim_wave.do
 modelsim_gui: $(DIR_BUILD_SIM) $(MODELSIM_QIP_TCL)
 	cp $(COMMON_RUN)/modelsim_wave.do $(DIR_BUILD_SIM)/wave.do
 	cd $(DIR_BUILD_SIM) && vsim $(MODELSIM_OPT)

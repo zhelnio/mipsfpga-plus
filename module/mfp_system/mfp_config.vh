@@ -18,7 +18,7 @@
 `endif
 
 `ifndef MFP_MACRO_CLOCK_SOURCE
-    `define MFP_MACRO_CLOCK_SOURCE mfp_clock_stub
+    `define MFP_MACRO_CLOCK_SOURCE mfp_clock_bypass
 `endif
 
 `ifndef MFP_MACRO_CLOCK_SOURCE_MODE
